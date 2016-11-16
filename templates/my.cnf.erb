@@ -1,0 +1,9 @@
+[mysql]
+prompt = 'Admin> '
+
+[client]
+socket = <%= scope.lookupvar('::proxysql::admin_listen_socket') %>
+host = <%= scope.lookupvar('::proxysql::admin_listen_ip') %>
+port = <%= scope.lookupvar('::proxysql::admin_listen_port') %>
+user = <%= scope.lookupvar('::proxysql::admin_username') %>
+password = <%= scope.lookupvar('::proxysql::admin_password') %>

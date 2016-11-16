@@ -1,0 +1,45 @@
+### MANAGED BY PUPPET ###
+
+<%
+default_handler = Proc.new do |k, v|
+  if v.is_a?(Integer) || v.is_a?(TrueClass) || v.is_a?(FalseClass)
+-%>
+  <%= k %> = <%= v %>
+<% else -%>
+  <%= k %> = "<%= v %>"
+<% end -%>
+<% end -%>
+
+<%
+  hash_handler = Proc.new do |k, v|
+    if v.is_a?(Hash)
+-%>
+  {
+    <% v.map do |ki, vi|
+         hash_handler.call(ki, vi)
+       end -%>
+  }
+<%  else
+      default_handler.call(k, v)
+    end
+  end
+-%>
+
+
+<% @config_settings.map do |k, v|
+     if v.is_a?(Hash) -%>
+  <%= k %> = {
+    <% v.map do |ki, vi|
+       if vi.is_a?(Hash)
+         hash_handler.call(ki, vi)
+       elsif ![nil, '', :undef].include?(vi)
+         default_handler.call(ki, vi)
+       end
+     end -%>
+  }
+
+  <% else
+       default_handler.call(k, v)
+     end
+   end
+-%>

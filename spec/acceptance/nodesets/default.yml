@@ -1,0 +1,15 @@
+HOSTS:
+  debian-82-x64:
+    roles:
+      - master
+    platform: debian-8-amd64
+    box: puppetlabs/debian-8.2-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/debian-8.2-64-nocm
+    hypervisor: vagrant
+
+CONFIG:
+#  log_level: verbose
+  forward_ssh_agent: true
+  type: foss
+  vagrant_memsize: 2024
+  vagrant_cpus: 1

@@ -1,0 +1,8 @@
+fixtures:
+  repositories:
+  symlinks:
+    proxysql: "#{source_dir}"
+  forge_modules:
+    stdlib:
+      repo: 'puppetlabs/stdlib'
+      ref: '4.11.0'
