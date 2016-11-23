@@ -9,6 +9,10 @@ class proxysql::service {
     ensure     => running,
     enable     => true,
     hasstatus  => true,
-    hasrestart => true,
+    hasrestart => false,
+    provider   => 'base',
+    status     => '/etc/init.d/proxysql status',
+    start      => '/usr/bin/proxysql --reload',
+    stop       => '/etc/init.d/proxysql stop'
   }
 }
