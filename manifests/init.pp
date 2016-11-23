@@ -26,6 +26,9 @@ class proxysql (
   Integer $admin_listen_port = $::proxysql::params::admin_listen_port,
   String $admin_listen_socket = $::proxysql::params::admin_listen_socket,
 
+  String $monitor_username = $::proxysql::params::monitor_username,
+  String $monitor_password = $::proxysql::params::monitor_password,
+
   String $config_file = $::proxysql::params::config_file,
   Boolean $manage_config_file = $::proxysql::params::manage_config_file,
 
@@ -41,10 +44,11 @@ class proxysql (
     admin_variables => {
       admin_credentials => "${admin_username}:${admin_password}",
       mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-      debug => $::proxysql::debug,
     },
     mysql_variables => {
-      interfaces => "${listen_ip}:${listen_port};${listen_socket}",
+      interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
+      monitor_username => $monitor_username,
+      monitor_password => $monitor_password,
     }
   }
   $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)

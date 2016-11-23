@@ -17,7 +17,8 @@ class proxysql::params {
   $admin_listen_port = 6032
   $admin_listen_socket = '/tmp/proxysql_admin.sock'
 
-  $debug = false
+  $monitor_username = 'monitor'
+  $monitor_password = 'monitor'
 
   $datadir = '/var/lib/proxysql'
 
@@ -33,7 +34,6 @@ class proxysql::params {
       admin_credentials => "${admin_username}:${admin_password}",
       mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
       refresh_interval => 2000,
-      debug => $debug,
     },
     mysql_variables => {
       threads => 4,
