@@ -9,12 +9,15 @@ class proxysql::install {
   }
 
   file { 'proxysql-datadir':
-    path  => $::proxysql::datadir,
-    owner => 'root',
-    group => 'root',
-    mode  => '0600',
+    ensure => directory,
+    path   => $::proxysql::datadir,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0600',
   }
+
   class { '::mysql::client':
     bindings_enable => false
   }
+
 }
