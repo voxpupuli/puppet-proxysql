@@ -6,3 +6,6 @@ fixtures:
     stdlib:
       repo: 'puppetlabs/stdlib'
       ref: '4.11.0'
+    mysql:
+      repo: 'puppetlabs/mysql'
+      ref: '3.10.0'

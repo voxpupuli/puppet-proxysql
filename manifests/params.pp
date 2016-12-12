@@ -7,14 +7,14 @@ class proxysql::params {
   $package_name = 'proxysql'
   $service_name = 'proxysql'
 
-  $listen_ip = '0.0.0.0'
-  $listen_port = 6033
+  $listen_ip     = '0.0.0.0'
+  $listen_port   = 6033
   $listen_socket = '/tmp/proxysql.sock'
 
-  $admin_username = 'admin'
-  $admin_password = 'admin'
-  $admin_listen_ip = '127.0.0.1'
-  $admin_listen_port = 6032
+  $admin_username      = 'admin'
+  $admin_password      = 'admin'
+  $admin_listen_ip     = '127.0.0.1'
+  $admin_listen_port   = 6032
   $admin_listen_socket = '/tmp/proxysql_admin.sock'
 
   $monitor_username = 'monitor'
@@ -22,10 +22,10 @@ class proxysql::params {
 
   $datadir = '/var/lib/proxysql'
 
-  $config_file = '/etc/proxysql.cnf'
+  $config_file        = '/etc/proxysql.cnf'
   $manage_config_file = true
 
-  $mycnf_file_name = '/root/.my.cnf'
+  $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true
 
   $config_settings = {
