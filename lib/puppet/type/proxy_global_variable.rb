@@ -1,0 +1,28 @@
+# This has to be a separate type to enable collecting
+Puppet::Type.newtype(:proxy_global_variable) do
+  @doc = 'Manage a ProxySQL global variable.'
+
+  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:class) { 'mysql::client' }
+
+  newparam(:name, :namevar => true) do
+    desc 'variable name'
+  end
+
+  newproperty(:value) do
+    desc 'variable value'
+    newvalue(/.+/)
+
+    munge do |value|
+      if value.is_a?(TrueClass)
+        :true
+      elsif value.is_a?(FalseClass)
+        :false
+      else
+        value
+      end
+    end
+  end
+
+
+end
