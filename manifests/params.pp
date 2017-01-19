@@ -28,6 +28,8 @@ class proxysql::params {
   $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true
 
+  $restart = false
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {
@@ -52,7 +54,7 @@ class proxysql::params {
       monitor_ping_interval => 10000,
       monitor_read_only_interval => 1500,
       monitor_read_only_timeout => 500,
-      ping_interval_server => 120000,
+      ping_interval_server_msec => 120000,
       ping_timeout_server => 500,
       commands_stats => true,
       sessions_sort => true,
