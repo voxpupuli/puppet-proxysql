@@ -11,7 +11,7 @@
 
 ## Overview
 
-The proxysql module installs, configures and manages the [ProxySQL|https://github.com/sysown/proxysql] service.
+The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
 This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules` and `global_variables`.
 
@@ -139,11 +139,27 @@ Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgrou
 
 
 #### proxy_mysql_user
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
 
+##### `name`
+Username for the user.
+
+##### `password`
+##### `active`
+##### `use_ssl`
+##### `default_hostgroup`
+##### `default_schema`
+##### `schema_locked`
+##### `transaction_persistent`
+##### `fast_forward`
+##### `backend`
+##### `frontend`
 
 ## Limitations
 
 The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
+It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 3.x)
 
 ## Development
 
