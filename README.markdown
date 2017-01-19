@@ -127,7 +127,7 @@ The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (an
 
 ## Development
 
-This module is originally developed by [Matthias Crauwels|mailto:matthias@crauwels.net] for use at [Ghent University, Belgium|http://www.ugent.be]. This module is published under the Apache 2.0 license.
+This module is originally developed by [Matthias Crauwels](mailto:matthias@crauwels.net) for use at [Ghent University, Belgium](http://www.ugent.be). This module is published under the Apache 2.0 license.
 
 We are open to feature requests, bug reports, contributions, etc...
 
