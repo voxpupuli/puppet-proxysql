@@ -17,6 +17,18 @@ class proxysql::config {
     }
   }
 
+  $config_settings['admin_variables'].each |$key, $value| {
+    proxy_global_variable { "admin-${key}":
+      value => $value,
+    }
+  }
+
+  $config_settings['mysql_variables'].each |$key, $value| {
+    proxy_global_variable { "mysql-${key}":
+      value => $value,
+    }
+  }
+
   if $proxysql::manage_mycnf_file {
     file { 'root-mycnf-file':
       ensure  => file,
@@ -25,6 +37,7 @@ class proxysql::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0400',
+      require => [Proxy_global_variable['admin-admin_credentials'], Proxy_global_variable['admin-mysql_ifaces']]
     }
   }
 }
