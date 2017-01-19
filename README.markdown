@@ -86,7 +86,7 @@ You can override any configuration setting by using the `override_config_setting
 ### Private classes
 * `proxysql::install`: Installs the packages
 * `proxysql::config`: Installs the packages
-* `proxysql::service`: Installs the packages*
+* `proxysql::service`: Installs the packages
 
 ### Types
 #### proxy_global_variable
@@ -117,6 +117,26 @@ Id of the reader hostgroup. Required.
 Optional comment.
 
 #### proxy_mysql_server
+`proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroup` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgroup_id`' format.
+
+##### `hostgroup_id`
+##### `hostname`
+##### `port`
+##### `status`
+##### `weight`
+##### `compression`
+##### `max_connections`
+##### `max_replication_lag`
+##### `use_ssl`
+##### `max_latency_ms`
+##### `comment`
+
 
 #### proxy_mysql_user
 
