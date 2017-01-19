@@ -6,9 +6,61 @@
 # Parameters
 # ----------
 #
-# * `sample parameter`
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# * `package_name`
+#   The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
+#
+# * `service_name`
+#   The name of the ProxySQL service resource. Defaults to 'proxysql'
+#
+# * `datadir`
+#   The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
+#
+# * `listen_ip`
+#   The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
+#
+# * `listen_port`
+#   The port where the ProxySQL service will listen on. Defaults to '6033'
+#
+# * `listen_socket`
+#   The socket where the ProxySQL service will listen on. Defaults to '/tmp/proxysql.sock'
+#
+# * `admin_username`
+#   The username to connect to the ProxySQL admin interface. Defaults to 'admin'
+#
+# * `admin_password`
+#   The password to connect to the ProxySQL admin interface. Defaults to 'admin'
+#
+# * `admin_listen_ip`
+#   The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'
+#
+# * `admin_listen_port`
+#   The port where the ProxySQL admin interface  will listen on. Defaults to '6032'
+#
+# * `admin_listen_socket`
+#   The socket where the ProxySQL admin interface  will listen on. Defaults to '/tmp/proxysql_admin.sock'
+#
+# * `monitor_username`
+#   The username ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
+#
+# * `monitor_password`
+#   The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
+#
+# * `config_file`
+#   The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
+#   Defaults to '/etc/proxysql.cnf'
+#
+# * `manage_config_file`
+#   Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+#
+# * `mycnf_file_name`
+#   Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
+#   This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
+#
+# * `manage_mycnf_file`
+#   Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
+#
+# * `restart`
+#   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 #
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
@@ -35,6 +87,8 @@ class proxysql (
   String $mycnf_file_name = $::proxysql::params::mycnf_file_name,
   Boolean $manage_mycnf_file = $::proxysql::params::manage_mycnf_file,
 
+  Boolean $restart = $::proxysql::params::restart,
+
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {
 
@@ -59,6 +113,11 @@ class proxysql (
   class { '::proxysql::service':}
 
   Class['::proxysql::install'] ~>
-  Class['::proxysql::config'] ~>
   Class['::proxysql::service']
+
+  if $restart {
+    Class['::proxysql::config'] ~>
+    Class['::proxysql::service']
+  }
+
 }
