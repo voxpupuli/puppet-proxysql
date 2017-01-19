@@ -99,7 +99,7 @@ The name of the variable.
 The value of the variable.
 
 #### proxy_mysql_replication_hostgroup
-`proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroup` admin table.
+`proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroups` admin table.
 
 ##### `ensure`
 Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
@@ -117,7 +117,7 @@ Id of the reader hostgroup. Required.
 Optional comment.
 
 #### proxy_mysql_server
-`proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroup` admin table.
+`proxy_mysql_server` manages an entry in the ProxySQL `mysql_servers` admin table.
 
 ##### `ensure`
 Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
@@ -139,6 +139,8 @@ Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgrou
 
 
 #### proxy_mysql_user
+`proxy_mysql_user` manages an entry in the ProxySQL `mysql_users` admin table.
+
 ##### `ensure`
 Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
 
