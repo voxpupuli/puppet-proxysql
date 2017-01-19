@@ -31,24 +31,106 @@ To install the ProxySQL software with all the default options:
 include ::proxysql
 ```
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
+```
+  class { '::proxysql':
+    listen_port              => 3306,
+    admin_password           => '654321',
+    monitor_password         => '123456',
+    override_config_settings => $override_settings
+  }
+```
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+Configuration is done by the `proxysql` class.
+
+### Customize config settings
+
+You can override any configuration setting by using the `override_config_settings` hash. This hash resembles the structure of the `proxysql.cnf` file
+
+```
+{
+    admin_variables => { 
+      refresh_interval => 2000,
+      ... 
+    },
+    mysql_variables => { 
+      monitor_writer_is_also_reader => false,
+      ... 
+    },
+    mysql_servers => {
+      'mysql1' => {
+         'address' => '127.0.0.1',
+         'port'    => 33061,
+       },
+      'mysql2' => {
+         'address' => '127.0.0.1',
+         'port'    => 33062,
+       },
+      ... 
+    },
+    mysql_users => { ... },
+    mysql_query_rules => { ... },
+    scheduler => { ... },
+    mysql_replication_hostgroups => { ... },
+
+}
+```
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+### Public classes
+* `proxysql`: Installs and configures ProxySQL
+
+### Private classes
+* `proxysql::install`: Installs the packages
+* `proxysql::config`: Installs the packages
+* `proxysql::service`: Installs the packages*
+
+### Types
+#### proxy_global_variable
+`proxy_global_variable` manages a variable in the ProxySQL `global_variables` admin table.
+
+##### `name`
+The name of the variable. 
+
+##### `value`
+The value of the variable.
+
+#### proxy_mysql_replication_hostgroup
+`proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroup` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`reader_hostgroup`' format.
+
+##### `writer_hostgroup`
+Id of the writer hostgroup. Required.
+
+##### `reader_hostgroup`
+Id of the reader hostgroup. Required.
+
+##### `comment`
+Optional comment.
+
+#### proxy_mysql_server
+
+#### proxy_mysql_user
+
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+This module is originally developed by [Matthias Crauwels|mailto:matthias@crauwels.net] for use at [Ghent University, Belgium|http://www.ugent.be]. This module is published under the Apache 2.0 license.
 
-## Release Notes/Contributors/Etc **Optional**
+We are open to feature requests, bug reports, contributions, etc...
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+## Contributors
+
+Original author: Matthias Crauwels
