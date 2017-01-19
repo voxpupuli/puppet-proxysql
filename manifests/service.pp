@@ -5,14 +5,23 @@
 #
 class proxysql::service {
 
-  service { $::proxysql::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => false,
-    provider   => 'base',
-    status     => '/etc/init.d/proxysql status',
-    start      => '/usr/bin/proxysql --reload',
-    stop       => '/etc/init.d/proxysql stop'
+  if $::proxysql::restart {
+    service { $::proxysql::service_name:
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => false,
+      provider   => 'base',
+      status     => '/etc/init.d/proxysql status',
+      start      => '/usr/bin/proxysql --reload',
+      stop       => '/etc/init.d/proxysql stop'
+    }
+  } else {
+    service { $::proxysql::service_name:
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+    }
   }
 }
