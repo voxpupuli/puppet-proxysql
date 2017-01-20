@@ -13,7 +13,7 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules` and `global_variables`.
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `scheduler` and `global_variables`.
 
 
 ## Setup
@@ -51,13 +51,13 @@ You can override any configuration setting by using the `override_config_setting
 
 ```
 {
-    admin_variables => { 
+    admin_variables => {
       refresh_interval => 2000,
-      ... 
+      ...
     },
-    mysql_variables => { 
+    mysql_variables => {
       monitor_writer_is_also_reader => false,
-      ... 
+      ...
     },
     mysql_servers => {
       'mysql1' => {
@@ -68,7 +68,7 @@ You can override any configuration setting by using the `override_config_setting
          'address' => '127.0.0.1',
          'port'    => 33062,
        },
-      ... 
+      ...
     },
     mysql_users => { ... },
     mysql_query_rules => { ... },
@@ -81,19 +81,77 @@ You can override any configuration setting by using the `override_config_setting
 ## Reference
 
 ### Public classes
-* `proxysql`: Installs and configures ProxySQL
+* [`proxysql`](#proxysql): Installs and configures ProxySQL
 
 ### Private classes
-* `proxysql::install`: Installs the packages
-* `proxysql::config`: Installs the packages
-* `proxysql::service`: Installs the packages
+* `proxysql::install`: Installs the package(s)
+* `proxysql::config`: Manages the configuration files and `global_variables`
+* `proxysql::service`: Manages the service
+
+### parameters
+#### `proxysql`
+##### `package_name`
+The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
+
+##### `service_name`
+The name of the ProxySQL service resource. Defaults to 'proxysql'
+
+##### `datadir`
+The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
+
+##### `listen_ip`
+The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
+
+##### `listen_port`
+The port where the ProxySQL service will listen on. Defaults to '6033'
+
+##### `listen_socket`
+The socket where the ProxySQL service will listen on. Defaults to '/tmp/proxysql.sock'
+
+##### `admin_username`
+The username to connect to the ProxySQL admin interface. Defaults to 'admin'
+
+##### `admin_password`
+The password to connect to the ProxySQL admin interface. Defaults to 'admin'
+
+##### `admin_listen_ip`
+The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'
+
+##### `admin_listen_port`
+The port where the ProxySQL admin interface  will listen on. Defaults to '6032'
+
+##### `admin_listen_socket`
+The socket where the ProxySQL admin interface  will listen on. Defaults to '/tmp/proxysql_admin.sock'
+
+##### `monitor_username`
+The username ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
+
+##### `monitor_password`
+The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
+
+##### `config_file`
+The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
+Defaults to '/etc/proxysql.cnf'
+
+##### `manage_config_file`
+Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+
+##### `mycnf_file_name`
+Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
+This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
+
+##### `manage_mycnf_file`
+Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
+
+##### `restart`
+Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 
 ### Types
 #### proxy_global_variable
 `proxy_global_variable` manages a variable in the ProxySQL `global_variables` admin table.
 
 ##### `name`
-The name of the variable. 
+The name of the variable.
 
 ##### `value`
 The value of the variable.
@@ -126,16 +184,37 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgroup_id`' format.
 
 ##### `hostgroup_id`
+Id of the hostgroup this server wil be configured to be part of. Integer value, required.
+
 ##### `hostname`
+Hostname of the server. Required.
+
 ##### `port`
+Port of the server. Required. Defaults to 3306.
+
 ##### `status`
+Status of the server. Should be one of the following values: 'ONLINE', 'OFFLINE_SOFT', 'OFFLINE_HARD', 'SHUNNED'. Defaults to 'ONLINE'.
+
 ##### `weight`
+Weight value of the server. The higher the value, the higher the probability this server will be chosen from the hostgroup. Integer, defaults to 0.
+
 ##### `compression`
+Compression value of the serer. If the value is greater than 0, new connections to that server will use compression. Integer, defaults to 0.
+
 ##### `max_connections`
+The maximum number of connections ProxySQL will open to this backend server. Even though this server will have the highest weight, no new connections will be opened to it once this limit is hit. Please ensure that the backend is configured with a correct value of max_connections to avoid that ProxySQL will try to go beyond that limit. Integer, defaults to 1000.
+
 ##### `max_replication_lag`
+If greater and 0, ProxySQL will reguarly monitor replication lag and if it goes beyond such threshold it will temporary shun the host until replication catch ups. Integer, defaults to 0.
+
 ##### `use_ssl`
+If set to 1, connections to the backend will use SSL. Values 0 or 1. Defaults to 0.
+
 ##### `max_latency_ms`
+Ping time is regularly monitored. If a host has a ping time greater than max_latency_ms it is excluded from the connection pool (although the server stays ONLINE. Integer, defaults to 0.
+
 ##### `comment`
+Optional comment.
 
 
 #### proxy_mysql_user
@@ -145,18 +224,38 @@ Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgrou
 Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
 
 ##### `name`
-Username for the user.
+Username for the user. Required.
 
 ##### `password`
+Password for the user. Required.
+*Note*: you should make sure that the global variable `admin-hashed_passwords` is set to `true` and then encrypt this password using the `mysql_password()` function.
+
 ##### `active`
+Flag to determine if this user is active or not. Values 0 or 1. Defaults to 1.
+
 ##### `use_ssl`
+Flag to determine if this user uses SSL or not. Values 0 or 1. Defaults to 0.
+
 ##### `default_hostgroup`
+Default hostgroup for the user. Integer, defaults to 0.
+
 ##### `default_schema`
+Default schema for the user. String, defaults to ''.
+
 ##### `schema_locked`
+Is the user locked in the `default_schema` or not. Values 0 or 1. Defaults to 0.
+
 ##### `transaction_persistent`
+Disable routing across hostgroups once a transaction has started for a specific user. Values 0 or 1. Defaults to 0.
+
 ##### `fast_forward`
+Flag to determine fast forward or not. Values 0 or 1. Defaults to 0.
+
 ##### `backend`
+Is this a backend user. Values 0 or 1. Defaults to 1.
+
 ##### `frontend`
+Is this a frontend user. Values 0 or 1. Defaults to 1.
 
 ## Limitations
 
