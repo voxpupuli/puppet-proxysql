@@ -19,13 +19,17 @@ class proxysql::config {
 
   $config_settings['admin_variables'].each |$key, $value| {
     proxy_global_variable { "admin-${key}":
-      value => $value,
+      value           => $value,
+      save_to_disk    => $::proxysql::save_to_disk,
+      load_to_runtime => $::proxysql::load_to_runtime,
     }
   }
 
   $config_settings['mysql_variables'].each |$key, $value| {
     proxy_global_variable { "mysql-${key}":
-      value => $value,
+      value           => $value,
+      save_to_disk    => $::proxysql::save_to_disk,
+      load_to_runtime => $::proxysql::load_to_runtime,
     }
   }
 

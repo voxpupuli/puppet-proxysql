@@ -35,12 +35,24 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, :parent => Puppet::
     prefix, var = name.split('-')
     @property_hash.clear
 
+    load_to_runtime = @resource[:load_to_runtime]
+    save_to_disk = @resource[:save_to_disk]
     if prefix == 'admin'
-      mysql([defaults_file, '-NBe', 'SAVE ADMIN VARIABLES TO DISK'].compact)
-      mysql([defaults_file, '-NBe', 'LOAD ADMIN VARIABLES TO RUNTIME'].compact)
+      if load_to_runtime == :true
+        mysql([defaults_file, '-NBe', 'LOAD ADMIN VARIABLES TO RUNTIME'].compact)
+      end
+
+      if save_to_disk == :true
+        mysql([defaults_file, '-NBe', 'SAVE ADMIN VARIABLES TO DISK'].compact)
+      end
     else
-      mysql([defaults_file, '-NBe', 'SAVE MYSQL VARIABLES TO DISK'].compact)
-      mysql([defaults_file, '-NBe', 'LOAD MYSQL VARIABLES TO RUNTIME'].compact)
+      if load_to_runtime == :true
+        mysql([defaults_file, '-NBe', 'LOAD MYSQL VARIABLES TO RUNTIME'].compact)
+      end
+
+      if save_to_disk == :true
+        mysql([defaults_file, '-NBe', 'SAVE MYSQL VARIABLES TO DISK'].compact)
+      end
     end
   end
 

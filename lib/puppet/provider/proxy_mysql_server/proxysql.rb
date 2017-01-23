@@ -95,17 +95,45 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, :parent => Puppet::Pro
     @property_hash[:ensure] == :present || false
   end
 
-  def flush
-    @property_hash.clear
-    mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact)
-    mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact)
+  def initialize(value={})
+    super(value)
+    @property_flush = {}
   end
 
-  def update_server(field, value)
+  def flush
+    if @property_flush
+      update_server(@property_flush)
+    end
+    @property_hash.clear
+    load_to_runtime = @resource[:load_to_runtime]
+    if load_to_runtime == :true
+      mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact)
+    end
+
+    save_to_disk = @resource[:save_to_disk]
+    if save_to_disk == :true
+      mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact)
+    end
+  end
+
+  def update_server(properties)
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
     hostgroup_id = @resource.value(:hostgroup_id)
-    query = "UPDATE mysql_servers SET `#{field}` = '#{value}'"
+
+    if properties.empty?
+      return false
+    end
+
+    query = "UPDATE mysql_users SET "
+
+    values = []
+    properties.each do |field, value|
+      values.push("`#{field}` = '#{value}'")
+    end
+
+    query = "UPDATE mysql_servers SET "
+    query << values.join(', ')
     query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
     mysql([defaults_file, '-e', query].compact)
 
@@ -117,35 +145,35 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, :parent => Puppet::Pro
   mk_resource_methods
 
   def status=(value)
-    return update_server(:status, value)
+    @property_flush[:status] = value
   end
 
   def weight=(value)
-    return update_server(:weight, value)
+    @property_flush[:weight] = value
   end
 
   def compression=(value)
-    return update_server(:compression, value)
+    @property_flush[:compression] = value
   end
 
   def max_connections=(value)
-    return update_server(:max_connections, value)
+    @property_flush[:max_connections] = value
   end
 
   def max_replication_lag=(value)
-    return update_server(:max_replication_lag, value)
+    @property_flush[:max_replication_lag] = value
   end
 
   def use_ssl=(value)
-    return update_server(:use_ssl, value)
+    @property_flush[:use_ssl] = value
   end
 
   def max_latency_ms=(value)
-    return update_server(:max_latency_ms, value)
+    @property_flush[:max_latency_ms] = value
   end
 
   def comment=(value)
-    return update_server(:comment, value)
+    @property_flush[:comment] = value
   end
 
 end

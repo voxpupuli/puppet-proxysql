@@ -11,6 +11,18 @@ Puppet::Type.newtype(:proxy_mysql_user) do
     desc 'The name of the user to manage.'
   end
 
+  newparam(:load_to_runtime) do
+    desc 'Load this entry to the active runtime.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newparam(:save_to_disk) do
+    desc 'Perist this entry to the disk.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
   newproperty(:password) do
     desc 'The password of the user. You can use mysql_password() for creating a hashed password.'
     newvalue(/\w*/)

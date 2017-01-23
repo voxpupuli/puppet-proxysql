@@ -70,8 +70,15 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, :parent
 
    def flush
      @property_hash.clear
-     mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact)
-     mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact)
+     load_to_runtime = @resource[:load_to_runtime]
+     if load_to_runtime == :true
+       mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact)
+     end
+
+     save_to_disk = @resource[:save_to_disk]
+     if save_to_disk == :true
+       mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact)
+     end
    end
 
    # Generates method for all properties of the property_hash

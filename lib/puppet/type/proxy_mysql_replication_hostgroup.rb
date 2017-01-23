@@ -17,6 +17,18 @@ Puppet::Type.newtype(:proxy_mysql_replication_hostgroup) do
     desc 'name to describe the hostgroup config'
   end
 
+  newparam(:load_to_runtime) do
+    desc 'Load this entry to the active runtime.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newparam(:save_to_disk) do
+    desc 'Perist this entry to the disk.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
   newproperty(:writer_hostgroup) do
     desc 'writer_hostgroup.'
     newvalue(/\d+/)

@@ -30,6 +30,9 @@ class proxysql::params {
 
   $restart = false
 
+  $load_to_runtime = true
+  $save_to_disk = true
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {

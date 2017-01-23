@@ -62,6 +62,15 @@
 # * `restart`
 #   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 #
+# * `load_to_runtime`
+#   Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+#
+# * `save_to_disk`
+#   Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
+#
+# * `override_config_settings`
+#   Which configuration variables should be overriden. Hash, defaults to {} (empty hash). 
+#
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
   String $service_name = $::proxysql::params::service_name,
@@ -88,6 +97,9 @@ class proxysql (
   Boolean $manage_mycnf_file = $::proxysql::params::manage_mycnf_file,
 
   Boolean $restart = $::proxysql::params::restart,
+
+  Boolean $load_to_runtime = $::proxysql::params::load_to_runtime,
+  Boolean $save_to_disk = $::proxysql::params::save_to_disk,
 
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {

@@ -18,6 +18,18 @@ Puppet::Type.newtype(:proxy_mysql_server) do
     desc 'name for server to manage.'
   end
 
+  newparam(:load_to_runtime) do
+    desc 'Load this entry to the active runtime.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newparam(:save_to_disk) do
+    desc 'Perist this entry to the disk.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
   newproperty(:hostgroup_id) do
     desc 'The hostgroup of the server.'
     defaultto 0

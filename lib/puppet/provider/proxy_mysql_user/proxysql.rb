@@ -83,67 +83,94 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
     @property_hash[:ensure] == :present || false
   end
 
-  def flush
-    @property_hash.clear
-    mysql([defaults_file, '-NBe', 'LOAD MYSQL USERS TO RUNTIME'].compact)
-    mysql([defaults_file, '-NBe', 'SAVE MYSQL USERS TO DISK'].compact)
+  def initialize(value={})
+    super(value)
+    @property_flush = {}
   end
 
-  def update_user(field, value)
-    name = @resource[:name]
-    mysql([defaults_file, '-e', "UPDATE mysql_users SET `#{field}` = '#{value}' WHERE username = '#{name}'"].compact)
-
+  def flush
+    if @property_flush
+      update_user(@property_flush)
+    end
     @property_hash.clear
-    exists? ? (return false) : (return true)
+
+    load_to_runtime = @resource[:load_to_runtime]
+    if load_to_runtime == :true
+      mysql([defaults_file, '-NBe', 'LOAD MYSQL USERS TO RUNTIME'].compact)
+    end
+
+    save_to_disk = @resource[:save_to_disk]
+    if save_to_disk == :true
+      mysql([defaults_file, '-NBe', 'SAVE MYSQL USERS TO DISK'].compact)
+    end
+  end
+
+  def update_user(properties)
+    name = @resource[:name]
+
+    if properties.empty?
+      return false
+    end
+
+    query = "UPDATE mysql_users SET "
+
+    values = []
+    properties.each do |field, value|
+      values.push("`#{field}` = '#{value}'")
+    end
+    query = "UPDATE mysql_users SET "
+    query << values.join(', ')
+    query << " WHERE username = '#{name}'"
+
+    mysql([defaults_file, '-e', query].compact)
+
   end
 
   # Generates method for all properties of the property_hash
   mk_resource_methods
 
   def password=(value)
-    return update_user(:password, value)
+    @property_flush[:password] = value
   end
 
   def active=(value)
-    return update_user(:active, value)
+    @property_flush[:active] = value
   end
 
   def use_ssl=(value)
-    return update_user(:use_ssl, value)
+    @property_flush[:use_ssl] = value
   end
 
   def default_hostgroup=(value)
-    return update_user(:default_hostgroup, value)
+    @property_flush[:default_hostgroup] = value
   end
 
   def default_schema=(value)
-    return update_user(:default_schema, value)
+    @property_flush[:default_schema] = value
   end
 
   def schema_locked=(value)
-    return update_user(:schema_locked, value)
+    @property_flush[:schema_locked] = value
   end
 
   def transaction_persistent=(value)
-    return update_user(:transaction_persistent, value)
+    @property_flush[:transaction_persistent] = value
   end
 
   def fast_forward=(value)
-    return update_user(:fast_forward, value)
+    @property_flush[:fast_forward] = value
   end
 
   def backend=(value)
-    return update_user(:backend, value)
+    @property_flush[:backend] = value
   end
 
   def frontend=(value)
-    return update_user(:frontend, value)
-
+    @property_flush[:frontend] = value
   end
 
   def max_connections=(value)
-    return update_user(:max_connections, value)
-
+    @property_flush[:max_connections] = value
   end
 
 end

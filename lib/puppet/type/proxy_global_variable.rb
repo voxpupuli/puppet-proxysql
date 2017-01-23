@@ -9,6 +9,18 @@ Puppet::Type.newtype(:proxy_global_variable) do
     desc 'variable name'
   end
 
+  newparam(:load_to_runtime) do
+    desc 'Load this entry to the active runtime.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newparam(:save_to_disk) do
+    desc 'Perist this entry to the disk.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
   newproperty(:value) do
     desc 'variable value'
     newvalue(/.+/)

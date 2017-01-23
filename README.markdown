@@ -146,12 +146,28 @@ Determines wheter this module will configure the my.cnf file to connect to the a
 ##### `restart`
 Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 
-### Types
+##### `load_to_runtime`
+Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `override_config_settings`
+Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
+
+
+## Types
 #### proxy_global_variable
 `proxy_global_variable` manages a variable in the ProxySQL `global_variables` admin table.
 
 ##### `name`
 The name of the variable.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `value`
 The value of the variable.
@@ -164,6 +180,12 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 
 ##### `name`
 Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`reader_hostgroup`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `writer_hostgroup`
 Id of the writer hostgroup. Required.
@@ -182,6 +204,12 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 
 ##### `name`
 Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgroup_id`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `hostgroup_id`
 Id of the hostgroup this server wil be configured to be part of. Integer value, required.
@@ -225,6 +253,12 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 
 ##### `name`
 Username for the user. Required.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `password`
 Password for the user. Required.
