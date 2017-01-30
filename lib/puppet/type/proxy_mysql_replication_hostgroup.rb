@@ -6,6 +6,7 @@ Puppet::Type.newtype(:proxy_mysql_replication_hostgroup) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   validate do
     fail('writer_hostgroup parameter is required.') if self[:ensure] == :present and self[:writer_hostgroup].nil?

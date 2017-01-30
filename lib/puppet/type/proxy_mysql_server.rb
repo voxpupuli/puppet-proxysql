@@ -6,6 +6,7 @@ Puppet::Type.newtype(:proxy_mysql_server) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   validate do
     fail('hostname parameter is required.') if self[:ensure] == :present and self[:hostname].nil?

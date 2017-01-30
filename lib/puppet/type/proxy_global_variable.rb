@@ -4,6 +4,7 @@ Puppet::Type.newtype(:proxy_global_variable) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   newparam(:name, :namevar => true) do
     desc 'variable name'

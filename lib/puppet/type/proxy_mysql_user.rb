@@ -6,6 +6,7 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   newparam(:name, :namevar => true) do
     desc 'The name of the user to manage.'
