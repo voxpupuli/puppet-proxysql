@@ -119,8 +119,6 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
       return false
     end
 
-    query = "UPDATE mysql_users SET "
-
     values = []
     properties.each do |field, value|
       values.push("`#{field}` = '#{value}'")
