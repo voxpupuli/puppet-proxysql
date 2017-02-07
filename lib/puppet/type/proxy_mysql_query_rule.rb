@@ -152,7 +152,7 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
     newvalue(/\d+/)
   end
 
-  newproperty(:mirror_flagOUT) do
+  newproperty(:mirror_flag_out) do
     desc 'see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md'
     newvalue(/\d+/)
   end

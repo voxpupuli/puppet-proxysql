@@ -24,7 +24,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
       @client_addr, @proxy_addr, @proxy_port, @destination_hostgroup,
       @digest, @match_digest, @match_pattern, @negate_match_pattern, @replace_pattern,
       @cache_ttl, @reconnect, @timeout, @retries, @delay, @error_msg, @log, @comment,
-      @mirror_flagOUT, @mirror_hostgroup = mysql([defaults_file, "-NBe", query].compact).split(/\s/)
+      @mirror_flag_out, @mirror_hostgroup = mysql([defaults_file, "-NBe", query].compact).split(/\s/)
       name = "mysql_query_rule-#{rule_id}"
 
       instances << new(
@@ -54,7 +54,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
         :error_msg              => @error_msg,
         :log                    => @log,
         :comment                => @comment,
-        :mirror_flagOUT         => @mirror_flagOUT,
+        :mirror_flag_out        => @mirror_flag_out,
         :mirror_hostgroup       => @mirror_hostgroup
        )
      end
@@ -98,7 +98,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      error_msg              = make_sql_value(@resource.value(:error_msg) || nil)
      log                    = make_sql_value(@resource.value(:log) || nil)
      comment                = make_sql_value(@resource.value(:comment) || nil)
-     mirror_flagOUT         = make_sql_value(@resource.value(:mirror_flagOUT) || nil)
+     mirror_flag_out        = make_sql_value(@resource.value(:mirror_flag_out) || nil)
      mirror_hostgroup       = make_sql_value(@resource.value(:mirror_hostgroup) || nil)
 
      query = "INSERT INTO `mysql_query_rules` ("
@@ -111,7 +111,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      query << "#{client_addr}, #{proxy_addr}, #{proxy_port}, #{destination_hostgroup}, "
      query << "#{digest}, #{match_digest}, #{match_pattern}, #{negate_match_pattern}, #{replace_pattern}, "
      query << "#{cache_ttl}, #{reconnect}, #{timeout}, #{retries}, #{delay}, #{error_msg}, #{log}, #{comment}, "
-     query << "#{mirror_flagOUT}, #{mirror_hostgroup})"
+     query << "#{mirror_flag_out}, #{mirror_hostgroup})"
      mysql([defaults_file, '-e', query].compact)
      @property_hash[:ensure] = :present
 
@@ -267,8 +267,8 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      @property_flush[:comment] = value
    end
 
-   def mirror_flagOUT=(value)
-     @property_flush[:mirror_flagOUT] = value
+   def mirror_flag_out=(value)
+     @property_flush[:mirror_flag_out] = value
    end
 
    def mirror_hostgroup=(value)
