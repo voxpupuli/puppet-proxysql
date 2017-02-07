@@ -5,6 +5,7 @@ Puppet::Type.newtype(:proxy_scheduler) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   validate do
     fail('id parameter is required.') if self[:id].nil?

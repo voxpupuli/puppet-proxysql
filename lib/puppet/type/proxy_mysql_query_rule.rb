@@ -5,6 +5,7 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
+  autorequire(:service) { 'proxysql' }
 
   validate do
     fail('rule_id parameter is required.') if self[:rule_id].nil?
