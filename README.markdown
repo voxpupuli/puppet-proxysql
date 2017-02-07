@@ -260,6 +260,9 @@ Specifies wheter the resource should be immediately loaded to the active runtime
 ##### `save_to_disk`
 Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
+##### `encrypt_password`
+Specifies wheter the user password should be encrypted (requires ProxySQL setting `admin-hash_password` = `true`). Boolean, defaults to 'true'.
+
 ##### `password`
 Password for the user. Required.
 *Note*: you should make sure that the global variable `admin-hashed_passwords` is set to `true` and then encrypt this password using the `mysql_password()` function.
@@ -290,6 +293,101 @@ Is this a backend user. Values 0 or 1. Defaults to 1.
 
 ##### `frontend`
 Is this a frontend user. Values 0 or 1. Defaults to 1.
+
+
+#### proxy_mysql_query_rule
+`proxy_mysql_query_rule` manages an entry in the ProxySQL `mysql_query_rules` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+The name of the query rule entry, Must be in a 'mysql_query_rule-`rule_id`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `rule_id`
+Id of the scheduler entry. Integer value, required.
+
+##### `active`
+Is the rule active or not. Boolean value 0 or 1, defaults to 0.
+
+##### `username`
+Username to apply this rule to. String, defaults to NULL.
+
+##### `schemaname`
+Schema to apply this rule to. String, defaults to NULL.
+
+##### `flag_in`
+Used to chain rules. This is the id of the previous rule to apply. Integer, defaults to 0.
+
+##### `flag_out`
+Used to chain rules. This is the id of the next rule to apply, Integer, defaults to NULL
+
+##### `apply`
+Used to chain rules.
+
+##### `client_addr`
+Match traffic from a certain address. String, defaults to NULL.
+
+##### `proxy_addr`
+Match incoming traffic on a specific local address. String, defaults to NULL.
+
+##### `proxy_port`
+Match incoming traffic on a specific local port. Integer, defaults to NULL.
+
+##### `digest`
+match queries with a specific digest, as returned by `stats_mysql_query_digest`.`digest`. String, defaults to NULL.
+
+##### `match_digest`
+regular expression that matches the query digest. String, defaults to NULL.
+
+##### `match_pattern`
+regular expression that matches the query text. String, defaults to NULL.
+
+##### `replace_pattern`
+this is the pattern with which to replace the matched pattern. String, defaults to NULL.
+
+##### `negate_match_pattern`
+if this is set to 1, only queries not matching the query text will be considered as a match. This acts as a NOT operator in front of the regular expression matching against match_pattern or match_digest. Boolean value 0 or 1, defaults to 0.
+
+##### `destination_hostgroup`
+The hostgroup to send this query to. Integer, defaults to NULL.
+
+##### `cache_ttl`
+The amount of miliseconds to cache the result of this query. Integer, defaults to NULL.
+
+##### `reconnect`
+feature currently not in use.
+
+##### `timeout`
+The maximum amount of miliseconds in which the matched or rewritten query should be executed. Integer, defaults to NULL.
+
+##### `retries`
+The maximum number of times a query needs to be re-executed in case of detected failure during the execution of the query. Integer, defaults to NULL.
+
+##### `delay`
+The number of milliseconds to delay the execution of the query. Integer, defaults to NULL.
+
+##### `error_msg`
+The query will be blocked, and the specified error_msg will be returned to the client. String, defaults to NULL.
+
+##### `log`
+The query will be logged. Boolean value 0 or 1, defaults to NULL.
+
+##### `mirror_hostgroup`
+see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md. Integer, defaults to NULL.
+
+##### `mirror_flag_out`
+see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md. Integer, defaults to NULL.
+
+##### `comment`
+Optional free form text field, usable for a descriptive comment of the query rule.
+
 
 #### proxy_scheduler
 `proxy_scheduler` manages an entry in the ProxySQL `scheduler` admin table.
