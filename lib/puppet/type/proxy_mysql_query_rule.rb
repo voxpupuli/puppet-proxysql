@@ -49,13 +49,13 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
     newvalue(/\w+/)
   end
 
-  newproperty(:flagIN) do
+  newproperty(:flag_in) do
     desc 'Used to chain rules. This is the id of the previous rule to apply'
     defaultto 0
     newvalue(/\d+/)
   end
 
-  newproperty(:flagOUT) do
+  newproperty(:flag_out) do
     desc 'Used to chain rules. This is the id of the next rule to apply'
     newvalue(/\d+/)
   end

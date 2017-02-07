@@ -20,7 +20,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
       query << " `mirror_flagOUT`, `mirror_hostgroup`"
       query << " FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
 
-      @active, @username, @schemaname, @flagIN, @flagOUT, @apply,
+      @active, @username, @schemaname, @flag_in, @flag_out, @apply,
       @client_addr, @proxy_addr, @proxy_port, @destination_hostgroup,
       @digest, @match_digest, @match_pattern, @negate_match_pattern, @replace_pattern,
       @cache_ttl, @reconnect, @timeout, @retries, @delay, @error_msg, @log, @comment,
@@ -34,8 +34,8 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
         :active                 => @active,
         :username               => @username,
         :schemaname             => @schemaname,
-        :flagIN                 => @flagIN,
-        :flagOUT                => @flagOUT,
+        :flag_in                => @flag_in,
+        :flag_out               => @flag_out,
         :apply                  => @apply,
         :client_addr            => @client_addr,
         :proxy_addr             => @proxy_addr,
@@ -78,8 +78,8 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      active                 = make_sql_value(@resource.value(:active) || 0)
      username               = make_sql_value(@resource.value(:username) || nil)
      schemaname             = make_sql_value(@resource.value(:schemaname) || nil)
-     flagIN                 = make_sql_value(@resource.value(:flagIN) || 0)
-     flagOUT                = make_sql_value(@resource.value(:flagOUT) || nil)
+     flag_in                = make_sql_value(@resource.value(:flag_in) || 0)
+     flag_out               = make_sql_value(@resource.value(:flag_out) || nil)
      apply                  = make_sql_value(@resource.value(:apply) || 0)
      client_addr            = make_sql_value(@resource.value(:client_addr) || nil)
      proxy_addr             = make_sql_value(@resource.value(:proxy_addr) || nil)
@@ -107,7 +107,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      query << "`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, "
      query << "`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, "
      query << "`mirror_flagOUT`, `mirror_hostgroup`) VALUES ("
-     query << "#{rule_id}, #{active}, #{username}, #{schemaname}, #{flagIN}, #{flagOUT}, #{apply}, "
+     query << "#{rule_id}, #{active}, #{username}, #{schemaname}, #{flag_in}, #{flag_out}, #{apply}, "
      query << "#{client_addr}, #{proxy_addr}, #{proxy_port}, #{destination_hostgroup}, "
      query << "#{digest}, #{match_digest}, #{match_pattern}, #{negate_match_pattern}, #{replace_pattern}, "
      query << "#{cache_ttl}, #{reconnect}, #{timeout}, #{retries}, #{delay}, #{error_msg}, #{log}, #{comment}, "
@@ -185,5 +185,105 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
 
    # Generates method for all properties of the property_hash
    mk_resource_methods
+
+   def active=(value)
+     @property_flush[:active] = value
+   end
+
+   def username=(value)
+     @property_flush[:username] = value
+   end
+
+   def schemaname=(value)
+     @property_flush[:schemaname] = value
+   end
+
+   def flag_in=(value)
+     @property_flush[:flag_in] = value
+   end
+
+   def flag_out=(value)
+     @property_flush[:flag_out] = value
+   end
+
+   def apply=(value)
+     @property_flush[:apply] = value
+   end
+
+   def client_addr=(value)
+     @property_flush[:client_addr] = value
+   end
+
+   def proxy_addr=(value)
+     @property_flush[:proxy_addr] = value
+   end
+
+   def proxy_port=(value)
+     @property_flush[:proxy_port] = value
+   end
+
+   def destination_hostgroup=(value)
+     @property_flush[:destination_hostgroup] = value
+   end
+
+   def digest=(value)
+     @property_flush[:digest] = value
+   end
+
+   def match_digest=(value)
+     @property_flush[:match_digest] = value
+   end
+
+   def match_pattern=(value)
+     @property_flush[:match_pattern] = value
+   end
+
+   def negate_match_pattern=(value)
+     @property_flush[:negate_match_pattern] = value
+   end
+
+   def replace_pattern=(value)
+     @property_flush[:replace_pattern] = value
+   end
+
+   def cache_ttl=(value)
+     @property_flush[:cache_ttl] = value
+   end
+
+   def reconnect=(value)
+     @property_flush[:reconnect] = value
+   end
+
+   def timeout=(value)
+     @property_flush[:timeout] = value
+   end
+
+   def retries=(value)
+     @property_flush[:retries] = value
+   end
+
+   def delay=(value)
+     @property_flush[:delay] = value
+   end
+
+   def error_msg=(value)
+     @property_flush[:error_msg] = value
+   end
+
+   def log=(value)
+     @property_flush[:log] = value
+   end
+
+   def comment=(value)
+     @property_flush[:comment] = value
+   end
+
+   def mirror_flagOUT=(value)
+     @property_flush[:mirror_flagOUT] = value
+   end
+
+   def mirror_hostgroup=(value)
+     @property_flush[:mirror_hostgroup] = value
+   end
 
 end
