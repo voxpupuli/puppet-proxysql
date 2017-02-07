@@ -8,23 +8,35 @@ Puppet::Type.newtype(:proxy_scheduler) do
   autorequire(:service) { 'proxysql' }
 
   validate do
-    fail('id parameter is required.') if self[:id].nil?
+    fail('scheduler_id parameter is required.') if self[:scheduler_id].nil?
     fail('filename parameter is required.') if self[:ensure] == :present and self[:filename].nil?
-    fail('name must match \'scheduler-\'<id> format') if self[:name] != "scheduler-#{self[:rule_id]}"
+    fail('name must match \'scheduler-\'<scheduler_id> format') if self[:name] != "scheduler-#{self[:scheduler_id]}"
   end
 
   newparam(:name, :namevar => true) do
     desc 'scheduler name'
   end
 
-  newproperty(:id) do
+  newparam(:load_to_runtime) do
+    desc 'Load this entry to the active runtime.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newparam(:save_to_disk) do
+    desc 'Perist this entry to the disk.'
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
+  newproperty(:scheduler_id) do
     desc 'The id of the scheduler entry.'
     newvalue(/\d+/)
   end
 
   newproperty(:active) do
     desc "Is the scheduler active or not."
-    defaultto 0
+    defaultto 1
     newvalue(/[01]/)
   end
 

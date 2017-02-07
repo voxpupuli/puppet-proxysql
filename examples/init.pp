@@ -58,4 +58,17 @@ proxy_mysql_query_rule { 'mysql_query_rule-1':
   active                => 1,
   destination_hostgroup => 31,
 }
+
+proxy_scheduler { 'scheduler-1':
+  scheduler_id => 1,
+  active       => 0,
+  filename     => '/usr/bin/whoami',
+}
+
+proxy_scheduler { 'scheduler-2':
+  scheduler_id => 2,
+  active       => 0,
+  interval_ms  => 1000,
+  filename     => '/usr/bin/id',
+}
 # lint:endignore
