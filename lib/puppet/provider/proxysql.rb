@@ -21,4 +21,14 @@ class Puppet::Provider::Proxysql < Puppet::Provider
     self.class.defaults_file
   end
 
+  def make_sql_value(value)
+    if value.nil?
+      return "NULL"
+    elsif value.is_a? Integer
+      return "#{value}"
+    else
+      return "'#{value}'"
+    end
+  end
+
 end

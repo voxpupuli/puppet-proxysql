@@ -124,7 +124,6 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
 
      @property_hash.clear
      exists? ? (return false) : (return true)
-
    end
 
    def exists?
@@ -171,16 +170,6 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, :parent => Puppet:
      query << " WHERE `rule_id` = '#{rule_id}'"
 
      mysql([defaults_file, '-e', query].compact)
-   end
-
-   def make_sql_value(value)
-     if value.nil?
-       return "NULL"
-     elsif value.is_a? Integer
-       return "#{value}"
-     else
-       return "'#{value}'"
-     end
    end
 
    # Generates method for all properties of the property_hash
