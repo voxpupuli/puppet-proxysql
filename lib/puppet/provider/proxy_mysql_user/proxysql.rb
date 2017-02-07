@@ -1,5 +1,4 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
-require 'digest/sha1'
 
 Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provider::Proxysql) do
 
@@ -62,11 +61,6 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
     backend                = @resource.value(:backend) || 1
     frontend               = @resource.value(:frontend) || 1
     max_connections        = @resource.value(:max_connections) || 10000
-
-    encrypt_password = @resource[:encrypt_password]
-    if encrypt_password == :true
-      password = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(password)).upcase
-    end
 
     query = "INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, "
     query << " `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) "

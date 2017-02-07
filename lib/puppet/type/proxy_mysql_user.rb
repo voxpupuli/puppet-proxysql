@@ -1,4 +1,6 @@
 # This has to be a separate type to enable collecting
+require 'digest/sha1'
+
 Puppet::Type.newtype(:proxy_mysql_user) do
   @doc = 'Manage a ProxySQL mysql_user. This includes management of users password as well as privileges.'
 
@@ -7,6 +9,16 @@ Puppet::Type.newtype(:proxy_mysql_user) do
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
+
+  def initialize(*args)
+    super
+
+    if self[:encrypt_password] == :true
+      if !self[:password].start_with?('*')
+        self[:password] = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase
+      end
+    end
+  end
 
   newparam(:name, :namevar => true) do
     desc 'The name of the user to manage.'
