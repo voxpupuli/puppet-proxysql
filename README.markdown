@@ -291,6 +291,48 @@ Is this a backend user. Values 0 or 1. Defaults to 1.
 ##### `frontend`
 Is this a frontend user. Values 0 or 1. Defaults to 1.
 
+#### proxy_scheduler
+`proxy_scheduler` manages an entry in the ProxySQL `scheduler` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+The name of the scheduler entry, Must be in a 'scheduler-`scheduler_id`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `scheduler_id`
+Id of the scheduler entry. Integer value, required.
+
+##### `filename`
+The filename of the scheduler script to run. Required.
+
+##### `interval_ms`
+Interval in which to run this scheduler. In miliseconds, Integer, defaults to 10000 (10sec).
+
+##### `arg1`
+The 1st argument for the scheduler script to run. Optional, defaults to NULL.
+
+##### `arg2`
+The 2nd argument for the scheduler script to run. Optional, defaults to NULL.
+
+##### `arg3`
+The 3rd argument for the scheduler script to run. Optional, defaults to NULL.
+
+##### `arg4`
+The 4th argument for the scheduler script to run. Optional, defaults to NULL.
+
+##### `arg5`
+The 5th argument for the scheduler script to run. Optional, defaults to NULL.
+
+##### `comment`
+Optional comment.
+
 ## Limitations
 
 The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
