@@ -1,11 +1,6 @@
 fixtures:
   repositories:
+    stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+    mysql: "git://github.com/puppetlabs/puppetlabs-mysql.git"
   symlinks:
     proxysql: "#{source_dir}"
-  forge_modules:
-    stdlib:
-      repo: 'puppetlabs/stdlib'
-      ref: '4.11.0'
-    mysql:
-      repo: 'puppetlabs/mysql'
-      ref: '3.10.0'
