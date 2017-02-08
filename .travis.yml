@@ -1,39 +1,47 @@
 ---
 sudo: false
+dist: trusty
 language: ruby
-bundler_args: --without development system_tests
-before_install: rm Gemfile.lock || true
-rvm:
-  - 1.8.7
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-script: bundle exec rake test
-env:
-  - PUPPET_GEM_VERSION="~> 2.7.0"
-  - PUPPET_GEM_VERSION="~> 3.2.0"
-  - PUPPET_GEM_VERSION="~> 3.3.0"
-  - PUPPET_GEM_VERSION="~> 3.4.0"
-  - PUPPET_GEM_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
-  - PUPPET_GEM_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
-  - PUPPET_GEM_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
-  - PUPPET_GEM_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
+cache: bundler
+bundler_args: --without system_tests development
+before_install:
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
+script:
+  - 'bundle exec rake $CHECK'
 matrix:
-  exclude:
-  # Ruby 1.9.3
-  - rvm: 1.9.3
-    env: PUPPET_GEM_VERSION="~> 2.7.0"
-    
-  # Ruby 2.0.0
-  - rvm: 2.0.0
-    env: PUPPET_GEM_VERSION="~> 2.7.0"
-    
-  # Ruby 2.1.0
-  - rvm: 2.1.0
-    env: PUPPET_GEM_VERSION="~> 2.7.0"
-  - rvm: 2.1.0
-    env: PUPPET_GEM_VERSION="~> 3.2.0"
-  - rvm: 2.1.0
-    env: PUPPET_GEM_VERSION="~> 3.3.0"
-  - rvm: 2.1.0
-    env: PUPPET_GEM_VERSION="~> 3.4.0"
+  fast_finish: true
+  include:
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.2.6
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.3.3
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.4.0
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.4.0
+    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
+  - rvm: 2.4.0
+    env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
+branches:
+  only:
+  - master
+  - /^v\d/
+notifications:
+  email: false
+deploy:
+  provider: puppetforge
+  user: puppet
+  password:
+    secure: ""
+  on:
+    tags: true
+    # all_branches is required to use tags
+    all_branches: true
+    # Only publish the build marked with "DEPLOY_TO_FORGE"
+    condition: "$DEPLOY_TO_FORGE = yes"
