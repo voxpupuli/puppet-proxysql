@@ -42,24 +42,22 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
     schedulers = instances
     resources.keys.each do |name|
       provider = schedulers.find { |scheduler| scheduler.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 
   def create
-    _name                  = @resource[:name],
-    scheduler_id           = make_sql_value(@resource.value(:scheduler_id))
-    active                 = make_sql_value(@resource.value(:active) || 1)
-    interval_ms            = make_sql_value(@resource.value(:interval_ms) || 10_000)
-    filename               = make_sql_value(@resource.value(:filename))
-    arg1                   = make_sql_value(@resource.value(:arg1) || nil)
-    arg2                   = make_sql_value(@resource.value(:arg2) || nil)
-    arg3                   = make_sql_value(@resource.value(:arg3) || nil)
-    arg4                   = make_sql_value(@resource.value(:arg4) || nil)
-    arg5                   = make_sql_value(@resource.value(:arg5) || nil)
-    comment                = make_sql_value(@resource.value(:comment) || '')
+    _name = @resource[:name],
+    scheduler_id = make_sql_value(@resource.value(:scheduler_id))
+    active = make_sql_value(@resource.value(:active) || 1)
+    interval_ms = make_sql_value(@resource.value(:interval_ms) || 10_000)
+    filename = make_sql_value(@resource.value(:filename))
+    arg1 = make_sql_value(@resource.value(:arg1) || nil)
+    arg2 = make_sql_value(@resource.value(:arg2) || nil)
+    arg3 = make_sql_value(@resource.value(:arg3) || nil)
+    arg4 = make_sql_value(@resource.value(:arg4) || nil)
+    arg5 = make_sql_value(@resource.value(:arg5) || nil)
+    comment = make_sql_value(@resource.value(:comment) || '')
 
     query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, '
     query << '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES ('

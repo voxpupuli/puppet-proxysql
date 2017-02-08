@@ -22,9 +22,7 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
     variables = instances
     resources.keys.each do |name|
       provider = variables.find { |var| var.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 

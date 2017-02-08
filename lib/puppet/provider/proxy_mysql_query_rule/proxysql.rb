@@ -66,40 +66,38 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     rules = instances
     resources.keys.each do |name|
       provider = rules.find { |rule| rule.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 
   def create
-    name                   = @resource[:name],
-                             rule_id = make_sql_value(@resource.value(:rule_id))
-    active                 = make_sql_value(@resource.value(:active) || 0)
-    username               = make_sql_value(@resource.value(:username) || nil)
-    schemaname             = make_sql_value(@resource.value(:schemaname) || nil)
-    flag_in                = make_sql_value(@resource.value(:flag_in) || 0)
-    flag_out               = make_sql_value(@resource.value(:flag_out) || nil)
-    apply                  = make_sql_value(@resource.value(:apply) || 0)
-    client_addr            = make_sql_value(@resource.value(:client_addr) || nil)
-    proxy_addr             = make_sql_value(@resource.value(:proxy_addr) || nil)
-    proxy_port             = make_sql_value(@resource.value(:proxy_port) || nil)
-    destination_hostgroup  = make_sql_value(@resource.value(:destination_hostgroup) || nil)
-    digest                 = make_sql_value(@resource.value(:digest) || nil)
-    match_digest           = make_sql_value(@resource.value(:match_digest) || nil)
-    match_pattern          = make_sql_value(@resource.value(:match_pattern) || nil)
-    negate_match_pattern   = make_sql_value(@resource.value(:negate_match_pattern) || 0)
-    replace_pattern        = make_sql_value(@resource.value(:replace_pattern) || nil)
-    cache_ttl              = make_sql_value(@resource.value(:cache_ttl) || nil)
-    reconnect              = make_sql_value(@resource.value(:reconnect) || nil)
-    timeout                = make_sql_value(@resource.value(:timeout) || nil)
-    retries                = make_sql_value(@resource.value(:retries) || nil)
-    delay                  = make_sql_value(@resource.value(:delay) || nil)
-    error_msg              = make_sql_value(@resource.value(:error_msg) || nil)
-    log                    = make_sql_value(@resource.value(:log) || nil)
-    comment                = make_sql_value(@resource.value(:comment) || nil)
-    mirror_flag_out        = make_sql_value(@resource.value(:mirror_flag_out) || nil)
-    mirror_hostgroup       = make_sql_value(@resource.value(:mirror_hostgroup) || nil)
+    _name = @resource[:name],
+    rule_id = make_sql_value(@resource.value(:rule_id))
+    active = make_sql_value(@resource.value(:active) || 0)
+    username = make_sql_value(@resource.value(:username) || nil)
+    schemaname = make_sql_value(@resource.value(:schemaname) || nil)
+    flag_in = make_sql_value(@resource.value(:flag_in) || 0)
+    flag_out = make_sql_value(@resource.value(:flag_out) || nil)
+    apply = make_sql_value(@resource.value(:apply) || 0)
+    client_addr = make_sql_value(@resource.value(:client_addr) || nil)
+    proxy_addr = make_sql_value(@resource.value(:proxy_addr) || nil)
+    proxy_port = make_sql_value(@resource.value(:proxy_port) || nil)
+    destination_hostgroup = make_sql_value(@resource.value(:destination_hostgroup) || nil)
+    digest = make_sql_value(@resource.value(:digest) || nil)
+    match_digest = make_sql_value(@resource.value(:match_digest) || nil)
+    match_pattern = make_sql_value(@resource.value(:match_pattern) || nil)
+    negate_match_pattern = make_sql_value(@resource.value(:negate_match_pattern) || 0)
+    replace_pattern = make_sql_value(@resource.value(:replace_pattern) || nil)
+    cache_ttl = make_sql_value(@resource.value(:cache_ttl) || nil)
+    reconnect = make_sql_value(@resource.value(:reconnect) || nil)
+    timeout = make_sql_value(@resource.value(:timeout) || nil)
+    retries = make_sql_value(@resource.value(:retries) || nil)
+    delay = make_sql_value(@resource.value(:delay) || nil)
+    error_msg = make_sql_value(@resource.value(:error_msg) || nil)
+    log = make_sql_value(@resource.value(:log) || nil)
+    comment = make_sql_value(@resource.value(:comment) || nil)
+    mirror_flag_out = make_sql_value(@resource.value(:mirror_flag_out) || nil)
+    mirror_hostgroup = make_sql_value(@resource.value(:mirror_hostgroup) || nil)
 
     query = 'INSERT INTO `mysql_query_rules` ('
     query << '`rule_id`, `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, '

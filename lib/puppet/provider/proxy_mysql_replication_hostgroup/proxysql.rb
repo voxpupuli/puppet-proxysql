@@ -33,17 +33,15 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
     hostgroups = instances
     resources.keys.each do |name|
       provider = hostgroups.find { |hostgroup| hostgroup.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 
   def create
-    _name             = @resource[:name]
+    _name = @resource[:name]
     writer_hostgroup = @resource.value(:writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
-    comment          = @resource.value(:comment) || ''
+    comment = @resource.value(:comment) || ''
 
     query = 'INSERT INTO `mysql_replication_hostgroups` (`writer_hostgroup`, `reader_hostgroup`, `comment`)'
     query << " VALUES (#{writer_hostgroup}, #{reader_hostgroup}, '#{comment}')"

@@ -49,25 +49,23 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     servers = instances
     resources.keys.each do |name|
       provider = servers.find { |server| server.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 
   def create
-    _name                  = @resource[:name]
-    hostname               = @resource.value(:hostname)
-    port                   = @resource.value(:port) || 3306
-    hostgroup_id           = @resource.value(:hostgroup_id) || 0
-    status                 = @resource.value(:status) || 'ONLINE'
-    weight                 = @resource.value(:weight) || 1
-    compression            = @resource.value(:compression) || 0
-    max_connections        = @resource.value(:max_connections) || 1000
-    max_replication_lag    = @resource.value(:max_replication_lag) || 0
-    use_ssl                = @resource.value(:use_ssl) || 0
-    max_latency_ms         = @resource.value(:max_latency_ms) || 0
-    comment                = @resource.value(:comment) || ''
+    _name = @resource[:name]
+    hostname = @resource.value(:hostname)
+    port = @resource.value(:port) || 3306
+    hostgroup_id = @resource.value(:hostgroup_id) || 0
+    status = @resource.value(:status) || 'ONLINE'
+    weight = @resource.value(:weight) || 1
+    compression = @resource.value(:compression) || 0
+    max_connections = @resource.value(:max_connections) || 1000
+    max_replication_lag = @resource.value(:max_replication_lag) || 0
+    use_ssl = @resource.value(:use_ssl) || 0
+    max_latency_ms = @resource.value(:max_latency_ms) || 0
+    comment = @resource.value(:comment) || ''
 
     query = 'INSERT INTO mysql_servers (`hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, '
     query << ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`)'

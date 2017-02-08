@@ -41,25 +41,23 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
     users = instances
     resources.keys.each do |name|
       provider = users.find { |user| user.name == name }
-      if provider
-        resources[name].provider = provider
-      end
+      resources[name].provider = provider if provider
     end
   end
 
   def create
-    name                   = @resource[:name]
-    password               = @resource.value(:password)
-    active                 = @resource.value(:active) || 1
-    use_ssl                = @resource.value(:use_ssl) || 0
-    default_hostgroup      = @resource.value(:default_hostgroup) || 0
-    default_schema         = @resource.value(:default_schema) || ''
-    schema_locked          = @resource.value(:schema_locked) || 0
+    name = @resource[:name]
+    password = @resource.value(:password)
+    active = @resource.value(:active) || 1
+    use_ssl = @resource.value(:use_ssl) || 0
+    default_hostgroup = @resource.value(:default_hostgroup) || 0
+    default_schema = @resource.value(:default_schema) || ''
+    schema_locked = @resource.value(:schema_locked) || 0
     transaction_persistent = @resource.value(:transaction_persistent) || 0
-    fast_forward           = @resource.value(:fast_forward) || 0
-    backend                = @resource.value(:backend) || 1
-    frontend               = @resource.value(:frontend) || 1
-    max_connections        = @resource.value(:max_connections) || 10_000
+    fast_forward = @resource.value(:fast_forward) || 0
+    backend = @resource.value(:backend) || 1
+    frontend = @resource.value(:frontend) || 1
+    max_connections = @resource.value(:max_connections) || 10_000
 
     query = 'INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, '
     query << ' `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) '
