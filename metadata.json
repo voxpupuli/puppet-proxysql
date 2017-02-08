@@ -1,6 +1,6 @@
 {
   "name": "puppet-proxysql",
-  "version": "1.1.0",
+  "version": "1.1.1-rc0",
   "author": "Vox Pupuli",
   "summary": "Module to install and configure ProxySQL",
   "license": "Apache-2.0",
@@ -8,9 +8,18 @@
   "project_page": "https://github.com/voxpupuli/puppet-proxysql",
   "issues_url": "https://github.com/voxpupuli/puppet-proxysql/issues",
   "dependencies": [
-    { "name": "puppetlabs-stdlib", "version_requirement": ">= 4.6.0 < 5.0.0" },
-    { "name": "puppetlabs-mysql", "version_requirement": ">= 3.5.0 < 4.0.0" },
-    { "name": "puppetlabs-apt", "version_requirement": ">= 2.1.0 < 3.0.0" }
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.6.0 < 5.0.0"
+    },
+    {
+      "name": "puppetlabs-mysql",
+      "version_requirement": ">= 3.5.0 < 4.0.0"
+    },
+    {
+      "name": "puppetlabs-apt",
+      "version_requirement": ">= 2.1.0 < 3.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
