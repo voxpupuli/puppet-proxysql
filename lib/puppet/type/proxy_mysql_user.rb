@@ -13,10 +13,8 @@ Puppet::Type.newtype(:proxy_mysql_user) do
   def initialize(*args)
     super
 
-    if self[:encrypt_password] == :true
-      unless self[:password].start_with?('*')
-        self[:password] = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase
-      end
+    unless self[:password].start_with?('*') || self[:encrypt_password] != :true
+      self[:password] = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase
     end
   end
 

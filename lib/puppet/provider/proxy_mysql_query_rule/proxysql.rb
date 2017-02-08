@@ -72,7 +72,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
 
   def create
     _name = @resource[:name],
-    rule_id = make_sql_value(@resource.value(:rule_id))
+    rule_id = @resource.value(:rule_id)
     active = make_sql_value(@resource.value(:active) || 0)
     username = make_sql_value(@resource.value(:username) || nil)
     schemaname = make_sql_value(@resource.value(:schemaname) || nil)
@@ -142,7 +142,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
 
     save_to_disk = @resource[:save_to_disk]
     mysql([defaults_file, '-NBe', 'SAVE MYSQL QUERY RULES TO DISK'].compact) if save_to_disk == :true
-    
+
   end
 
   def update_query_rule(properties)
