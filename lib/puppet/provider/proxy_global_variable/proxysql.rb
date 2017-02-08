@@ -21,7 +21,8 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
   def self.prefetch(resources)
     variables = instances
     resources.keys.each do |name|
-      if provider = variables.find { |var| var.name == name }
+      provider = variables.find { |var| var.name == name }
+      if provider
         resources[name].provider = provider
       end
     end
@@ -29,7 +30,7 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
 
   def flush
     name = @resource[:name]
-    prefix, var = name.split('-')
+    prefix, _var = name.split('-')
     @property_hash.clear
 
     load_to_runtime = @resource[:load_to_runtime]

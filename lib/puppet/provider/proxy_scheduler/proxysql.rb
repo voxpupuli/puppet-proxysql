@@ -41,15 +41,16 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
   def self.prefetch(resources)
     schedulers = instances
     resources.keys.each do |name|
-      if provider = schedulers.find { |scheduler| scheduler.name == name }
+      provider = schedulers.find { |scheduler| scheduler.name == name }
+      if provider
         resources[name].provider = provider
       end
     end
   end
 
   def create
-    name                   = @resource[:name],
-                             scheduler_id = make_sql_value(@resource.value(:scheduler_id))
+    _name                  = @resource[:name],
+    scheduler_id           = make_sql_value(@resource.value(:scheduler_id))
     active                 = make_sql_value(@resource.value(:active) || 1)
     interval_ms            = make_sql_value(@resource.value(:interval_ms) || 10_000)
     filename               = make_sql_value(@resource.value(:filename))

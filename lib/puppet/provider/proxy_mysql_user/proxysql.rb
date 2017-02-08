@@ -40,7 +40,8 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
   def self.prefetch(resources)
     users = instances
     resources.keys.each do |name|
-      if provider = users.find { |user| user.name == name }
+      provider = users.find { |user| user.name == name }
+      if provider
         resources[name].provider = provider
       end
     end

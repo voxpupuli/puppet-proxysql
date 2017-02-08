@@ -48,14 +48,15 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def self.prefetch(resources)
     servers = instances
     resources.keys.each do |name|
-      if provider = servers.find { |server| server.name == name }
+      provider = servers.find { |server| server.name == name }
+      if provider
         resources[name].provider = provider
       end
     end
   end
 
   def create
-    name                   = @resource[:name]
+    _name                  = @resource[:name]
     hostname               = @resource.value(:hostname)
     port                   = @resource.value(:port) || 3306
     hostgroup_id           = @resource.value(:hostgroup_id) || 0
