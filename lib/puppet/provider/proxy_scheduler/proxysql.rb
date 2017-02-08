@@ -1,40 +1,39 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
-Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provider::Proxysql) do
-
+Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider::Proxysql) do
   desc 'Manage scheduler entry for a ProxySQL instance.'
-  commands :mysql => 'mysql'
+  commands mysql: 'mysql'
 
   # Build a property_hash containing all the discovered information about query rules.
   def self.instances
     instances = []
     schedulers = mysql([defaults_file, '-NBe',
-      "SELECT `id` FROM `scheduler`"].compact).split("\n")
+                        'SELECT `id` FROM `scheduler`'].compact).split("\n")
 
-    schedulers.collect do |scheduler_id|
-      query = "SELECT `active`, `interval_ms`, `filename`, "
-      query << "`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` "
+    schedulers.map do |scheduler_id|
+      query = 'SELECT `active`, `interval_ms`, `filename`, '
+      query << '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` '
       query << "FROM `scheduler` WHERE `id` = #{scheduler_id}"
 
       @active, @interval_ms, @filename, @arg1, @arg2, @arg3, @arg4, @arg5,
-      @comment = mysql([defaults_file, "-NBe", query].compact).split(/\s/)
+      @comment = mysql([defaults_file, '-NBe', query].compact).split(%r{\s})
       name = "scheduler-#{scheduler_id}"
 
       instances << new(
-        :name                   => name,
-        :ensure                 => :present,
-        :scheduler_id           => scheduler_id,
-        :active                 => @active,
-        :interval_ms            => @interval_ms,
-        :filename               => @filename,
-        :arg1                   => @arg1,
-        :arg2                   => @arg2,
-        :arg3                   => @arg3,
-        :arg4                   => @arg4,
-        :arg5                   => @arg5,
-        :comment                => @comment
+        name: name,
+        ensure: :present,
+        scheduler_id: scheduler_id,
+        active: @active,
+        interval_ms: @interval_ms,
+        filename: @filename,
+        arg1: @arg1,
+        arg2: @arg2,
+        arg3: @arg3,
+        arg4: @arg4,
+        arg5: @arg5,
+        comment: @comment
       )
     end
-    return instances
+    instances
   end
 
   # We iterate over each proxy_scheduler entry in the catalog and compare it against
@@ -50,9 +49,9 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
 
   def create
     name                   = @resource[:name],
-    scheduler_id           = make_sql_value(@resource.value(:scheduler_id))
+                             scheduler_id = make_sql_value(@resource.value(:scheduler_id))
     active                 = make_sql_value(@resource.value(:active) || 1)
-    interval_ms            = make_sql_value(@resource.value(:interval_ms) || 10000)
+    interval_ms            = make_sql_value(@resource.value(:interval_ms) || 10_000)
     filename               = make_sql_value(@resource.value(:filename))
     arg1                   = make_sql_value(@resource.value(:arg1) || nil)
     arg2                   = make_sql_value(@resource.value(:arg2) || nil)
@@ -61,8 +60,8 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
     arg5                   = make_sql_value(@resource.value(:arg5) || nil)
     comment                = make_sql_value(@resource.value(:comment) || '')
 
-    query = "INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, "
-    query << "`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES ("
+    query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, '
+    query << '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES ('
     query << "#{scheduler_id}, #{active}, #{interval_ms}, #{filename}, "
     query << "#{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{comment})"
     mysql([defaults_file, '-e', query].compact)
@@ -84,15 +83,13 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
     @property_hash[:ensure] == :present || false
   end
 
-  def initialize(value={})
+  def initialize(value = {})
     super(value)
     @property_flush = {}
   end
 
   def flush
-    if @property_flush
-      update_scheduler(@property_flush)
-    end
+    update_scheduler(@property_flush) if @property_flush
     @property_hash.clear
 
     load_to_runtime = @resource[:load_to_runtime]
@@ -109,9 +106,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
   def update_scheduler(properties)
     scheduler_id = @resource.value(:scheduler_id)
 
-    if properties.empty?
-      return false
-    end
+    return false if properties.empty?
 
     values = []
     properties.each do |field, value|
@@ -119,7 +114,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
       values.push("`#{field}` = #{sql_value}")
     end
 
-    query = "UPDATE `scheduler` SET "
+    query = 'UPDATE `scheduler` SET '
     query << values.join(', ')
     query << " WHERE `id` = '#{scheduler_id}'"
 
@@ -164,5 +159,4 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, :parent => Puppet::Provid
   def comment=(value)
     @property_flush[:comment] = value
   end
-
 end

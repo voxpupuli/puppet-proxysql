@@ -1,39 +1,37 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
 
-Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provider::Proxysql) do
-
+Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider::Proxysql) do
   desc 'Manage users for a ProxySQL instance.'
-  commands :mysql => 'mysql'
+  commands mysql: 'mysql'
 
   # Build a property_hash containing all the discovered information about MySQL
   # users.
   def self.instances
     users = mysql([defaults_file, '-NBe',
-      "SELECT username FROM mysql_users"].compact).split("\n")
+                   'SELECT username FROM mysql_users'].compact).split("\n")
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
-    users.collect do |name|
+    users.map do |name|
       query = "SELECT password, active, use_ssl, default_hostgroup, default_schema, schema_locked, transaction_persistent, fast_forward, backend, frontend, max_connections FROM mysql_users WHERE username = '#{name}'"
 
       @password, @active, @use_ssl, @default_hostgroup, @default_schema,
       @schema_locked, @transaction_persistent, @fast_forward, @backend, @frontend,
-      @max_connections = mysql([defaults_file, "-NBe", query].compact).split(/\s/)
+      @max_connections = mysql([defaults_file, '-NBe', query].compact).split(%r{\s})
 
-      new(:name                   => name,
-          :ensure                 => :present,
-          :password               => @password,
-          :active                 => @active,
-          :use_ssl                => @use_ssl,
-          :default_hostgroup      => @default_hostgroup,
-          :default_schema         => @default_schema,
-          :schema_locked          => @schema_locked,
-          :transaction_persistent => @transaction_persistent,
-          :fast_forward           => @fast_forward,
-          :backend                => @backend,
-          :frontend               => @frontend,
-          :max_connections        => @max_connections
-         )
+      new(name: name,
+          ensure: :present,
+          password: @password,
+          active: @active,
+          use_ssl: @use_ssl,
+          default_hostgroup: @default_hostgroup,
+          default_schema: @default_schema,
+          schema_locked: @schema_locked,
+          transaction_persistent: @transaction_persistent,
+          fast_forward: @fast_forward,
+          backend: @backend,
+          frontend: @frontend,
+          max_connections: @max_connections)
     end
   end
 
@@ -60,10 +58,10 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
     fast_forward           = @resource.value(:fast_forward) || 0
     backend                = @resource.value(:backend) || 1
     frontend               = @resource.value(:frontend) || 1
-    max_connections        = @resource.value(:max_connections) || 10000
+    max_connections        = @resource.value(:max_connections) || 10_000
 
-    query = "INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, "
-    query << " `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) "
+    query = 'INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, '
+    query << ' `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) '
     query << " VALUES ('#{name}', '#{password}', #{active}, #{use_ssl}, #{default_hostgroup}, '#{default_schema}', "
     query << " #{schema_locked}, #{transaction_persistent}, #{fast_forward}, #{backend}, #{frontend}, #{max_connections})"
     mysql([defaults_file, '-e', query].compact)
@@ -84,15 +82,13 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
     @property_hash[:ensure] == :present || false
   end
 
-  def initialize(value={})
+  def initialize(value = {})
     super(value)
     @property_flush = {}
   end
 
   def flush
-    if @property_flush
-      update_user(@property_flush)
-    end
+    update_user(@property_flush) if @property_flush
     @property_hash.clear
 
     load_to_runtime = @resource[:load_to_runtime]
@@ -109,20 +105,17 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
   def update_user(properties)
     name = @resource[:name]
 
-    if properties.empty?
-      return false
-    end
+    return false if properties.empty?
 
     values = []
     properties.each do |field, value|
       values.push("`#{field}` = '#{value}'")
     end
-    query = "UPDATE mysql_users SET "
+    query = 'UPDATE mysql_users SET '
     query << values.join(', ')
     query << " WHERE username = '#{name}'"
 
     mysql([defaults_file, '-e', query].compact)
-
   end
 
   # Generates method for all properties of the property_hash
@@ -171,5 +164,4 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, :parent => Puppet::Provi
   def max_connections=(value)
     @property_flush[:max_connections] = value
   end
-
 end

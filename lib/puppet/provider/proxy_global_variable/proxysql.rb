@@ -1,24 +1,21 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
-Puppet::Type.type(:proxy_global_variable).provide(:proxysql, :parent => Puppet::Provider::Proxysql) do
-
+Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Provider::Proxysql) do
   desc 'Manage global variables for a ProxySQL instance.'
-  commands :mysql => 'mysql'
+  commands mysql: 'mysql'
 
   # Build a property_hash containing all the discovered information about MySQL
   # servers.
   def self.instances
     instances = []
-    data = mysql([defaults_file, '-NBe', "SHOW GLOBAL VARIABLES"]).split("\n")
+    data = mysql([defaults_file, '-NBe', 'SHOW GLOBAL VARIABLES']).split("\n")
     data.each do |line|
-      var, val = line.split(/\t/)
+      var, val = line.split(%r{\t})
 
-      if val.is_a?(TrueClass) || val.is_a?(FalseClass)
-        val = "'#{val}'"
-      end
+      val = "'#{val}'" if val.is_a?(TrueClass) || val.is_a?(FalseClass)
 
-      instances << new(:name => var, :value => val)
+      instances << new(name: var, value: val)
     end
-    return instances
+    instances
   end
 
   def self.prefetch(resources)
@@ -64,6 +61,6 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, :parent => Puppet::
     mysql([defaults_file, '-e', "SET #{name} = '#{val}'"].compact)
 
     @property_hash.clear
-    return true
+    true
   end
 end

@@ -6,7 +6,7 @@ Puppet::Type.newtype(:proxy_global_variable) do
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'variable name'
   end
 
@@ -24,7 +24,7 @@ Puppet::Type.newtype(:proxy_global_variable) do
 
   newproperty(:value) do
     desc 'variable value'
-    newvalue(/.+/)
+    newvalue(%r{.+})
 
     munge do |value|
       if value.is_a?(TrueClass)
@@ -36,6 +36,4 @@ Puppet::Type.newtype(:proxy_global_variable) do
       end
     end
   end
-
-
 end
