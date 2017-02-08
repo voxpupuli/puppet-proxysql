@@ -1,12 +1,15 @@
 # lint:ignore:80chars
-apt::source{ 'debs_jessie_mysql_dev':
-  comment  => 'MySQL-dev repo',
-  location => 'http://debs.ugent.be/debian',
-  repos    => 'mysql-dev',
-}->
+
 class { '::proxysql':
   listen_port    => 3306,
   admin_password => 'SuperSecretPassword',
+  repo           => {
+    'debs_proxysql_repo' => {
+      comment  => 'ProxySQL repo',
+      location => 'http://debs.ugent.be/debian',
+      repos    => 'mysql-dev',
+    },
+  },
 }
 
 proxy_mysql_server { '192.168.33.31:3306-31':
