@@ -37,7 +37,14 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
     listen_port              => 3306,
     admin_password           => '654321',
     monitor_password         => '123456',
-    override_config_settings => $override_settings
+    override_config_settings => $override_settings,
+    repo                     => {
+      'debs_proxysql_repo' => {
+        comment  => 'ProxySQL repo',
+        location => 'http://debs.example.tld/debian',
+        repos    => 'proxsql',
+      },
+    },
   }
 ```
 
@@ -86,6 +93,7 @@ You can override any configuration setting by using the `override_config_setting
 ### Private classes
 * `proxysql::install`: Installs the package(s)
 * `proxysql::config`: Manages the configuration files and `global_variables`
+* `proxysql::repo`: Manages the repo's where ProxySQL might be in.
 * `proxysql::service`: Manages the service
 
 ### parameters
@@ -151,6 +159,12 @@ Specifies wheter te managed ProxySQL resources should be immediately loaded to t
 
 ##### `save_to_disk`
 Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `repo`
+These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
+
+##### `manage_repo`
+Boolean to determine wheter we want to configure the repo management. Defaults to true.
 
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
