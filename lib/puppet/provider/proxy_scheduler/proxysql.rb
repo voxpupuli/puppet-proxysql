@@ -96,7 +96,6 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
 
     save_to_disk = @resource[:save_to_disk]
     mysql([defaults_file, '-NBe', 'SAVE SCHEDULER TO DISK'].compact) if save_to_disk == :true
-
   end
 
   def update_scheduler(properties)

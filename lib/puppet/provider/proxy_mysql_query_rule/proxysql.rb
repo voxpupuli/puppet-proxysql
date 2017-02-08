@@ -142,7 +142,6 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
 
     save_to_disk = @resource[:save_to_disk]
     mysql([defaults_file, '-NBe', 'SAVE MYSQL QUERY RULES TO DISK'].compact) if save_to_disk == :true
-
   end
 
   def update_query_rule(properties)
