@@ -69,7 +69,7 @@
 #   Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
 #
 # * `override_config_settings`
-#   Which configuration variables should be overriden. Hash, defaults to {} (empty hash). 
+#   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
@@ -101,6 +101,9 @@ class proxysql (
   Boolean $load_to_runtime = $::proxysql::params::load_to_runtime,
   Boolean $save_to_disk = $::proxysql::params::save_to_disk,
 
+  Boolean $manage_repo = true,
+  Hash $repo = {},
+
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {
 
@@ -120,9 +123,12 @@ class proxysql (
   $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)
   # lint:endignore
 
+  anchor { '::proxysql::begin': } ->
+  class { '::proxysql::repo':} ->
   class { '::proxysql::install':} ->
   class { '::proxysql::config':} ->
-  class { '::proxysql::service':}
+  class { '::proxysql::service':} ->
+  anchor { '::proxysql::end': }
 
   Class['::proxysql::install'] ~>
   Class['::proxysql::service']
