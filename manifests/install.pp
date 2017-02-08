@@ -17,7 +17,7 @@ class proxysql::install {
   }
 
   class { '::mysql::client':
-    bindings_enable => false
+    bindings_enable => false,
   }
 
 }
