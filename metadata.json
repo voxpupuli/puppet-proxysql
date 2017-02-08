@@ -4,12 +4,13 @@
   "author": "Matthias Crauwels <matthias.crauwels@UGent.be>",
   "summary": "Module to install and configure ProxySQL",
   "license": "Apache-2.0",
-  "source": "git@github.com:mcrauwel/puppet-proxysql.git",
-  "project_page": "https://github.com/mcrauwel/puppet-proxysql",
-  "issues_url": "https://github.com/mcrauwel/puppet-proxysql/issues",
+  "source": "git@github.com:voxpupuli/puppet-proxysql.git",
+  "project_page": "https://github.com/voxpupuli/puppet-proxysql",
+  "issues_url": "https://github.com/voxpupuli/puppet-proxysql/issues",
   "dependencies": [
     { "name": "puppetlabs-stdlib", "version_requirement": ">= 1.0.0" },
     { "name": "puppetlabs-mysql", "version_requirement": ">= 3.0.0" }
+    { "name": "puppetlabs-apt", "version_requirement": ">= 2.2.0" }
   ],
   "operatingsystem_support": [
     {
