@@ -16,3 +16,4 @@ Puppetfile.lock
 *.iml
 .*.sw?
 .yardoc/
+.ruby-version
