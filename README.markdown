@@ -11,6 +11,13 @@
 
 ## Overview
 
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-proxysql.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-proxysql)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-proxysql/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-proxysql)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
+
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
 This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `scheduler` and `global_variables`.
