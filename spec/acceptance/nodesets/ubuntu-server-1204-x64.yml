@@ -3,11 +3,11 @@
 # https://github.com/voxpupuli/modulesync
 # https://github.com/voxpupuli/modulesync_config
 HOSTS:
-  centos-511-x64:
+  ubuntu-server-1204-x64:
     roles:
       - master
-    platform: el-5-x86_64
-    box: puppetlabs/centos-5.11-64-nocm
+    platform: ubuntu-12.04-amd64
+    box: puppetlabs/ubuntu-12.04-64-nocm
     hypervisor: vagrant
 CONFIG:
   type: foss

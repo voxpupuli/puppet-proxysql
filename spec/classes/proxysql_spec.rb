@@ -8,8 +8,7 @@ describe 'proxysql' do
           facts
         end
 
-        context "proxysql class without any parameters" do
-
+        context 'proxysql class without any parameters' do
           it { is_expected.to contain_class('proxysql') }
           it { is_expected.to compile.with_all_deps }
 
@@ -18,45 +17,42 @@ describe 'proxysql' do
           it { is_expected.to contain_class('proxysql::config').that_comes_before('Class[proxysql::service]') }
           it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
 
-
-          it { is_expected.to contain_class('mysql::client').with( :bindings_enable => false)}
+          it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           it { is_expected.to contain_package('proxysql').with_ensure('present') }
 
-          it { is_expected.to contain_file('proxysql-config-file').with({
-            :ensure => 'file',
-            :owner  => 'root',
-            :group  => 'root',
-            :mode   => '0640',
-            :path   => '/etc/proxysql.cnf'
-          }) }
+          it do
+            is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
+                                                                     owner: 'root',
+                                                                     group: 'root',
+                                                                     mode: '0640',
+                                                                     path: '/etc/proxysql.cnf')
+          end
 
-          it { is_expected.to contain_file('proxysql-datadir').with({
-            :ensure => 'directory',
-            :owner  => 'root',
-            :group   => 'root',
-            :mode   => '0600',
-            :path   => '/var/lib/proxysql'
-          }) }
+          it do
+            is_expected.to contain_file('proxysql-datadir').with(ensure: 'directory',
+                                                                 owner: 'root',
+                                                                 group: 'root',
+                                                                 mode: '0600',
+                                                                 path: '/var/lib/proxysql')
+          end
 
-          it { is_expected.to contain_file('root-mycnf-file').with({
-            :ensure => 'file',
-            :owner  => 'root',
-            :group  => 'root',
-            :mode   => '0400',
-            :path   => '/root/.my.cnf'
-          }) }
+          it do
+            is_expected.to contain_file('root-mycnf-file').with(ensure: 'file',
+                                                                owner: 'root',
+                                                                group: 'root',
+                                                                mode: '0400',
+                                                                path: '/root/.my.cnf')
+          end
 
-          it { is_expected.to contain_service('proxysql').with({
-            :ensure     => 'running',
-            :enable     => true,
-            :hasstatus  => true,
-            :hasrestart => true,
-          }) }
-          
+          it do
+            is_expected.to contain_service('proxysql').with(ensure: 'running',
+                                                            enable: true,
+                                                            hasstatus: true,
+                                                            hasrestart: true)
+          end
         end
       end
     end
   end
-
 end

@@ -118,7 +118,7 @@ class proxysql (
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
       monitor_password => $monitor_password,
-    }
+    },
   }
   $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)
   # lint:endignore

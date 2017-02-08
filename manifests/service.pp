@@ -14,7 +14,7 @@ class proxysql::service {
       provider   => 'base',
       status     => '/etc/init.d/proxysql status',
       start      => '/usr/bin/proxysql --reload',
-      stop       => '/etc/init.d/proxysql stop'
+      stop       => '/etc/init.d/proxysql stop',
     }
   } else {
     service { $::proxysql::service_name:

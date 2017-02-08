@@ -8,12 +8,12 @@ Puppet::Type.newtype(:proxy_scheduler) do
   autorequire(:service) { 'proxysql' }
 
   validate do
-    fail('scheduler_id parameter is required.') if self[:scheduler_id].nil?
-    fail('filename parameter is required.') if self[:ensure] == :present and self[:filename].nil?
-    fail('name must match \'scheduler-\'<scheduler_id> format') if self[:name] != "scheduler-#{self[:scheduler_id]}"
+    raise('scheduler_id parameter is required.') if self[:scheduler_id].nil?
+    raise('filename parameter is required.') if (self[:ensure] == :present) && self[:filename].nil?
+    raise('name must match \'scheduler-\'<scheduler_id> format') if self[:name] != "scheduler-#{self[:scheduler_id]}"
   end
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'scheduler name'
   end
 
@@ -31,54 +31,53 @@ Puppet::Type.newtype(:proxy_scheduler) do
 
   newproperty(:scheduler_id) do
     desc 'The id of the scheduler entry.'
-    newvalue(/\d+/)
+    newvalue(%r{\d+})
   end
 
   newproperty(:active) do
-    desc "Is the scheduler active or not."
+    desc 'Is the scheduler active or not.'
     defaultto 1
-    newvalue(/[01]/)
+    newvalue(%r{[01]})
   end
 
   newproperty(:interval_ms) do
     desc 'How often (in millisecond) the job will be started.'
-    defaultto 10000
-    newvalue(/\d+/)
+    defaultto 10_000
+    newvalue(%r{\d+})
   end
 
   newproperty(:filename) do
     desc 'Filename of the script to run. (required)'
-    newvalue(/\w+/)
+    newvalue(%r{\w+})
   end
 
   newproperty(:arg1) do
-    desc "optional argument to pass to the script."
-    newvalue(/[\w+]/)
+    desc 'optional argument to pass to the script.'
+    newvalue(%r{[\w+]})
   end
 
   newproperty(:arg2) do
-    desc "optional argument to pass to the script."
-    newvalue(/[\w+]/)
+    desc 'optional argument to pass to the script.'
+    newvalue(%r{[\w+]})
   end
 
   newproperty(:arg3) do
-    desc "optional argument to pass to the script."
-    newvalue(/[\w+]/)
+    desc 'optional argument to pass to the script.'
+    newvalue(%r{[\w+]})
   end
 
   newproperty(:arg4) do
-    desc "optional argument to pass to the script."
-    newvalue(/[\w+]/)
+    desc 'optional argument to pass to the script.'
+    newvalue(%r{[\w+]})
   end
 
   newproperty(:arg5) do
-    desc "optional argument to pass to the script."
-    newvalue(/[\w+]/)
+    desc 'optional argument to pass to the script.'
+    newvalue(%r{[\w+]})
   end
 
   newproperty(:comment) do
-    desc "optional comment."
-    newvalue(/[\w+]/)
+    desc 'optional comment.'
+    newvalue(%r{[\w+]})
   end
-
 end

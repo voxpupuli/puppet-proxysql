@@ -1,20 +1,15 @@
 class Puppet::Provider::Proxysql < Puppet::Provider
-
   # Without initvars commands won't work.
   initvars
 
   # Make sure we find mysql commands on CentOS and FreeBSD
-  ENV['PATH']=ENV['PATH'] + ':/usr/libexec:/usr/local/libexec:/usr/local/bin'
+  ENV['PATH'] = ENV['PATH'] + ':/usr/libexec:/usr/local/libexec:/usr/local/bin'
 
-  commands :mysql      => 'mysql'
+  commands mysql: 'mysql'
 
   # Optional defaults file
   def self.defaults_file
-    if File.file?("#{Facter.value(:root_home)}/.my.cnf")
-      "--defaults-extra-file=#{Facter.value(:root_home)}/.my.cnf"
-    else
-      nil
-    end
+    "--defaults-extra-file=#{Facter.value(:root_home)}/.my.cnf" if File.file?("#{Facter.value(:root_home)}/.my.cnf")
   end
 
   def defaults_file
@@ -23,12 +18,11 @@ class Puppet::Provider::Proxysql < Puppet::Provider
 
   def make_sql_value(value)
     if value.nil?
-      return "NULL"
+      'NULL'
     elsif value.is_a? Integer
-      return "#{value}"
+      value.to_s
     else
-      return "'#{value}'"
+      "'#{value}'"
     end
   end
-
 end
