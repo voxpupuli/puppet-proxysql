@@ -92,14 +92,11 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
     @property_hash.clear
 
     load_to_runtime = @resource[:load_to_runtime]
-    if load_to_runtime == :true
-      mysql([defaults_file, '-NBe', 'LOAD SCHEDULER TO RUNTIME'].compact)
-    end
+    mysql([defaults_file, '-NBe', 'LOAD SCHEDULER TO RUNTIME'].compact) if load_to_runtime == :true
 
     save_to_disk = @resource[:save_to_disk]
-    if save_to_disk == :true
-      mysql([defaults_file, '-NBe', 'SAVE SCHEDULER TO DISK'].compact)
-    end
+    mysql([defaults_file, '-NBe', 'SAVE SCHEDULER TO DISK'].compact) if save_to_disk == :true
+
   end
 
   def update_scheduler(properties)

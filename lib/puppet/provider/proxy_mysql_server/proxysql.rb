@@ -101,15 +101,12 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def flush
     update_server(@property_flush) if @property_flush
     @property_hash.clear
+
     load_to_runtime = @resource[:load_to_runtime]
-    if load_to_runtime == :true
-      mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact)
-    end
+    mysql([defaults_file, '-NBe', 'LOAD MYSQL SERVERS TO RUNTIME'].compact) if load_to_runtime == :true
 
     save_to_disk = @resource[:save_to_disk]
-    if save_to_disk == :true
-      mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact)
-    end
+    mysql([defaults_file, '-NBe', 'SAVE MYSQL SERVERS TO DISK'].compact) if save_to_disk == :true
   end
 
   def update_server(properties)
@@ -118,8 +115,6 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     hostgroup_id = @resource.value(:hostgroup_id)
 
     return false if properties.empty?
-
-    query = 'UPDATE mysql_users SET '
 
     values = []
     properties.each do |field, value|
