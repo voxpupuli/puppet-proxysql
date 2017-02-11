@@ -5,7 +5,7 @@
 #
 class proxysql::params {
   $package_name = 'proxysql'
-  $package_ensure = 'latest'
+  $package_ensure = 'installed'
 
   $service_name = 'proxysql'
   $service_ensure = 'running'
