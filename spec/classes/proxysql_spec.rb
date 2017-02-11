@@ -13,13 +13,20 @@ describe 'proxysql' do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('proxysql::params') }
+          it { is_expected.to contain_class('proxysql::repo').that_comes_before('Class[proxysql::install]') }
           it { is_expected.to contain_class('proxysql::install').that_comes_before('Class[proxysql::config]') }
           it { is_expected.to contain_class('proxysql::config').that_comes_before('Class[proxysql::service]') }
           it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
 
+          it { is_expected.to contain_anchor('::proxysql::begin').that_comes_before('Class[proxysql::repo]') }
+          it { is_expected.to contain_anchor('::proxysql::end')}
+          it { is_expected.to contain_class('proxysql::service').that_comes_before('Anchor[::proxysql::end]') }
+
+          it { is_expected.to contain_class('proxysql::install').that_notifies('Class[proxysql::service]') }
+
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
-          it { is_expected.to contain_package('proxysql').with_ensure('present') }
+          it { is_expected.to contain_package('proxysql').with_ensure('latest') }
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
@@ -50,6 +57,17 @@ describe 'proxysql' do
                                                             enable: true,
                                                             hasstatus: true,
                                                             hasrestart: true)
+          end
+
+          it do
+            is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
+              command:   'test -S /tmp/proxysql_admin.sock',
+              unless:    'test -S /tmp/proxysql_admin.sock',
+              tries:     3,
+              try_sleep: 10,
+              require:   'Service[proxysql]',
+              path:      '/bin:/usr/bin',
+            )
           end
         end
       end

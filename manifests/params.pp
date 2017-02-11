@@ -5,7 +5,10 @@
 #
 class proxysql::params {
   $package_name = 'proxysql'
+  $package_ensure = 'latest'
+
   $service_name = 'proxysql'
+  $service_ensure = 'running'
 
   $listen_ip     = '0.0.0.0'
   $listen_port   = 6033

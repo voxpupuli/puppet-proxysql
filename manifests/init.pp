@@ -9,8 +9,14 @@
 # * `package_name`
 #   The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
 #
+# * `package_ensure`
+#   The ensure of the ProxySQL package resource. Defaults to 'latest'
+#
 # * `service_name`
 #   The name of the ProxySQL service resource. Defaults to 'proxysql'
+#
+# * `service_ensure`
+#   The ensure of the ProxySQL service resource. Defaults to 'running'
 #
 # * `datadir`
 #   The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
@@ -68,12 +74,22 @@
 # * `save_to_disk`
 #   Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
 #
+# * `manage_repo`
+#   Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
+#
+# * `repo
+#   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
+#   to `apt::source`. Defaults to {}.
+#
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
+  String $package_ensure = $::proxysql::params::package_ensure,
+
   String $service_name = $::proxysql::params::service_name,
+  String $service_ensure = $::proxysql::params::service_ensure,
 
   String $datadir = $::proxysql::params::datadir,
 

@@ -108,8 +108,14 @@ You can override any configuration setting by using the `override_config_setting
 ##### `package_name`
 The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
 
+##### `package_ensure`
+The ensure of the ProxySQL package resource. Defaults to 'latest'
+
 ##### `service_name`
 The name of the ProxySQL service resource. Defaults to 'proxysql'
+
+##### `service_ensure`
+The ensure of the ProxySQL service resource. Defaults to 'running'
 
 ##### `datadir`
 The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
