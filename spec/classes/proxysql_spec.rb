@@ -26,7 +26,7 @@ describe 'proxysql' do
 
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
-          it { is_expected.to contain_package('proxysql').with_ensure('latest') }
+          it { is_expected.to contain_package('proxysql').with_ensure('installed') }
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
