@@ -28,7 +28,6 @@ matrix:
     env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
   - rvm: 2.4.0
     env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
-    script: 'bundle exec rake build; find pkg -ls'
 branches:
   only:
   - master

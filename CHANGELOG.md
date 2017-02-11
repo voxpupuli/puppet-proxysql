@@ -5,4 +5,3 @@
 ## 2017-02-07 Release 1.0.0
 * initial release of the module
 * include providers to all admin tables in ProxySQL.
-
