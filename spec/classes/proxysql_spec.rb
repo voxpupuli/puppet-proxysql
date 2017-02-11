@@ -19,7 +19,7 @@ describe 'proxysql' do
           it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
 
           it { is_expected.to contain_anchor('::proxysql::begin').that_comes_before('Class[proxysql::repo]') }
-          it { is_expected.to contain_anchor('::proxysql::end')}
+          it { is_expected.to contain_anchor('::proxysql::end') }
           it { is_expected.to contain_class('proxysql::service').that_comes_before('Anchor[::proxysql::end]') }
 
           it { is_expected.to contain_class('proxysql::install').that_notifies('Class[proxysql::service]') }
@@ -66,7 +66,7 @@ describe 'proxysql' do
               tries:     3,
               try_sleep: 10,
               require:   'Service[proxysql]',
-              path:      '/bin:/usr/bin',
+              path:      '/bin:/usr/bin'
             )
           end
         end
