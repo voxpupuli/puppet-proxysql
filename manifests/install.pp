@@ -5,7 +5,7 @@
 class proxysql::install {
 
   package { $::proxysql::package_name:
-    ensure => present,
+    ensure => $::proxysql::package_ensure,
   }
 
   file { 'proxysql-datadir':

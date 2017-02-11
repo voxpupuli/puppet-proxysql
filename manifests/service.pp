@@ -7,7 +7,7 @@ class proxysql::service {
 
   if $::proxysql::restart {
     service { $::proxysql::service_name:
-      ensure     => running,
+      ensure     => $::proxysql::service_ensure,
       enable     => true,
       hasstatus  => true,
       hasrestart => false,
@@ -18,7 +18,7 @@ class proxysql::service {
     }
   } else {
     service { $::proxysql::service_name:
-      ensure     => running,
+      ensure     => $::proxysql::service_ensure,
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
