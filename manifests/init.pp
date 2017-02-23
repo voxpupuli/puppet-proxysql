@@ -87,6 +87,7 @@
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
+  Array[String] $package_install_options = $::proxysql::params::package_install_options,
 
   String $service_name = $::proxysql::params::service_name,
   String $service_ensure = $::proxysql::params::service_ensure,
