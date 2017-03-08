@@ -4,11 +4,10 @@
 # It sets variables according to platform.
 #
 class proxysql::params {
-  $package_name = 'proxysql'
+  $package_name  = 'proxysql'
   $package_ensure = 'installed'
-  $package_install_options = []
 
-  $service_name = 'proxysql'
+  $service_name  = 'proxysql'
   $service_ensure = 'running'
 
   $listen_ip     = '0.0.0.0'
@@ -35,7 +34,7 @@ class proxysql::params {
   $restart = false
 
   $load_to_runtime = true
-  $save_to_disk = true
+  $save_to_disk    = true
 
   $config_settings = {
     datadir => $datadir,
@@ -52,4 +51,11 @@ class proxysql::params {
     scheduler => {},
     mysql_replication_hostgroups => {},
   }
+
+  # 'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux'
+  $rpm_repo_name   = 'mariadb_repo'
+  $rpm_repo_descr  = 'mariadb_repo_for_proxysql'
+  $rpm_repo        = 'http://yum.mariadb.org/10.1/centos6-amd64'
+  $rpm_repo_key    = 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB'
+ 
 }
