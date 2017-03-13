@@ -6,8 +6,9 @@
 class proxysql::params {
   $package_name  = 'proxysql'
   $package_ensure = 'installed'
+  $package_source = ''
 
-  $service_name  = 'proxysql'
+  $service_name = 'proxysql'
   $service_ensure = 'running'
 
   $listen_ip     = '0.0.0.0'
@@ -18,7 +19,28 @@ class proxysql::params {
   $admin_password      = 'admin'
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
-  $admin_listen_socket = '/tmp/proxysql_admin.sock'
+
+  case $::operatingsystem {
+    'Debian': {
+      $admin_listen_socket = '/tmp/proxysql_admin.sock'
+      $package_provider    = 'dpkg'
+      $sys_owner 	   = 'root'
+      $sys_group           = 'root'
+    }
+    'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
+      $admin_listen_socket = '/tmp/proxysql.sock'
+      $package_provider    = 'rpm'
+      $sys_owner           = 'root'
+      $sys_group           = 'proxysql'
+    }
+    default: {
+      $admin_listen_socket = '/tmp/proxysql_admin.sock'
+      $package_provider    = undef
+      $sys_user            = 'root'
+      $sys_group           = 'root'
+    }
+  }
+
 
   $monitor_username = 'monitor'
   $monitor_password = 'monitor'
@@ -36,6 +58,11 @@ class proxysql::params {
   $load_to_runtime = true
   $save_to_disk    = true
 
+  $rpm_repo_name   = ''
+  $rpm_repo_descr  = ''
+  $rpm_repo        = ''
+  $rpm_repo_key    = ''
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {
@@ -52,10 +79,4 @@ class proxysql::params {
     mysql_replication_hostgroups => {},
   }
 
-  # 'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux'
-  $rpm_repo_name   = 'mariadb_repo'
-  $rpm_repo_descr  = 'mariadb_repo_for_proxysql'
-  $rpm_repo        = 'http://yum.mariadb.org/10.1/centos6-amd64'
-  $rpm_repo_key    = 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB'
- 
 }

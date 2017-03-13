@@ -87,7 +87,6 @@
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
-  Array[String] $package_install_options = $::proxysql::params::package_install_options,
 
   String $service_name = $::proxysql::params::service_name,
   String $service_ensure = $::proxysql::params::service_ensure,
@@ -119,7 +118,15 @@ class proxysql (
   Boolean $save_to_disk = $::proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
+  Boolean $manage_rpm  = false,
   Hash $repo = {},
+
+  String $package_source  =  $::proxysql::params::package_source,
+
+  String $rpm_repo_name   =  $::proxysql::params::rpm_repo_name,
+  String $rpm_repo_descr  =  $::proxysql::params::rpm_repo_descr,
+  String $rpm_repo        =  $::proxysql::params::rpm_repo,
+  String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {
