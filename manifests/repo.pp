@@ -4,7 +4,7 @@
 # Manage the repos where the ProxySQL package might be
 #
 class proxysql::repo inherits proxysql {
-  if $::proxysql::manage_repo {
+  if ($::proxysql::manage_repo == true) and ($::proxysql::manage_rpm == false) {
     case $::operatingsystem {
       'Debian': {
         create_resources('::apt::source', $::proxysql::repo)
