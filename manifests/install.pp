@@ -21,8 +21,8 @@ class proxysql::install {
   file { 'proxysql-datadir':
     ensure => directory,
     path   => $::proxysql::datadir,
-    owner  => 'root',
-    group  => 'root',
+    owner  => $proxysql::params::sys_owner,
+    group  => $proxysql::params::sys_group,
     mode   => '0600',
   }
 

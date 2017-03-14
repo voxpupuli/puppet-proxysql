@@ -31,7 +31,7 @@ class proxysql::params {
     'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
       $admin_listen_socket = '/tmp/proxysql.sock'
       $package_provider    = 'rpm'
-      $sys_owner           = 'root'
+      $sys_owner           = 'proxysql'
       $sys_group           = 'proxysql'
     }
     default: {

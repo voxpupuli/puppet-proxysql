@@ -11,8 +11,8 @@ class proxysql::config {
       path                    => $proxysql::config_file,
       content                 => template('proxysql/proxysql.cnf.erb'),
       mode                    => '0640',
-      owner                   => 'root',
-      group                   => 'root',
+      owner                   => $proxysql::params::sys_owner,
+      group                   => $proxysql::params::sys_group, 
       selinux_ignore_defaults => true,
     }
   }
@@ -22,8 +22,8 @@ class proxysql::config {
       ensure  => file,
       path    => $proxysql::mycnf_file_name,
       content => template('proxysql/my.cnf.erb'),
-      owner   => 'root',
-      group   => 'root',
+      owner   => $proxysql::params::sys_owner,
+      group   => $proxysql::params::sys_group,
       mode    => '0400',
     }
   }
