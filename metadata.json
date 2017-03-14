@@ -27,6 +27,12 @@
       "operatingsystemrelease": [
         "8"
       ]
+    },
+    {
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "2016.09"
+      ]
     }
   ],
   "requirements": [
