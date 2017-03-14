@@ -6,6 +6,7 @@
 class proxysql::params {
   $package_name  = 'proxysql'
   $package_ensure = 'installed'
+  $package_install_options = []
   $package_source = ''
 
   $service_name = 'proxysql'
