@@ -7,7 +7,9 @@ class proxysql::params {
   $package_name  = 'proxysql'
   $package_ensure = 'installed'
   $package_install_options = []
-  $package_source = 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+
+  # Check your version in https://github.com/sysown/proxysql/releases
+  $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.3.4/proxysql-1.3.4-1-centos67.x86_64.rpm'
 
   $service_name = 'proxysql'
   $service_ensure = 'running'
