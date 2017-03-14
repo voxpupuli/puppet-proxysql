@@ -7,7 +7,7 @@ class proxysql::params {
   $package_name  = 'proxysql'
   $package_ensure = 'installed'
   $package_install_options = []
-  $package_source = ''
+  $package_source = 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
 
   $service_name = 'proxysql'
   $service_ensure = 'running'
@@ -59,10 +59,10 @@ class proxysql::params {
   $load_to_runtime = true
   $save_to_disk    = true
 
-  $rpm_repo_name   = ''
-  $rpm_repo_descr  = ''
-  $rpm_repo        = ''
-  $rpm_repo_key    = ''
+  $rpm_repo_name   = 'percona_repo'
+  $rpm_repo_descr  = 'percona_repo_contains_proxysql'
+  $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
+  $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
   $config_settings = {
     datadir => $datadir,
