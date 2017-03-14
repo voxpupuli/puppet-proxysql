@@ -12,7 +12,7 @@ class proxysql::config {
       content                 => template('proxysql/proxysql.cnf.erb'),
       mode                    => '0640',
       owner                   => $proxysql::params::sys_owner,
-      group                   => $proxysql::params::sys_group, 
+      group                   => $proxysql::params::sys_group,
       selinux_ignore_defaults => true,
     }
   }

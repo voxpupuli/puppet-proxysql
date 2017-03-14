@@ -27,7 +27,7 @@ class proxysql::params {
     'Debian': {
       $admin_listen_socket = '/tmp/proxysql_admin.sock'
       $package_provider    = 'dpkg'
-      $sys_owner 	   = 'root'
+      $sys_owner           = 'root'
       $sys_group           = 'root'
     }
     'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
