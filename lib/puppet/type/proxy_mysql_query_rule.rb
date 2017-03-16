@@ -138,7 +138,7 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
   end
 
   newproperty(:error_msg) do
-    desc 'query will be blocked, and the specified error_msg will be returned to the clientß.'
+    desc 'query will be blocked, and the specified error_msg will be returned to the client.'
     newvalue(%r{\w+})
   end
 
