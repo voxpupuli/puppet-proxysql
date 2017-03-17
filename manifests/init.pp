@@ -122,6 +122,10 @@ class proxysql (
   Hash $repo = {},
 
   String $package_source  =  $::proxysql::params::package_source,
+  String $package_provider =  $::proxysql::params::package_provider,
+
+  String $sys_owner = $::proxysql::params::sys_owner,
+  String $sys_group = $::proxysql::params::sys_group,
 
   String $rpm_repo_name   =  $::proxysql::params::rpm_repo_name,
   String $rpm_repo_descr  =  $::proxysql::params::rpm_repo_descr,

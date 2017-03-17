@@ -31,26 +31,38 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
+          case facts[:operatingsystem]
+          when 'Debian', 'Ubuntu' then
+            let(:sys_user) { 'root' }
+            let(:sys_group) { 'root' }
+          when 'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux' then
+            let(:sys_user) { 'proxysql' }
+            let(:sys_group) { 'proxysql' }
+          else
+            let(:sys_user) { 'root' }
+            let(:sys_group) { 'root' }
+          end
+
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
-                                                                     owner: 'root',
-                                                                     group: 'root',
+                                                                     owner: sys_user,
+                                                                     group: sys_group,
                                                                      mode: '0640',
                                                                      path: '/etc/proxysql.cnf')
           end
 
           it do
             is_expected.to contain_file('proxysql-datadir').with(ensure: 'directory',
-                                                                 owner: 'root',
-                                                                 group: 'root',
+                                                                 owner: sys_user,
+                                                                 group: sys_group,
                                                                  mode: '0600',
                                                                  path: '/var/lib/proxysql')
           end
 
           it do
             is_expected.to contain_file('root-mycnf-file').with(ensure: 'file',
-                                                                owner: 'root',
-                                                                group: 'root',
+                                                                owner: sys_user,
+                                                                group: sys_group,
                                                                 mode: '0400',
                                                                 path: '/root/.my.cnf')
           end

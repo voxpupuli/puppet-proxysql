@@ -8,7 +8,7 @@ class proxysql::install {
     package { $::proxysql::package_name:
       ensure          => $::proxysql::package_ensure,
       source          => $::proxysql::package_source,
-      provider        => $::proxysql::params::package_provider,
+      provider        => $::proxysql::package_provider,
       install_options => $::proxysql::package_install_options,
     }
   } else {
@@ -21,8 +21,8 @@ class proxysql::install {
   file { 'proxysql-datadir':
     ensure => directory,
     path   => $::proxysql::datadir,
-    owner  => $proxysql::params::sys_owner,
-    group  => $proxysql::params::sys_group,
+    owner  => $::proxysql::sys_owner,
+    group  => $::proxysql::sys_group,
     mode   => '0600',
   }
 
