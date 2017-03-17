@@ -4,9 +4,12 @@
 # It sets variables according to platform.
 #
 class proxysql::params {
-  $package_name = 'proxysql'
+  $package_name  = 'proxysql'
   $package_ensure = 'installed'
   $package_install_options = []
+
+  # Check your version in https://github.com/sysown/proxysql/releases
+  $package_source = 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
 
   $service_name = 'proxysql'
   $service_ensure = 'running'
@@ -19,7 +22,28 @@ class proxysql::params {
   $admin_password      = 'admin'
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
-  $admin_listen_socket = '/tmp/proxysql_admin.sock'
+
+  case $::operatingsystem {
+    'Debian', 'Ubuntu': {
+      $admin_listen_socket = '/tmp/proxysql_admin.sock'
+      $package_provider    = 'dpkg'
+      $sys_owner           = 'root'
+      $sys_group           = 'root'
+    }
+    'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
+      $admin_listen_socket = '/tmp/proxysql_admin.sock'
+      $package_provider    = 'rpm'
+      $sys_owner           = 'proxysql'
+      $sys_group           = 'proxysql'
+    }
+    default: {
+      $admin_listen_socket = '/tmp/proxysql_admin.sock'
+      $package_provider    = undef
+      $sys_owner           = 'root'
+      $sys_group           = 'root'
+    }
+  }
+
 
   $monitor_username = 'monitor'
   $monitor_password = 'monitor'
@@ -35,7 +59,12 @@ class proxysql::params {
   $restart = false
 
   $load_to_runtime = true
-  $save_to_disk = true
+  $save_to_disk    = true
+
+  $rpm_repo_name   = 'percona_repo'
+  $rpm_repo_descr  = 'percona_repo_contains_proxysql'
+  $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
+  $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
   $config_settings = {
     datadir => $datadir,
@@ -52,4 +81,5 @@ class proxysql::params {
     scheduler => {},
     mysql_replication_hostgroups => {},
   }
+
 }

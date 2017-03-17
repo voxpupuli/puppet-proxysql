@@ -77,9 +77,36 @@
 # * `manage_repo`
 #   Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 #
-# * `repo
+# * `repo`
 #   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
 #   to `apt::source`. Defaults to {}.
+#
+# * `manage_rpm`
+#   Determines wheter this module will use local provider instead of the repo to install ProxySQL, defaults to false,
+#
+# * `package_source`
+#   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+#
+# * `package_provider`
+#   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
+#
+# * `sys_owner`
+#   owner of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
+#
+# * `sys_group`
+#   group of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
+#
+# * `rpm_repo_name`
+#   title for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo'
+#
+# * `rpm_repo_descr`
+#   description for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo_contains_proxysql'
+#
+# * `rpm_repo`
+#   repo url for the yumrepo-resource in RedHat-based systems, defaults to 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
+#
+# * `rpm_repo_key`
+#   key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 #
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
@@ -88,7 +115,6 @@ class proxysql (
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
-
   String $service_name = $::proxysql::params::service_name,
   String $service_ensure = $::proxysql::params::service_ensure,
 
@@ -119,7 +145,19 @@ class proxysql (
   Boolean $save_to_disk = $::proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
+  Boolean $manage_rpm  = false,
   Hash $repo = {},
+
+  String $package_source  =  $::proxysql::params::package_source,
+  String $package_provider =  $::proxysql::params::package_provider,
+
+  String $sys_owner = $::proxysql::params::sys_owner,
+  String $sys_group = $::proxysql::params::sys_group,
+
+  String $rpm_repo_name   =  $::proxysql::params::rpm_repo_name,
+  String $rpm_repo_descr  =  $::proxysql::params::rpm_repo_descr,
+  String $rpm_repo        =  $::proxysql::params::rpm_repo,
+  String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {
