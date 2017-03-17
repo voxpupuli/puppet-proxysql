@@ -55,6 +55,16 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
   }
 ```
 
+On `Yum` based systems you can do and the module will install ProxySQL from the Percona repo's.
+```
+class { '::proxysql':
+  listen_port              => 3306,
+  admin_password           => '654321',
+  monitor_password         => '123456',
+  manage_rpm               => true,
+}
+```
+
 ## Usage
 
 Configuration is done by the `proxysql` class.
@@ -177,7 +187,37 @@ Specifies wheter te managed ProxySQL resources should be immediately save to dis
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
 
 ##### `manage_repo`
-Boolean to determine wheter we want to configure the repo management. Defaults to true.
+Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
+
+##### `repo`
+These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
+
+##### `manage_rpm`
+Determines wheter this module will use local provider instead of the repo to install ProxySQL, defaults to false,
+
+##### `package_source`
+location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+
+##### `package_provider`
+provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or `undef` for others
+
+##### `sys_owner`
+owner of the datadir and config_file, defaults to 'root' on most systems, to 'proxysql' on redhat-based
+
+##### `sys_group`
+group of the datadir and config_file, defaults to 'root' on most systems, to 'proxysql' on redhat-based
+
+##### `rpm_repo_name`
+title for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo'
+
+##### `rpm_repo_descr`
+description for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo_contains_proxysql'
+
+##### `rpm_repo`
+repo url for the yumrepo-resource in RedHat-based systems, defaults to 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
+
+##### `rpm_repo_key`
+key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
