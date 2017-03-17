@@ -6,7 +6,7 @@
 class proxysql::repo inherits proxysql {
   if ($::proxysql::manage_repo == true) and ($::proxysql::manage_rpm == false) {
     case $::operatingsystem {
-      'Debian': {
+      'Debian', 'Ubuntu': {
         create_resources('::apt::source', $::proxysql::repo)
       }
       'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
