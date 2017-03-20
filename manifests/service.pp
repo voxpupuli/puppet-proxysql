@@ -5,6 +5,16 @@
 #
 class proxysql::service {
 
+  if $::proxysql::manage_config_file {
+    if $::proxysql::manage_mycnf_file {
+      $service_require = [ File['proxysql-config-file'], File['root-mycnf-file'] ]
+    } else {
+      $service_require = [ File['proxysql-config-file'] ]
+    }
+  } else {
+    $service_require = []
+  }
+
   if $::proxysql::restart {
     service { $::proxysql::service_name:
       ensure     => $::proxysql::service_ensure,
@@ -15,6 +25,7 @@ class proxysql::service {
       status     => '/etc/init.d/proxysql status',
       start      => '/usr/bin/proxysql --reload',
       stop       => '/etc/init.d/proxysql stop',
+      require    => $service_require,
     }
   } else {
     service { $::proxysql::service_name:
@@ -22,6 +33,7 @@ class proxysql::service {
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
+      require    => $service_require,
     }
   }
 
