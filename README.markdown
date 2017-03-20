@@ -47,9 +47,13 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
     override_config_settings => $override_settings,
     repo                     => {
       'debs_proxysql_repo' => {
-        comment  => 'ProxySQL repo',
-        location => 'http://debs.example.tld/debian',
-        repos    => 'proxsql',
+        comment  => 'Percona repo',
+        location => 'http://repo.percona.com/apt',
+        repos    => 'main',
+        key      => {
+          'id'     => '4D1BB29D63D98E422B2113B19334A25F8507EFA5',
+          'server' => 'keyserver.ubuntu.com',
+        }
       },
     },
   }
