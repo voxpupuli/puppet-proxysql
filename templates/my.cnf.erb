@@ -2,8 +2,11 @@
 prompt = 'Admin> '
 
 [client]
+<% if scope.lookupvar('::proxysql::admin_listen_socket') != '' -%>
 socket = <%= scope.lookupvar('::proxysql::admin_listen_socket') %>
+<% else -%>
 host = <%= scope.lookupvar('::proxysql::admin_listen_ip') %>
 port = <%= scope.lookupvar('::proxysql::admin_listen_port') %>
+<% end -%>
 user = <%= scope.lookupvar('::proxysql::admin_username') %>
 password = <%= scope.lookupvar('::proxysql::admin_password') %>
