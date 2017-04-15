@@ -178,19 +178,19 @@ class proxysql (
   $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)
   # lint:endignore
 
-  anchor { '::proxysql::begin': } ->
-  class { '::proxysql::repo':} ->
-  class { '::proxysql::install':} ->
-  class { '::proxysql::config':} ->
-  class { '::proxysql::service':} ->
-  anchor { '::proxysql::end': }
+  anchor { '::proxysql::begin': }
+  -> class { '::proxysql::repo':}
+  -> class { '::proxysql::install':}
+  -> class { '::proxysql::config':}
+  -> class { '::proxysql::service':}
+  -> anchor { '::proxysql::end': }
 
-  Class['::proxysql::install'] ~>
-  Class['::proxysql::service']
+  Class['::proxysql::install']
+  ~> Class['::proxysql::service']
 
   if $restart {
-    Class['::proxysql::config'] ~>
-    Class['::proxysql::service']
+    Class['::proxysql::config']
+    ~> Class['::proxysql::service']
   }
 
 }
