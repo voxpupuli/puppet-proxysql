@@ -51,7 +51,6 @@ Puppet::Type.newtype(:proxy_mysql_server) do
 
   newproperty(:status) do
     desc 'Server status.'
-    defaultto :ONLINE
     newvalues(:ONLINE, :SHUNNED, :OFFLINE_SOFT, :OFFLINE_HARD)
   end
 
