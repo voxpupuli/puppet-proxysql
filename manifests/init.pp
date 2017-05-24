@@ -81,9 +81,6 @@
 #   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
 #   to `apt::source`. Defaults to {}.
 #
-# * `manage_rpm`
-#   Determines wheter this module will use local provider instead of the repo to install ProxySQL, defaults to false,
-#
 # * `package_source`
 #   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
 #
@@ -145,7 +142,6 @@ class proxysql (
   Boolean $save_to_disk = $::proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
-  Boolean $manage_rpm  = false,
   Hash $repo = {},
 
   String $package_source  =  $::proxysql::params::package_source,
