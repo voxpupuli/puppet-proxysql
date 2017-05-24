@@ -65,7 +65,7 @@ class { '::proxysql':
   listen_port              => 3306,
   admin_password           => '654321',
   monitor_password         => '123456',
-  manage_rpm               => true,
+  manage_repo              => true,
 }
 ```
 
