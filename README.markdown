@@ -295,7 +295,7 @@ Port of the server. Required. Defaults to 3306.
 Status of the server. Should be one of the following values: 'ONLINE', 'OFFLINE_SOFT', 'OFFLINE_HARD', 'SHUNNED'. Defaults to 'ONLINE'.
 
 ##### `weight`
-Weight value of the server. The higher the value, the higher the probability this server will be chosen from the hostgroup. Integer, defaults to 0.
+Weight value of the server. The higher the value, the higher the probability this server will be chosen from the hostgroup. Integer, defaults to 1.
 
 ##### `compression`
 Compression value of the serer. If the value is greater than 0, new connections to that server will use compression. Integer, defaults to 0.
