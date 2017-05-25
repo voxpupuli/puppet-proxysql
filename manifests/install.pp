@@ -4,7 +4,7 @@
 #
 class proxysql::install {
 
-  if $::proxysql::manage_rpm {
+  if !$::proxysql::manage_repo {
     package { $::proxysql::package_name:
       ensure          => $::proxysql::package_ensure,
       source          => $::proxysql::package_source,

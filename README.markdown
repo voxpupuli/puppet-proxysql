@@ -47,9 +47,13 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
     override_config_settings => $override_settings,
     repo                     => {
       'debs_proxysql_repo' => {
-        comment  => 'ProxySQL repo',
-        location => 'http://debs.example.tld/debian',
-        repos    => 'proxsql',
+        comment  => 'Percona repo',
+        location => 'http://repo.percona.com/apt',
+        repos    => 'main',
+        key      => {
+          'id'     => '4D1BB29D63D98E422B2113B19334A25F8507EFA5',
+          'server' => 'keyserver.ubuntu.com',
+        }
       },
     },
   }
@@ -61,7 +65,7 @@ class { '::proxysql':
   listen_port              => 3306,
   admin_password           => '654321',
   monitor_password         => '123456',
-  manage_rpm               => true,
+  manage_repo              => true,
 }
 ```
 
@@ -291,7 +295,7 @@ Port of the server. Required. Defaults to 3306.
 Status of the server. Should be one of the following values: 'ONLINE', 'OFFLINE_SOFT', 'OFFLINE_HARD', 'SHUNNED'. Defaults to 'ONLINE'.
 
 ##### `weight`
-Weight value of the server. The higher the value, the higher the probability this server will be chosen from the hostgroup. Integer, defaults to 0.
+Weight value of the server. The higher the value, the higher the probability this server will be chosen from the hostgroup. Integer, defaults to 1.
 
 ##### `compression`
 Compression value of the serer. If the value is greater than 0, new connections to that server will use compression. Integer, defaults to 0.

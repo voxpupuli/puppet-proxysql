@@ -51,13 +51,12 @@ Puppet::Type.newtype(:proxy_mysql_server) do
 
   newproperty(:status) do
     desc 'Server status.'
-    defaultto :ONLINE
     newvalues(:ONLINE, :SHUNNED, :OFFLINE_SOFT, :OFFLINE_HARD)
   end
 
   newproperty(:weight) do
     desc 'the bigger the weight of a server relative to other weights, the higher the probability of the server to be chosen from a hostgroup'
-    defaultto 0
+    defaultto 1
     newvalue(%r{\d+})
   end
 
