@@ -21,7 +21,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
 
       @hostname, @port, @hostgroup_id, @status, @weight, @compression,
       @max_connections, @max_replication_lag, @use_ssl, @max_latency_ms,
-      @comment = mysql([defaults_file, '-NBe', query].compact).delete(%r{\n}).split(%r{\t})
+      @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
       name = "#{hostname}:#{port}-#{hostgroup_id}"
 
       instances << new(
