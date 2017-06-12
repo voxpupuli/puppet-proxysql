@@ -7,7 +7,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
   def self.instances
     instances = []
     schedulers = mysql([defaults_file, '-NBe',
-                        'SELECT `id` FROM `scheduler`'].compact).split("\n")
+                        'SELECT `id` FROM `scheduler`'].compact).split(%r{\n})
 
     schedulers.map do |scheduler_id|
       query = 'SELECT `active`, `interval_ms`, `filename`, '
@@ -15,7 +15,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
       query << "FROM `scheduler` WHERE `id` = #{scheduler_id}"
 
       @active, @interval_ms, @filename, @arg1, @arg2, @arg3, @arg4, @arg5,
-      @comment = mysql([defaults_file, '-NBe', query].compact).split(%r{\t})
+      @comment = mysql([defaults_file, '-NBe', query].compact).delete(%r{\n}).split(%r{\t})
       name = "scheduler-#{scheduler_id}"
 
       instances << new(

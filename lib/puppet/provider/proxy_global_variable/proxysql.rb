@@ -7,7 +7,7 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
   # servers.
   def self.instances
     instances = []
-    data = mysql([defaults_file, '-NBe', 'SHOW GLOBAL VARIABLES']).split("\n")
+    data = mysql([defaults_file, '-NBe', 'SHOW GLOBAL VARIABLES']).split(%r{\n})
     data.each do |line|
       var, val = line.split(%r{\t})
 
