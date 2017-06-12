@@ -17,7 +17,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
 
       @password, @active, @use_ssl, @default_hostgroup, @default_schema,
       @schema_locked, @transaction_persistent, @fast_forward, @backend, @frontend,
-      @max_connections = mysql([defaults_file, '-NBe', query].compact).delete(%r{\n}).split(%r{\t})
+      @max_connections = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
 
       new(name: name,
           ensure: :present,
