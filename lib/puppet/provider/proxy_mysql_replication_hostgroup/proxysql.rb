@@ -8,7 +8,7 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
   def self.instances
     instances = []
     hostgroups = mysql([defaults_file, '-NBe',
-                        'SELECT `writer_hostgroup`, `reader_hostgroup`, `comment` FROM `mysql_replication_hostgroups`'].compact).split("\n")
+                        'SELECT `writer_hostgroup`, `reader_hostgroup`, `comment` FROM `mysql_replication_hostgroups`'].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.

@@ -8,7 +8,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def self.instances
     instances = []
     servers = mysql([defaults_file, '-NBe',
-                     'SELECT `hostname`, `port`, `hostgroup_id` FROM `mysql_servers`'].compact).split("\n")
+                     'SELECT `hostname`, `port`, `hostgroup_id` FROM `mysql_servers`'].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -21,7 +21,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
 
       @hostname, @port, @hostgroup_id, @status, @weight, @compression,
       @max_connections, @max_replication_lag, @use_ssl, @max_latency_ms,
-      @comment = mysql([defaults_file, '-NBe', query].compact).split(%r{\s})
+      @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
       name = "#{hostname}:#{port}-#{hostgroup_id}"
 
       instances << new(
