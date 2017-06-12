@@ -8,7 +8,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
   # users.
   def self.instances
     users = mysql([defaults_file, '-NBe',
-                   'SELECT username FROM mysql_users'].compact).split("\n")
+                   'SELECT username FROM mysql_users'].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -17,7 +17,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
 
       @password, @active, @use_ssl, @default_hostgroup, @default_schema,
       @schema_locked, @transaction_persistent, @fast_forward, @backend, @frontend,
-      @max_connections = mysql([defaults_file, '-NBe', query].compact).split(%r{\t})
+      @max_connections = mysql([defaults_file, '-NBe', query].compact).delete(%r{\n}).split(%r{\t})
 
       new(name: name,
           ensure: :present,
