@@ -43,7 +43,8 @@
 #   The port where the ProxySQL admin interface  will listen on. Defaults to '6032'
 #
 # * `admin_listen_socket`
-#   The socket where the ProxySQL admin interface  will listen on. Defaults to '/tmp/proxysql_admin.sock'
+#   The socket where the ProxySQL admin interface  will listen on. Changing this on a running system will result in failing runs.
+#   Defaults to '/tmp/proxysql_admin.sock'
 #
 # * `monitor_username`
 #   The username ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
@@ -63,7 +64,8 @@
 #   This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
 #
 # * `manage_mycnf_file`
-#   Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
+#   Determines wheter this module will configure the my.cnf file to connect to the admin interface.
+#   This is required for the providers to work. Defaults to 'true'
 #
 # * `restart`
 #   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
@@ -179,6 +181,7 @@ class proxysql (
   -> class { '::proxysql::install':}
   -> class { '::proxysql::config':}
   -> class { '::proxysql::service':}
+  -> class { '::proxysql::admin_credentials':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']

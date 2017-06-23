@@ -6,11 +6,7 @@
 class proxysql::service {
 
   if $::proxysql::manage_config_file {
-    if $::proxysql::manage_mycnf_file {
-      $service_require = [ File['proxysql-config-file'], File['root-mycnf-file'] ]
-    } else {
-      $service_require = File['proxysql-config-file']
-    }
+    $service_require = File['proxysql-config-file']
   } else {
     $service_require = undef
   }

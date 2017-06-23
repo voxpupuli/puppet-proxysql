@@ -17,28 +17,4 @@ class proxysql::config {
     }
   }
 
-  proxy_global_variable { 'admin-admin_credentials':
-    value           => $config_settings['admin_variables']['admin_credentials'],
-    load_to_runtime => false,
-    notify          => Service[$::proxysql::service_name],
-    before          => File['root-mycnf-file'],
-  }
-
-  proxy_global_variable { 'admin-mysql_ifaces':
-    value           => $config_settings['admin_variables']['mysql_ifaces'],
-    load_to_runtime => false,
-    notify          => Service[$::proxysql::service_name],
-    before          => File['root-mycnf-file'],
-  }
-
-  if $proxysql::manage_mycnf_file {
-    file { 'root-mycnf-file':
-      ensure  => file,
-      path    => $proxysql::mycnf_file_name,
-      content => template('proxysql/my.cnf.erb'),
-      owner   => $proxysql::sys_owner,
-      group   => $proxysql::sys_group,
-      mode    => '0400',
-    }
-  }
 }
