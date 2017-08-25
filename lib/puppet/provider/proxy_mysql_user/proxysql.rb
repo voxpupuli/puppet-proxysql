@@ -53,7 +53,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
     default_hostgroup = @resource.value(:default_hostgroup) || 0
     default_schema = @resource.value(:default_schema) || ''
     schema_locked = @resource.value(:schema_locked) || 0
-    transaction_persistent = @resource.value(:transaction_persistent) || 0
+    transaction_persistent = @resource.value(:transaction_persistent) || 1
     fast_forward = @resource.value(:fast_forward) || 0
     backend = @resource.value(:backend) || 1
     frontend = @resource.value(:frontend) || 1
