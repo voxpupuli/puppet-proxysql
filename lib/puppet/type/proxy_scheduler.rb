@@ -36,13 +36,11 @@ Puppet::Type.newtype(:proxy_scheduler) do
 
   newproperty(:active) do
     desc 'Is the scheduler active or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
   newproperty(:interval_ms) do
     desc 'How often (in millisecond) the job will be started.'
-    defaultto 10_000
     newvalue(%r{\d+})
   end
 

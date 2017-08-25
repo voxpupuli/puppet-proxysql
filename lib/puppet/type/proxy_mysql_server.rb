@@ -56,37 +56,31 @@ Puppet::Type.newtype(:proxy_mysql_server) do
 
   newproperty(:weight) do
     desc 'the bigger the weight of a server relative to other weights, the higher the probability of the server to be chosen from a hostgroup'
-    defaultto 1
     newvalue(%r{\d+})
   end
 
   newproperty(:compression) do
     desc 'if the value is greater than 0, new connections to that server will use compression'
-    defaultto 0
     newvalue(%r{\d+})
   end
 
   newproperty(:max_connections) do
     desc 'the maximum number of connections ProxySQL will open to this backend server. Even though this server will have the highest weight, no new connections will be opened to it once this limit is hit. Please ensure that the backend is configured with a correct value of max_connections to avoid that ProxySQL will try to go beyond that limit'
-    defaultto 1000
     newvalue(%r{\d+})
   end
 
   newproperty(:max_replication_lag) do
     desc 'if greater and 0, ProxySQL will reguarly monitor replication lag and if it goes beyond such threshold it will temporary shun the host until replication catch ups'
-    defaultto 0
     newvalue(%r{\d+})
   end
 
   newproperty(:use_ssl) do
     desc 'if set to 1, connections to the backend will use SSL'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
   newproperty(:max_latency_ms) do
     desc 'ping time is regularly monitored. If a host has a ping time greater than max_latency_ms it is excluded from the connection pool (although the server stays ONLINE)'
-    defaultto 0
     newvalue(%r{[\d+]})
   end
 

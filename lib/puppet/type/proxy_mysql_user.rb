@@ -45,19 +45,16 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   newproperty(:active) do
     desc 'Is the user active or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
   newproperty(:use_ssl) do
     desc 'Use ssl or not.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
   newproperty(:default_hostgroup) do
     desc 'Default hostgroup for the user.'
-    defaultto 0
     newvalue(%r{\d+})
   end
 
@@ -68,19 +65,16 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   newproperty(:schema_locked) do
     desc 'Is the user locked in the default schema or not.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
   newproperty(:transaction_persistent) do
     desc 'Disable routing across hostgroups once a transaction has started for a specific user.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
   newproperty(:fast_forward) do
     desc 'Use fast forwrd or not.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
@@ -98,7 +92,6 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   newproperty(:max_connections) do
     desc 'Max concurrent connections for the user.'
-    defaultto 10_000
     newvalue(%r{\d+})
   end
 end
