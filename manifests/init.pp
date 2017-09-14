@@ -10,7 +10,7 @@
 #   The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
 #
 # * `package_ensure`
-#   The ensure of the ProxySQL package resource. Defaults to 'latest'
+#   The ensure of the ProxySQL package resource. Defaults to 'installed'
 #
 # * `service_name`
 #   The name of the ProxySQL service resource. Defaults to 'proxysql'
