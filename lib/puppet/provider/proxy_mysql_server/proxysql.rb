@@ -58,7 +58,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     hostname = @resource.value(:hostname)
     port = @resource.value(:port) || 3306
     hostgroup_id = @resource.value(:hostgroup_id) || 0
-    status = @resource.value(:status)
+    status = @resource.value(:status) || 'ONLINE'
     weight = @resource.value(:weight) || 1
     compression = @resource.value(:compression) || 0
     max_connections = @resource.value(:max_connections) || 1000
