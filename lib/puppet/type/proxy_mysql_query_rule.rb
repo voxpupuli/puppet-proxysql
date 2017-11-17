@@ -35,7 +35,6 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:active) do
     desc 'Is the rule active or not.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
@@ -51,7 +50,6 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:flag_in) do
     desc 'Used to chain rules. This is the id of the previous rule to apply'
-    defaultto 0
     newvalue(%r{\d+})
   end
 
@@ -62,7 +60,6 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:apply) do
     desc 'Used to chain rules.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
@@ -103,7 +100,6 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:negate_match_pattern) do
     desc 'if this is set to 1, only queries not matching the query text will be considered as a match. This acts as a NOT operator in front of the regular expression matching against match_pattern or match_digest.'
-    defaultto 0
     newvalue(%r{[01]})
   end
 
