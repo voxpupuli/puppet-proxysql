@@ -5,18 +5,12 @@
 #
 class proxysql::repo inherits proxysql {
   if $::proxysql::manage_repo == true {
-    case $::operatingsystem {
-      'Debian', 'Ubuntu': {
-        create_resources('::apt::source', $::proxysql::repo)
+    case $facts['os']['family'] {
+      'Debian': {
+        create_resources('::apt::source', { 'proxysql_repo' => $::proxysql::repo})
       }
-      'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
-        yumrepo { $::proxysql::rpm_repo_name:
-          descr    => $::proxysql::rpm_repo_descr,
-          baseurl  => $::proxysql::rpm_repo,
-          enabled  => true,
-          gpgcheck => true,
-          gpgkey   => $::proxysql::rpm_repo_key,
-        }
+      'RedHat': {
+        create_resources('yumrepo', { 'proxysql_repo' => $::proxysql::repo})
       }
       default: {
         fail('This operatingsystem is not supported (yet).')

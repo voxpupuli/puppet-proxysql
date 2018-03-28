@@ -8,9 +8,6 @@ class proxysql::params {
   $package_ensure = 'installed'
   $package_install_options = []
 
-  # Check your version in https://github.com/sysown/proxysql/releases
-  $package_source = 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
-
   $service_name = 'proxysql'
   $service_ensure = 'running'
 
@@ -23,30 +20,38 @@ class proxysql::params {
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
-  case $::operatingsystem {
+  $admin_listen_socket = '/tmp/proxysql_admin.sock'
+  $sys_owner           = 'root'
+  $sys_group           = 'root'
+
+  case $facts['os']['family'] {
     'Debian': {
-      $admin_listen_socket = '/tmp/proxysql_admin.sock'
-      $package_provider    = 'dpkg'
-      $sys_owner           = 'root'
-      $sys_group           = 'root'
+      $package_provider = 'dpkg'
+      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb'
+      $repo             = {
+        comment  => 'ProxySQL APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${::facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        }
+      }
     }
-    'Ubuntu': {
-      $admin_listen_socket = '/tmp/proxysql_admin.sock'
-      $package_provider    = 'dpkg'
-      $sys_owner           = 'proxysql'
-      $sys_group           = 'proxysql'
-    }
-    'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
-      $admin_listen_socket = '/tmp/proxysql_admin.sock'
-      $package_provider    = 'rpm'
-      $sys_owner           = 'proxysql'
-      $sys_group           = 'proxysql'
+    'RedHat': {
+      $package_provider = 'rpm'
+      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm'
+      $repo             = {
+        descr    => 'ProxySQL YUM repository',
+        baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/$releasever',
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
     }
     default: {
-      $admin_listen_socket = '/tmp/proxysql_admin.sock'
-      $package_provider    = undef
-      $sys_owner           = 'root'
-      $sys_group           = 'root'
+      $package_provider = undef
     }
   }
 
@@ -66,11 +71,6 @@ class proxysql::params {
 
   $load_to_runtime = true
   $save_to_disk    = true
-
-  $rpm_repo_name   = 'percona_repo'
-  $rpm_repo_descr  = 'percona_repo_contains_proxysql'
-  $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
-  $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
   $config_settings = {
     datadir => $datadir,

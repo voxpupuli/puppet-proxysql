@@ -5,9 +5,29 @@
 class proxysql::install {
 
   if !$::proxysql::manage_repo {
+    case $facts['os']['family'] {
+      'Debian': {
+        if ! defined(Package['wget']) {
+          package { 'wget':
+            ensure => installed
+          }
+        }
+
+        exec { 'wget-package-source':
+          command => "/usr/bin/wget $::proxysql::package_source -O /tmp/proxysql-package.deb",
+          creates => '/tmp/proxysql-package.deb',
+        }
+
+        $real_package_source = '/tmp/proxysql-package.deb'
+      }
+      default: {
+        $real_package_source = $::proxysql::package_source
+      }
+    }
+
     package { $::proxysql::package_name:
       ensure          => $::proxysql::package_ensure,
-      source          => $::proxysql::package_source,
+      source          => $real_package_source,
       provider        => $::proxysql::package_provider,
       install_options => $::proxysql::package_install_options,
     }
