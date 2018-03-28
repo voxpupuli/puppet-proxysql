@@ -23,14 +23,14 @@ class proxysql::params {
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
-  case $::operatingsystem {
-    'Debian', 'Ubuntu': {
+  case $facts['os']['family'] {
+    'Debian': {
       $admin_listen_socket = '/tmp/proxysql_admin.sock'
       $package_provider    = 'dpkg'
       $sys_owner           = 'proxysql'
       $sys_group           = 'proxysql'
     }
-    'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {
+    'RedHat': {
       $admin_listen_socket = '/tmp/proxysql_admin.sock'
       $package_provider    = 'rpm'
       $sys_owner           = 'proxysql'
