@@ -32,10 +32,7 @@ describe 'proxysql' do
           end
 
           case facts[:operatingsystem]
-          when 'Debian' then
-            let(:sys_user) { 'root' }
-            let(:sys_group) { 'root' }
-          when 'Ubuntu' then
+          when 'Debian', 'Ubuntu' then
             let(:sys_user) { 'proxysql' }
             let(:sys_group) { 'proxysql' }
           when 'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux' then
