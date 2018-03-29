@@ -30,7 +30,7 @@ class proxysql::params {
       $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb'
       $repo             = {
         comment  => 'ProxySQL APT repository',
-        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${::facts['os']['distro']['codename']}/",
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${::facts['lsbdistcodename']}/",
         release  => './',
         repos    => '',
         key      => {
