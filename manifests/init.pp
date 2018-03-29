@@ -81,31 +81,22 @@
 #
 # * `repo`
 #   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
-#   to `apt::source`. Defaults to {}.
+#   to `apt::source` or `yumrepo` (depending on the OS family).
+#   Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
 #
 # * `package_source`
-#   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+#   location ot the proxysql package for the `package_provider`.
+#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm' for RedHat based systems
+#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb' for Debian based systems
 #
 # * `package_provider`
 #   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
 #
 # * `sys_owner`
-#   owner of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
+#   owner of the datadir and config_file, defaults to root.
 #
 # * `sys_group`
-#   group of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
-#
-# * `rpm_repo_name`
-#   title for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo'
-#
-# * `rpm_repo_descr`
-#   description for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo_contains_proxysql'
-#
-# * `rpm_repo`
-#   repo url for the yumrepo-resource in RedHat-based systems, defaults to 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
-#
-# * `rpm_repo_key`
-#   key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
+#   group of the datadir and config_file, defaults to root.
 #
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).

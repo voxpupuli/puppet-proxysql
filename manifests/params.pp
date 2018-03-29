@@ -36,7 +36,7 @@ class proxysql::params {
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
-        }
+        },
       }
     }
     'RedHat': {
