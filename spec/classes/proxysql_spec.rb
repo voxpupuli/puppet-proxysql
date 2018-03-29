@@ -31,17 +31,8 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
-          case facts[:os][:family]
-          when 'Debian' then
-            let(:sys_user) { 'root' }
-            let(:sys_group) { 'root' }
-          when 'RedHat' then
-            let(:sys_user) { 'root' }
-            let(:sys_group) { 'root' }
-          else
-            let(:sys_user) { 'root' }
-            let(:sys_group) { 'root' }
-          end
+          let(:sys_user) { 'root' }
+          let(:sys_group) { 'root' }
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
