@@ -31,14 +31,11 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
-          case facts[:operatingsystem]
+          case facts[:osfamily]
           when 'Debian' then
-            let(:sys_user) { 'root' }
-            let(:sys_group) { 'root' }
-          when 'Ubuntu' then
             let(:sys_user) { 'proxysql' }
             let(:sys_group) { 'proxysql' }
-          when 'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux' then
+          when 'RedHat' then
             let(:sys_user) { 'proxysql' }
             let(:sys_group) { 'proxysql' }
           else
