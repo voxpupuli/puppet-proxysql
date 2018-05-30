@@ -124,13 +124,13 @@ class proxysql (
   String $listen_socket = $::proxysql::params::listen_socket,
 
   String $admin_username = $::proxysql::params::admin_username,
-  String $admin_password = $::proxysql::params::admin_password,
+  Sensitive[String] $admin_password = $::proxysql::params::admin_password,
   String $admin_listen_ip = $::proxysql::params::admin_listen_ip,
   Integer $admin_listen_port = $::proxysql::params::admin_listen_port,
   String $admin_listen_socket = $::proxysql::params::admin_listen_socket,
 
   String $monitor_username = $::proxysql::params::monitor_username,
-  String $monitor_password = $::proxysql::params::monitor_password,
+  Sensitive[String] $monitor_password = $::proxysql::params::monitor_password,
 
   String $config_file = $::proxysql::params::config_file,
   Boolean $manage_config_file = $::proxysql::params::manage_config_file,
