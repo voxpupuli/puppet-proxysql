@@ -19,7 +19,7 @@ class proxysql::params {
   $listen_socket = '/tmp/proxysql.sock'
 
   $admin_username      = 'admin'
-  $admin_password      = 'admin'
+  $admin_password      = Sensitive('admin')
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
@@ -52,7 +52,7 @@ class proxysql::params {
 
 
   $monitor_username = 'monitor'
-  $monitor_password = 'monitor'
+  $monitor_password = Sensitive('monitor')
 
   $datadir = '/var/lib/proxysql'
 
