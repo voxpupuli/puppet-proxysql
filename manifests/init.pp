@@ -173,7 +173,7 @@ class proxysql (
       monitor_password => $monitor_password,
     },
   }
-  $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)
+  $config_settings = deep_merge($proxysql::params::config_settings, $settings, $override_config_settings)
   # lint:endignore
 
   anchor { '::proxysql::begin': }
