@@ -164,13 +164,13 @@ class proxysql (
   $settings = {
     datadir => $datadir,
     admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password}",
+      admin_credentials => "${admin_username}:${admin_password.unwrap}",
       mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
-      monitor_password => $monitor_password,
+      monitor_password => $monitor_password.unwrap,
     },
   }
   $config_settings = deep_merge($proxysql::params::config_settings, $override_config_settings, $settings)
