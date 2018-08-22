@@ -65,7 +65,6 @@ class { '::proxysql':
   listen_port              => 3306,
   admin_password           => '654321',
   monitor_password         => '123456',
-  manage_repo              => true,
 }
 ```
 
@@ -164,22 +163,12 @@ The username ProxySQL will use to connect to the configured mysql_servers. Defau
 ##### `monitor_password`
 The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
 
-##### `config_file`
-The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
-Defaults to '/etc/proxysql.cnf'
-
-##### `manage_config_file`
-Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
-
 ##### `mycnf_file_name`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
 
 ##### `manage_mycnf_file`
 Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
-
-##### `restart`
-Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 
 ##### `load_to_runtime`
 Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
@@ -189,9 +178,6 @@ Specifies wheter te managed ProxySQL resources should be immediately save to dis
 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
-
-##### `manage_repo`
-Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.

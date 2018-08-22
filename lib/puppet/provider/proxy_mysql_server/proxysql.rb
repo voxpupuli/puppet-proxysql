@@ -8,7 +8,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def self.instances
     instances = []
     servers = mysql([defaults_file, '-NBe',
-                     'SELECT `hostname`, `port`, `hostgroup_id` FROM `mysql_servers`'].compact).split(%r{\n})
+                     'SELECT `hostname`, `port` FROM `mysql_servers`'].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -17,12 +17,12 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
       query = 'SELECT `hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, '
       query << ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment` '
       query << ' FROM `mysql_servers`'
-      query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
+      query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
 
       @hostname, @port, @hostgroup_id, @status, @weight, @compression,
       @max_connections, @max_replication_lag, @use_ssl, @max_latency_ms,
       @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
-      name = "#{hostname}:#{port}-#{hostgroup_id}"
+      name = "#{hostname}:#{port}"
 
       instances << new(
         name: name,
@@ -82,7 +82,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     port = @resource.value(:port)
     hostgroup_id = @resource.value(:hostgroup_id)
     query = 'DELETE FROM `mysql_servers`'
-    query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
+    query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -112,8 +112,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def update_server(properties)
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
-    hostgroup_id = @resource.value(:hostgroup_id)
-
+    
     return false if properties.empty?
 
     values = []
@@ -123,7 +122,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
 
     query = 'UPDATE mysql_servers SET '
     query << values.join(', ')
-    query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
+    query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
