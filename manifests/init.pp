@@ -155,7 +155,7 @@
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
 #
 class proxysql (
-  String $cluster_name,
+  String $cluster_name = undef,
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
@@ -211,7 +211,7 @@ class proxysql (
 
   Hash $override_config_settings = {},
 
-  Optional[Array[String]] $admin_users,
+  Optional[Array[String]] $admin_users = undef,
 
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,
