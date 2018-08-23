@@ -133,6 +133,16 @@
 #
 # * `schedulers`
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
+# * `split_config`
+#   If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
+#   and proxy config file with servers\users\hostgroups\scheduler params. Defaults to false
+#
+# * `proxy_config_file`
+#   The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved
+#   This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
+#
+# * `manage_proxy_config_file`
+#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 #
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
@@ -157,6 +167,11 @@ class proxysql (
 
   String $monitor_username = $proxysql::params::monitor_username,
   Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
+
+  Boolean $split_config = $proxysql::params::split_config,
+
+  String $proxy_config_file = $proxysql::params::proxy_config_file,
+  Boolean $manage_proxy_config_file = $proxysql::params::manage_proxy_config_file,
 
   String $config_file = $proxysql::params::config_file,
   Boolean $manage_config_file = $proxysql::params::manage_config_file,
