@@ -56,8 +56,11 @@ class proxysql::params {
 
   $datadir = '/var/lib/proxysql'
 
-  $config_file        = '/etc/proxysql.cnf'
-  $manage_config_file = true
+  $split_config             = false
+  $config_file              = '/etc/proxysql.cnf'
+  $manage_config_file       = true
+  $proxy_config_file        = '/etc/proxysql_proxy.cnf'
+  $manage_proxy_config_file = true
 
   $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true
@@ -71,6 +74,10 @@ class proxysql::params {
   $rpm_repo_descr  = 'percona_repo_contains_proxysql'
   $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
   $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
+
+  $cluster_name = ''
+  $cluster_username = 'cluster'
+  $cluster_password = Sensitive('cluster')
 
   $config_settings = {
     datadir => $datadir,

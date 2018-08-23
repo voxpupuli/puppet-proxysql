@@ -226,6 +226,25 @@ key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://w
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 
+##### `cluster_name`
+If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
+Defaults to ''
+
+##### `cluster_username`
+The username ProxySQL will use to connect to the configured mysql_clusters
+Defaults to 'cluster'
+
+##### `cluster_password`
+The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+
+##### `split_config`
+If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables and proxy config file with servers\users\hostgroups\scheduler\rules params. Defaults to false
+
+##### `proxy_config_file`
+The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved. This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
+
+#####`manage_proxy_config_file`
+Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 
 ## Types
 #### proxy_global_variable
@@ -242,6 +261,18 @@ Specifies wheter the resource should be immediately save to disk. Boolean, defau
 
 ##### `value`
 The value of the variable.
+
+#### proxy_cluster
+`proxy_cluster` manages an entry in the ProxySQL `proxysql_clusters` admin table.
+
+##### `name`
+The name of the resource.
+
+##### `hostname`
+Hostname of the server. Required.
+
+##### `port`
+Port of the server. Required. Defaults to 3306.
 
 #### proxy_mysql_replication_hostgroup
 `proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroups` admin table.

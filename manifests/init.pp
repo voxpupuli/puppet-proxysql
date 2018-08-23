@@ -110,7 +110,30 @@
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to ''
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
+# * `split_config`
+#   If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
+#   and proxy config file with servers\users\hostgroups\scheduler params. Defaults to false
+#
+# * `proxy_config_file`
+#   The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved
+#   This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
+#
+# * `manage_proxy_config_file`
+#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
+#
 class proxysql (
+  String $cluster_name = $::proxysql::params::cluster_name,
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
@@ -132,8 +155,11 @@ class proxysql (
   String $monitor_username = $::proxysql::params::monitor_username,
   Sensitive[String] $monitor_password = $::proxysql::params::monitor_password,
 
+  Boolean $split_config = $::proxysql::params::split_config,
   String $config_file = $::proxysql::params::config_file,
   Boolean $manage_config_file = $::proxysql::params::manage_config_file,
+  String $proxy_config_file = $::proxysql::params::proxy_config_file,
+  Boolean $manage_proxy_config_file = $::proxysql::params::manage_proxy_config_file,
 
   String $mycnf_file_name = $::proxysql::params::mycnf_file_name,
   Boolean $manage_mycnf_file = $::proxysql::params::manage_mycnf_file,
@@ -157,7 +183,11 @@ class proxysql (
   String $rpm_repo        =  $::proxysql::params::rpm_repo,
   String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
+  String $cluster_username = $::proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+
   Hash $override_config_settings = {},
+  String $node_name = "${::fqdn}:${admin_listen_port}"
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
@@ -173,7 +203,20 @@ class proxysql (
       monitor_password => $monitor_password.unwrap,
     },
   }
-  $config_settings = deep_merge($proxysql::params::config_settings, $settings, $override_config_settings)
+
+  if $cluster_name {
+    $settings_cluster = {
+      admin_variables => {
+        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        cluster_username => $cluster_username,
+        cluster_password => "${cluster_password.unwrap}",
+      },
+    }
+  }
+
+  $settings_result = deep_merge($settings, $settings_cluster)
+
+  $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
   anchor { '::proxysql::begin': }
@@ -182,6 +225,7 @@ class proxysql (
   -> class { '::proxysql::config':}
   -> class { '::proxysql::service':}
   -> class { '::proxysql::admin_credentials':}
+  -> class { '::proxysql::cluster':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']
