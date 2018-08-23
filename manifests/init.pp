@@ -155,7 +155,7 @@
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
 #
 class proxysql (
-  String $cluster_name = undef,
+  String $cluster_name = '',
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
