@@ -88,5 +88,4 @@ Puppet::Type.newtype(:proxy_mysql_server_no_hostgroup) do
       desc 'text field that can be used for any purposed defined by the user. Could be a description of what the host stores, a reminder of when the host was added or disabled, or a JSON processed by some checker script.'
       newvalue(%r{[\w+]})
     end
-  end
-  
+end

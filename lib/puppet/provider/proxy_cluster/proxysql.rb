@@ -22,10 +22,10 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
         query = 'SELECT `hostname`, `port`, `weight`, `comment`'
         query << ' FROM `proxysql_servers`'
         query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
-      
+
         @hostname, @port, @weight, @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
         name = "#{hostname}:#{port}"
-      
+
         instances << new(
           name: name,
           ensure: :present,
@@ -98,7 +98,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
   def update_server(properties)
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
-    
+
     return false if properties.empty?
 
     values = []
