@@ -52,12 +52,23 @@
 # * `monitor_password`
 #   The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
 #
-# * `config_file`
-#   The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
-#   Defaults to '/etc/proxysql.cnf'
+# * `main_config_file`
+#   The file where the main ProxySQL configuration is saved (datadir, admin and mysql variable). 
+#   This will only be configured if `manage_main_config_file` is set to `true`. Defaults to '/etc/proxysql.cnf'
 #
-# * `manage_config_file`
-#   Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+# * `manage_main_config_file`
+#   Determines wheter this module will update the ProxySQL main configuration file. Defaults to 'true'
+#
+# * `proxy_config_file`
+#   The file where servers, users, hostgroups, rules the ProxySQL configuration is saved. 
+#   This will only be configured if `manage_proxy_config_file` is set to `true`. Defaults to '/etc/proxysql.cnf'
+#
+# * `manage_proxy_config_file`
+#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
+#
+# * `config_directory`
+#   Path where proxy_config_file file will be stored.
+#   Defaults to '/etc/proxysql.d/'
 #
 # * `mycnf_file_name`
 #   Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
@@ -66,6 +77,10 @@
 # * `manage_mycnf_file`
 #   Determines wheter this module will configure the my.cnf file to connect to the admin interface.
 #   This is required for the providers to work. Defaults to 'true'
+#
+# * `manage_hostgroup_for_servers`
+#   Determines wheter this module will manage hostgroup_id for mysql_servers. 
+#   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
 # * `restart`
 #   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
@@ -84,7 +99,7 @@
 #   to `apt::source`. Defaults to {}.
 #
 # * `package_source`
-#   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+#   location ot the proxysql package for the `package_provider`. Default to undef
 #
 # * `package_provider`
 #   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
@@ -110,7 +125,37 @@
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to ''
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
+# * `admin_users`
+#   Array of users, for which .my.cnf file will be copied to their home directory. Defaults to []
+#
+# * `mysql_servers`
+#   Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_users`
+#   Array of mysql_users, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_hostgroups`
+#   Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_rules`
+#   Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+#
+# * `schedulers`
+#   Array of schedulers, that will be created in ProxySQL. Defaults to undef
+#
 class proxysql (
+  String $cluster_name = '',
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
@@ -132,8 +177,11 @@ class proxysql (
   String $monitor_username = $::proxysql::params::monitor_username,
   Sensitive[String] $monitor_password = $::proxysql::params::monitor_password,
 
-  String $config_file = $::proxysql::params::config_file,
-  Boolean $manage_config_file = $::proxysql::params::manage_config_file,
+  String $main_config_file = $::proxysql::params::main_config_file,
+  Boolean $manage_main_config_file = $::proxysql::params::manage_main_config_file,
+  String $config_directory = $::proxysql::params::config_directory,
+  String $proxy_config_file = $::proxysql::params::proxy_config_file,
+  Boolean $manage_proxy_config_file = $::proxysql::params::manage_proxy_config_file,
 
   String $mycnf_file_name = $::proxysql::params::mycnf_file_name,
   Boolean $manage_mycnf_file = $::proxysql::params::manage_mycnf_file,
@@ -142,12 +190,13 @@ class proxysql (
 
   Boolean $load_to_runtime = $::proxysql::params::load_to_runtime,
   Boolean $save_to_disk = $::proxysql::params::save_to_disk,
+  Boolean $manage_hostgroup_for_servers = $::proxysql::params::manage_hostgroup_for_servers,
 
-  Boolean $manage_repo = true,
+  Boolean $manage_repo = $::proxysql::params::manage_repo,
   Hash $repo = {},
 
-  String $package_source  =  $::proxysql::params::package_source,
-  String $package_provider =  $::proxysql::params::package_provider,
+  Optional[String] $package_source = '',
+  String $package_provider = $::proxysql::params::package_provider,
 
   String $sys_owner = $::proxysql::params::sys_owner,
   String $sys_group = $::proxysql::params::sys_group,
@@ -157,10 +206,23 @@ class proxysql (
   String $rpm_repo        =  $::proxysql::params::rpm_repo,
   String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
+  String $cluster_username = $::proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+
   Hash $override_config_settings = {},
+
+  Optional[Array[String]] $admin_users = [],
+
+  Optional[Proxysql::Server] $mysql_servers = undef,
+  Optional[Proxysql::User] $mysql_users = undef,
+  Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
+  Optional[Proxysql::Rule] $mysql_rules = undef,
+  Optional[Proxysql::Scheduler] $schedulers = undef,
+
+  String $node_name = "${::fqdn}:${admin_listen_port}"
 ) inherits ::proxysql::params {
 
-  # lint:ignore:80chars
+# lint:ignore:80chars
   $settings = {
     datadir => $datadir,
     admin_variables => {
@@ -170,18 +232,34 @@ class proxysql (
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
-      monitor_password => $monitor_password.unwrap,
+      monitor_password => "${monitor_password.unwrap}",
     },
   }
-  $config_settings = deep_merge($proxysql::params::config_settings, $settings, $override_config_settings)
+
+  if $cluster_name {
+    $settings_cluster = {
+      admin_variables => {
+        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        cluster_username => $cluster_username,
+        cluster_password => "${cluster_password.unwrap}",
+      },
+    }
+  }
+
+  $settings_result = deep_merge($settings, $settings_cluster)
+
+  $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
   anchor { '::proxysql::begin': }
   -> class { '::proxysql::repo':}
-  -> class { '::proxysql::install':}
   -> class { '::proxysql::config':}
+  -> class { '::proxysql::install':}
   -> class { '::proxysql::service':}
   -> class { '::proxysql::admin_credentials':}
+  -> class { '::proxysql::reload_config':}
+  -> class { '::proxysql::cluster':}
+  -> class { '::proxysql::configure':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']

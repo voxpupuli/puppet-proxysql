@@ -18,16 +18,9 @@ class proxysql::install {
     }
   }
 
-  file { 'proxysql-datadir':
-    ensure => directory,
-    path   => $::proxysql::datadir,
-    owner  => $::proxysql::sys_owner,
-    group  => $::proxysql::sys_group,
-    mode   => '0600',
-  }
-
   class { '::mysql::client':
+    package_name    => 'mysql-client',
+    package_ensure  => 'present',
     bindings_enable => false,
   }
-
 }

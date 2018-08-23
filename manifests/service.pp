@@ -5,8 +5,8 @@
 #
 class proxysql::service {
 
-  if $::proxysql::manage_config_file {
-    $service_require = File['proxysql-config-file']
+  if $::proxysql::manage_main_config_file {
+    $service_require = [ File['proxysql-main-config-file'], File['proxysql-proxy-config-file'] ]
   } else {
     $service_require = undef
   }

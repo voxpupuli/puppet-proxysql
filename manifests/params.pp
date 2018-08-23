@@ -8,9 +8,6 @@ class proxysql::params {
   $package_ensure = 'installed'
   $package_install_options = []
 
-  # Check your version in https://github.com/sysown/proxysql/releases
-  $package_source = 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
-
   $service_name = 'proxysql'
   $service_ensure = 'running'
 
@@ -50,36 +47,46 @@ class proxysql::params {
     }
   }
 
-
   $monitor_username = 'monitor'
   $monitor_password = Sensitive('monitor')
 
   $datadir = '/var/lib/proxysql'
 
-  $config_file        = '/etc/proxysql.cnf'
-  $manage_config_file = true
+  $main_config_file         = '/etc/proxysql.cnf'
+  $manage_main_config_file  = true
+  $config_directory         = '/etc/proxysql.d/'
+  $proxy_config_file        = 'proxysql_proxy.cnf'
+  $manage_proxy_config_file = true
 
   $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true
 
   $restart = false
 
-  $load_to_runtime = true
-  $save_to_disk    = true
+  $manage_repo = true
+
+  $load_to_runtime              = true
+  $save_to_disk                 = true
+  $manage_hostgroup_for_servers = true
 
   $rpm_repo_name   = 'percona_repo'
   $rpm_repo_descr  = 'percona_repo_contains_proxysql'
   $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
   $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
+  $cluster_username = 'cluster'
+  $cluster_password = Sensitive('cluster')
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password}",
+      admin_credentials => "${admin_username}:${admin_password};",
       mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
     },
     mysql_variables => {
       interfaces => "${listen_ip}:${listen_port};${listen_socket}",
+      monitor_username => $monitor_username,
+      monitor_password => $monitor_password,
     },
     mysql_servers => {},
     mysql_users => {},
