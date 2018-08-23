@@ -283,7 +283,7 @@ Specifies wheter the resource should be immediately save to disk. Boolean, defau
 The value of the variable.
 
 #### proxy_cluster
-`proxy_cluster` manages a variable in the ProxySQL `proxysql_clusters` admin table.
+`proxy_cluster` manages an entry in the ProxySQL `proxysql_clusters` admin table.
 
 ##### `name`
 The name of the resource.
