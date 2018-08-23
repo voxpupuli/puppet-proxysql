@@ -247,6 +247,7 @@ class proxysql (
   -> class { 'proxysql::config':}
   -> class { 'proxysql::service':}
   -> class { 'proxysql::admin_credentials':}
+  -> class { 'proxysql::reload_config':}
   -> class { 'proxysql::configure':}
   -> anchor { 'proxysql::end': }
 
