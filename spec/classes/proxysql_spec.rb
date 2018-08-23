@@ -64,9 +64,9 @@ describe 'proxysql' do
 
           it do
             is_expected.to contain_file('root-mycnf-file').with(ensure: 'file',
-                                                                owner: sys_user,
-                                                                group: sys_group,
-                                                                mode: '0400',
+                                                                owner: 'root',
+                                                                group: 'root',
+                                                                mode: '0640',
                                                                 path: '/root/.my.cnf')
           end
 

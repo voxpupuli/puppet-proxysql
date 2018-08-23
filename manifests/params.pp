@@ -72,6 +72,8 @@ class proxysql::params {
   $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
   $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
+  $admin_users = []
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {

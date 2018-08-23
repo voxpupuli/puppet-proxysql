@@ -226,6 +226,8 @@ key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://w
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 
+##### `admin_users`
+Array of users, for which .my.cnf file will be copied to their home directory. Defaults to []
 
 ## Types
 #### proxy_global_variable

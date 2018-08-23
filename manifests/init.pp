@@ -110,6 +110,9 @@
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
+# * `admin_users`
+#   Array of users, for which .my.cnf file will be copied to their home directory. Defaults to []
+#
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
@@ -158,6 +161,8 @@ class proxysql (
   String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
   Hash $override_config_settings = {},
+
+  Array[String] $admin_users = $::proxysql::params::admin_users,
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
