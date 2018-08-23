@@ -13,7 +13,7 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
     servers.each do |line|
-      hostname, port, hostgroup_id = line.split(%r{\t})
+      hostname, port = line.split(%r{\t})
       query = 'SELECT `hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, '
       query << ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment` '
       query << ' FROM `mysql_servers`'
@@ -80,7 +80,7 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
   def destroy
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
-    hostgroup_id = @resource.value(:hostgroup_id)
+
     query = 'DELETE FROM `mysql_servers`'
     query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
@@ -112,7 +112,7 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
   def update_server(properties)
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
-      
+
     return false if properties.empty?
 
     values = []

@@ -79,8 +79,8 @@
 #   This is required for the providers to work. Defaults to 'true'
 #
 # * `manage_hostgroup_for_servers`
-#   Determines wheter this module will manage hostgroup_id for mysql_servers. If false - it will skip difference in this value between manifest and defined in ProxySQL.
-#   Defaults to 'true'
+#   Determines wheter this module will manage hostgroup_id for mysql_servers. 
+#   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
 # * `restart`
 #   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
@@ -126,8 +126,8 @@
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 # * `cluster_name`
-#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
-#   Defaults to ''
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to ''
 #
 # * `cluster_username`
 #   The username ProxySQL will use to connect to the configured mysql_clusters
@@ -155,6 +155,7 @@
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
 #
 class proxysql (
+  String $cluster_name,
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
@@ -205,13 +206,12 @@ class proxysql (
   String $rpm_repo        =  $::proxysql::params::rpm_repo,
   String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
-  String $cluster_name,
   String $cluster_username = $::proxysql::params::cluster_username,
   Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
 
-  Optional[Array[String]] $admin_users,
-
   Hash $override_config_settings = {},
+
+  Optional[Array[String]] $admin_users,
 
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,
@@ -231,7 +231,7 @@ class proxysql (
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
-      monitor_username => "${monitor_username}",
+      monitor_username => $monitor_username,
       monitor_password => "${monitor_password.unwrap}",
     },
   }
@@ -240,17 +240,17 @@ class proxysql (
     $settings_cluster = {
       admin_variables => {
         admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
-        cluster_username => "${cluster_username}",
+        cluster_username => $cluster_username,
         cluster_password => "${cluster_password.unwrap}",
       },
     }
   }
 
-  $settings_result = deep_merge($settings, $settings_cluster) 
+  $settings_result = deep_merge($settings, $settings_cluster)
 
   $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
-  
+
   anchor { '::proxysql::begin': }
   -> class { '::proxysql::repo':}
   -> class { '::proxysql::config':}
