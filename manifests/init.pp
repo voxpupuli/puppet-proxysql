@@ -195,7 +195,7 @@ class proxysql (
   Boolean $manage_repo = $::proxysql::params::manage_repo,
   Hash $repo = {},
 
-  Optional[String] $package_source = undef,
+  Optional[String] $package_source = '',
   String $package_provider = $::proxysql::params::package_provider,
 
   String $sys_owner = $::proxysql::params::sys_owner,
