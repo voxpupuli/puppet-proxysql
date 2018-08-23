@@ -211,7 +211,11 @@ class proxysql (
 
   Hash $override_config_settings = {},
 
+<<<<<<< HEAD
   Optional[Array[String]] $admin_users = [],
+=======
+  Optional[Array[String]] $admin_users = undef,
+>>>>>>> 3e6f798ae9229f09da1b6537233c6ad6a203767f
 
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,
