@@ -128,6 +128,10 @@ class proxysql::params {
   $load_to_runtime = true
   $save_to_disk    = true
 
+  $cluster_name = ''
+  $cluster_username = 'cluster'
+  $cluster_password = Sensitive('cluster')
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {

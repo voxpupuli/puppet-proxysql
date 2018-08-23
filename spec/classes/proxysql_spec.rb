@@ -13,14 +13,19 @@ describe 'proxysql' do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('proxysql::params') }
+          it { is_expected.to contain_anchor('::proxysql::begin').that_comes_before('Class[proxysql::repo]') }
           it { is_expected.to contain_class('proxysql::repo').that_comes_before('Class[proxysql::install]') }
           it { is_expected.to contain_class('proxysql::install').that_comes_before('Class[proxysql::config]') }
           it { is_expected.to contain_class('proxysql::config').that_comes_before('Class[proxysql::service]') }
-          it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
+          it { is_expected.to contain_class('proxysql::service').that_comes_before('Class[proxysql::admin_credentials]') }
+          it { is_expected.to contain_class('proxysql::admin_credentials').that_comes_before('Class[proxysql::cluster]') }
+          it { is_expected.to contain_class('proxysql::cluster').that_comes_before('Anchor[::proxysql::end]') }
 
-          it { is_expected.to contain_anchor('::proxysql::begin').that_comes_before('Class[proxysql::repo]') }
+
+          it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
+          
           it { is_expected.to contain_anchor('::proxysql::end') }
-          it { is_expected.to contain_class('proxysql::service').that_comes_before('Anchor[::proxysql::end]') }
+          
 
           it { is_expected.to contain_class('proxysql::install').that_notifies('Class[proxysql::service]') }
 
