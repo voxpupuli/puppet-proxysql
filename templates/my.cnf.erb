@@ -9,4 +9,4 @@ host = <%= scope.lookupvar('::proxysql::admin_listen_ip') %>
 port = <%= scope.lookupvar('::proxysql::admin_listen_port') %>
 <% end -%>
 user = <%= scope.lookupvar('::proxysql::admin_username') %>
-password = <%= scope.lookupvar('::proxysql::_admin_password') %>
+password = <%= scope.lookupvar('::proxysql::admin_password').unwrap %>

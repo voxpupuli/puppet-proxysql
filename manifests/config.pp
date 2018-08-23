@@ -5,7 +5,6 @@
 class proxysql::config {
 
   $config_settings = $::proxysql::config_settings
-  $mycnf_file_name = $proxysql::mycnf_file_name
 
   group { $::proxysql::sys_group:
     ensure => 'present',
@@ -18,39 +17,39 @@ class proxysql::config {
 
   file { 'proxysql-datadir':
     ensure => directory,
-    path   => $::proxysql::datadir,
-    owner  => $::proxysql::sys_owner,
-    group  => $::proxysql::sys_group,
+    path   => $proxysql::datadir,
+    owner  => $proxysql::sys_owner,
+    group  => $proxysql::sys_group,
     mode   => '0600',
   }
 
   file { 'proxysql-config-directory':
       ensure => directory,
-      path   => '/etc/proxysql.d/',
+      path   => $proxysql::config_directory,
       mode   => '0640',
       owner  => $proxysql::sys_owner,
       group  => $proxysql::sys_group,
   }
-  
+
   file { 'proxysql-main-config-file':
       ensure  => file,
       notify  => Service[$proxysql::service_name],
-      path    => '/etc/proxysql.cnf',
+      path    => $proxysql::main_config_file,
       content => template('proxysql/proxysql.cnf.erb'),
       mode    => '0640',
       owner   => $proxysql::sys_owner,
       group   => $proxysql::sys_group,
-      replace => true,
+      replace => $proxysql::manage_main_config_file,
   }
 
   file { 'proxysql-proxy-config-file':
       ensure  => file,
-      path    => '/etc/proxysql.d/proxysql_proxy.cnf',
+      path    => "${proxysql::config_directory}/${proxysql::proxy_config_file}",
       content => template('proxysql/proxysql_proxy.cnf.erb'),
       mode    => '0640',
       owner   => $proxysql::sys_owner,
       group   => $proxysql::sys_group,
-      replace => false,
+      replace => $proxysql::manage_proxy_config_file,
   }
 
 }

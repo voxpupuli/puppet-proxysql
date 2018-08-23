@@ -4,7 +4,7 @@
 #
 class proxysql::cluster {
 
-  if $proxysql::cluster_name != "" {
+  if $proxysql::cluster_name != '' {
     resources { 'proxy_cluster':
       purge => true,
     }
@@ -13,8 +13,8 @@ class proxysql::cluster {
 
     $nodes.each |String $node| {
       proxy_cluster { $node:
-        hostname     => "${split($node, ':')[0]}",
-        port         => split($node, ':')[1]
+        hostname => "${split($node, ':')[0]}",
+        port     => split($node, ':')[1]
       }
     }
   }

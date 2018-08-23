@@ -4,9 +4,9 @@
 #
 class proxysql::reload_config {
 
-  $default_mycnf_file_name = $proxysql::default_mycnf_file_name
+  $mycnf_file_name = $proxysql::mycnf_file_name
     exec {'reload-config':
-        command => "/usr/bin/mysql --defaults-extra-file=${default_mycnf_file_name} --execute=\"
+        command     => "/usr/bin/mysql --defaults-extra-file=${mycnf_file_name} --execute=\"
           LOAD ADMIN VARIABLES FROM CONFIG; \
           LOAD ADMIN VARIABLES TO RUNTIME; \
           SAVE ADMIN VARIABLES TO DISK; \
@@ -14,11 +14,8 @@ class proxysql::reload_config {
           LOAD MYSQL VARIABLES TO RUNTIME; \
           SAVE MYSQL VARIABLES TO DISK; \"
         ",
-        subscribe => [ File['proxysql-main-config-file'], File['proxysql-proxy-config-file'] ],
-        require => [ Service[$::proxysql::service_name] , File['root-mycnf-file'] ],
+        subscribe   => [ File['proxysql-main-config-file'], File['proxysql-proxy-config-file'] ],
+        require     => [ Service[$::proxysql::service_name] , File['root-mycnf-file'] ],
         refreshonly => true,
-     }
+    }
 }
-
-
- 

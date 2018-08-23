@@ -10,10 +10,18 @@ class proxysql::configure {
         $hostname = $k
         $port = $server[$k][port] ? { undef   => 3306, 
                                       default => $server[$k][port], }
+        $hostgroup_id = $server[$k][hostgroup_id]
 
-        proxy_mysql_server { "${hostname}:${port}":
-          hostname => $hostname,
-          *        => $server[$k],
+        if $proxysql::manage_hostgroup_for_servers {
+          proxy_mysql_server { "${hostname}:${port}-${hostgroup_id}":
+            hostname => $hostname,
+            *        => $server[$k],
+          }
+        } else {
+          proxy_mysql_server_no_hostgroup { "${hostname}:${port}":
+            hostname => $hostname,
+            *        => $server[$k],
+          }
         }
       }
     }
