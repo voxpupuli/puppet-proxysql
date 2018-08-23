@@ -205,6 +205,25 @@ The password ProxySQL will use to connect to the configured mysql_clusters. Defa
 ##### `mysql_client_package_name`
 The name of the mysql client package in your package manager. Defaults to undef
 
+##### `manage_hostgroup_for_servers`
+Determines wheter this module will manage hostgroup_id for mysql_servers. 
+If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
+
+##### `mysql_servers`
+Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_users`
+Array of mysql_users, that will be created in ProxySQL. Defaults to undef
+
+#####` mysql_hostgroups`
+Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_rules`
+Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+
+##### `schedulers`
+Array of schedulers, that will be created in ProxySQL. Defaults to undef
+
 ## Types
 #### proxy_global_variable
 `proxy_global_variable` manages a variable in the ProxySQL `global_variables` admin table.
