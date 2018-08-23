@@ -21,7 +21,6 @@ describe 'proxysql' do
           it { is_expected.to contain_class('proxysql::admin_credentials').that_comes_before('Class[proxysql::cluster]') }
           it { is_expected.to contain_class('proxysql::cluster').that_comes_before('Anchor[proxysql::end]') }
 
-
           it { is_expected.to contain_class('proxysql::service').that_subscribes_to('Class[proxysql::install]') }
           
           it { is_expected.to contain_anchor('proxysql::end') }
