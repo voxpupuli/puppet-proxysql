@@ -115,6 +115,17 @@
 # * `mysql_client_package_name`
 #   The name of the mysql client package in your package manager. Defaults to undef
 #
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to ''
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
@@ -165,6 +176,9 @@ class proxysql (
   String $cluster_username = $::proxysql::params::cluster_username,
   Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
 
+  String $cluster_username = $::proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+
   Hash $override_config_settings = {},
 
   String $node_name = "${::fqdn}:${admin_listen_port}",
@@ -207,6 +221,7 @@ class proxysql (
   -> class { '::proxysql::config':}
   -> class { '::proxysql::service':}
   -> class { '::proxysql::admin_credentials':}
+  -> class { '::proxysql::cluster':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']
