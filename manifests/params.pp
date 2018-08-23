@@ -72,6 +72,10 @@ class proxysql::params {
   $rpm_repo        = 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
   $rpm_repo_key    = 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
 
+  $cluster_name = ''
+  $cluster_username = 'cluster'
+  $cluster_password = Sensitive('cluster')
+
   $config_settings = {
     datadir => $datadir,
     admin_variables => {

@@ -110,7 +110,19 @@
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to ''
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
 class proxysql (
+  String $cluster_name = $::proxysql::params::cluster_name,
   String $package_name = $::proxysql::params::package_name,
   String $package_ensure = $::proxysql::params::package_ensure,
   Array[String] $package_install_options = $::proxysql::params::package_install_options,
@@ -157,7 +169,11 @@ class proxysql (
   String $rpm_repo        =  $::proxysql::params::rpm_repo,
   String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
 
+  String $cluster_username = $::proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+
   Hash $override_config_settings = {},
+  String $node_name = "${::fqdn}:${admin_listen_port}"
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
@@ -173,7 +189,20 @@ class proxysql (
       monitor_password => $monitor_password.unwrap,
     },
   }
-  $config_settings = deep_merge($proxysql::params::config_settings, $settings, $override_config_settings)
+
+  if $cluster_name {
+    $settings_cluster = {
+      admin_variables => {
+        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        cluster_username => $cluster_username,
+        cluster_password => "${cluster_password.unwrap}",
+      },
+    }
+  }
+
+  $settings_result = deep_merge($settings, $settings_cluster)
+
+  $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
   anchor { '::proxysql::begin': }
@@ -182,6 +211,7 @@ class proxysql (
   -> class { '::proxysql::config':}
   -> class { '::proxysql::service':}
   -> class { '::proxysql::admin_credentials':}
+  -> class { '::proxysql::cluster':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']
