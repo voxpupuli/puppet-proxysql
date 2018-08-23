@@ -21,14 +21,14 @@ class proxysql::config {
 
   if $proxysql::split_config {
     file { 'proxysql-proxy-config-file':
-      ensure  => file,
-      path    => $proxysql::proxy_config_file,
-      content => template('proxysql/proxysql_proxy.cnf.erb'),
-      mode    => '0640',
-      owner   => $proxysql::sys_owner,
-      group   => $proxysql::sys_group,
+      ensure                  => file,
+      path                    => $proxysql::proxy_config_file,
+      content                 => template('proxysql/proxysql_proxy.cnf.erb'),
+      mode                    => '0640',
+      owner                   => $proxysql::sys_owner,
+      group                   => $proxysql::sys_group,
       selinux_ignore_defaults => true,
-      replace => $proxysql::manage_proxy_config_file,
+      replace                 => $proxysql::manage_proxy_config_file,
     }
   }
 }
