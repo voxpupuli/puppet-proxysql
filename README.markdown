@@ -65,6 +65,7 @@ class { '::proxysql':
   listen_port              => 3306,
   admin_password           => '654321',
   monitor_password         => '123456',
+  manage_repo              => true,
 }
 ```
 
@@ -89,12 +90,12 @@ You can override any configuration setting by using the `override_config_setting
     mysql_servers => {
       'mysql1' => {
          'address' => '127.0.0.1',
-         'port'    => 33061,
-       },
+         'port'    => 33061,
+       },
       'mysql2' => {
          'address' => '127.0.0.1',
-         'port'    => 33062,
-       },
+         'port'    => 33062,
+       },
       ...
     },
     mysql_users => { ... },
@@ -163,12 +164,33 @@ The username ProxySQL will use to connect to the configured mysql_servers. Defau
 ##### `monitor_password`
 The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
 
+##### `main_config_file`
+The file where the main ProxySQL configuration is saved (datadir, admin and mysql variable). 
+This will only be configured if `manage_main_config_file` is set to `true`. Defaults to '/etc/proxysql.cn
+
+##### `manage_main_config_file`
+Determines wheter this module will update the ProxySQL main configuration file. Defaults to 'tru
+
+##### `proxy_config_file`
+The file where servers, users, hostgroups, rules the ProxySQL configuration is saved. 
+This will only be configured if `manage_proxy_config_file` is set to `true`. Defaults to '/etc/proxysql.cn
+
+##### `manage_proxy_config_file`
+Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'tru
+
+##### `config_directory`
+Path where proxy_config_file file will be stored.
+Defaults to '/etc/proxysql.d
+
 ##### `mycnf_file_name`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
 
 ##### `manage_mycnf_file`
 Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
+
+##### `restart`
+Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 
 ##### `load_to_runtime`
 Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
@@ -178,6 +200,9 @@ Specifies wheter te managed ProxySQL resources should be immediately save to dis
 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
+
+##### `manage_repo`
+Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source`. Defaults to {}.
@@ -212,6 +237,34 @@ key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://w
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 
+##### `cluster_name`
+If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
+Defaults to ''
+
+##### `cluster_username`
+The username ProxySQL will use to connect to the configured mysql_clusters
+Defaults to 'cluster'
+
+##### `cluster_password`
+The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+
+##### `admin_users`
+Array of users, for which .my.cnf file will be copied to their home directory. Defaults to []
+
+##### `mysql_servers`
+Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_users`
+Array of mysql_users, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_hostgroups`
+Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_rules`
+Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+
+##### `schedulers`
+Array of schedulers, that will be created in ProxySQL. Defaults to undef
 
 ## Types
 #### proxy_global_variable
@@ -228,6 +281,18 @@ Specifies wheter the resource should be immediately save to disk. Boolean, defau
 
 ##### `value`
 The value of the variable.
+
+#### proxy_cluster
+`proxy_cluster` manages an entry in the ProxySQL `proxysql_clusters` admin table.
+
+##### `name`
+The name of the resource.
+
+##### `hostname`
+Hostname of the server. Required.
+
+##### `port`
+Port of the server. Required. Defaults to 3306.
 
 #### proxy_mysql_replication_hostgroup
 `proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroups` admin table.

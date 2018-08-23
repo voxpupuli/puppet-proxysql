@@ -8,7 +8,7 @@ class proxysql::configure {
     $proxysql::mysql_servers.each |$server| {
       $server.each |$k,$v| {
         $hostname = $k
-        $port = $server[$k][port] ? { undef   => 3306, 
+        $port = $server[$k][port] ? { undef   => 3306,
                                       default => $server[$k][port], }
         $hostgroup_id = $server[$k][hostgroup_id]
 
@@ -31,8 +31,8 @@ class proxysql::configure {
     $proxysql::mysql_users.each |$user| {
       $user.each |$k,$v| {
         $username = $k
-            
-        proxy_mysql_user { "${username}":
+
+        proxy_mysql_user { $username:
           * => $user[$k],
         }
       }
@@ -49,7 +49,7 @@ class proxysql::configure {
         proxy_mysql_replication_hostgroup { "${writer}-${reader}":
           writer_hostgroup => $writer,
           reader_hostgroup => $reader,
-          comment          => $k,    
+          comment          => $k,
         }
       }
     }
@@ -60,9 +60,9 @@ class proxysql::configure {
       $rule.each |$k,$v| {
         $comment = $k
         $rule_id = $rule[$k][rule_id]
-        
+
         proxy_mysql_query_rule { "mysql_query_rule-${rule_id}":
-          comment => $k, 
+          comment => $k,
           *       => $rule[$k],
         }
       }
@@ -74,10 +74,10 @@ class proxysql::configure {
       $scheduler.each |$k,$v| {
         $comment = $k
         $scheduler_id = $scheduler[$k][scheduler_id]
-                
+
         proxy_scheduler { "scheduler-${scheduler_id}":
           comment => $k,
-          *       => $scheduler[$k],          
+          *       => $scheduler[$k],
         }
       }
     }

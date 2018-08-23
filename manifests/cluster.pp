@@ -14,7 +14,7 @@ class proxysql::cluster {
     $nodes.each |String $node| {
       proxy_cluster { $node:
         hostname => "${split($node, ':')[0]}",
-        port     => split($node, ':')[1]
+        port     => split($node, ':')[1],
       }
     }
   }

@@ -17,7 +17,7 @@ class proxysql::params {
 
   $admin_username      = 'admin'
   $admin_password      = Sensitive('admin')
-  $admin_listen_ip     = '0.0.0.0'
+  $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
   case $::operatingsystem {
@@ -78,21 +78,21 @@ class proxysql::params {
   $cluster_password = Sensitive('cluster')
 
   $config_settings = {
-   datadir => $datadir,
-   admin_variables => {
-     admin_credentials => "${admin_username}:${admin_password};",
-     mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-   },
-   mysql_variables => {
-     interfaces => "${listen_ip}:${listen_port};${listen_socket}",
-     monitor_username => $monitor_username,
-     monitor_password => $monitor_password, 
-   },
-   mysql_servers => {},
-   mysql_users => {},
-   mysql_query_rules => {},
-   scheduler => {},
-   mysql_replication_hostgroups => {},
+    datadir => $datadir,
+    admin_variables => {
+      admin_credentials => "${admin_username}:${admin_password};",
+      mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
+    },
+    mysql_variables => {
+      interfaces => "${listen_ip}:${listen_port};${listen_socket}",
+      monitor_username => $monitor_username,
+      monitor_password => $monitor_password,
+    },
+    mysql_servers => {},
+    mysql_users => {},
+    mysql_query_rules => {},
+    scheduler => {},
+    mysql_replication_hostgroups => {},
   }
 
 }
