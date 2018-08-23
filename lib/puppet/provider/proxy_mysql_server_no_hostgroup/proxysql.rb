@@ -112,7 +112,7 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
   def update_server(properties)
     hostname = @resource.value(:hostname)
     port = @resource.value(:port)
-    
+      
     return false if properties.empty?
 
     values = []

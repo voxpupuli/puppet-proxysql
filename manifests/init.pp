@@ -52,12 +52,23 @@
 # * `monitor_password`
 #   The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
 #
-# * `config_file`
-#   The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
-#   Defaults to '/etc/proxysql.cnf'
+# * `main_config_file`
+#   The file where the main ProxySQL configuration is saved (datadir, admin and mysql variable). 
+#   This will only be configured if `manage_main_config_file` is set to `true`. Defaults to '/etc/proxysql.cnf'
 #
-# * `manage_config_file`
-#   Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+# * `manage_main_config_file`
+#   Determines wheter this module will update the ProxySQL main configuration file. Defaults to 'true'
+#
+# * `proxy_config_file`
+#   The file where servers, users, hostgroups, rules the ProxySQL configuration is saved. 
+#   This will only be configured if `manage_proxy_config_file` is set to `true`. Defaults to '/etc/proxysql.cnf'
+#
+# * `manage_proxy_config_file`
+#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
+#
+# * `config_directory`
+#   Path where proxy_config_file file will be stored.
+#   Defaults to '/etc/proxysql.d/'
 #
 # * `mycnf_file_name`
 #   Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
@@ -66,6 +77,10 @@
 # * `manage_mycnf_file`
 #   Determines wheter this module will configure the my.cnf file to connect to the admin interface.
 #   This is required for the providers to work. Defaults to 'true'
+#
+# * `manage_hostgroup_for_servers`
+#   Determines wheter this module will manage hostgroup_id for mysql_servers. If false - it will skip difference in this value between manifest and defined in ProxySQL.
+#   Defaults to 'true'
 #
 # * `restart`
 #   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
@@ -84,7 +99,7 @@
 #   to `apt::source`. Defaults to {}.
 #
 # * `package_source`
-#   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+#   location ot the proxysql package for the `package_provider`. Default to undef
 #
 # * `package_provider`
 #   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
@@ -109,6 +124,35 @@
 #
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
+#
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
+#   Defaults to ''
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
+# * `admin_users`
+#   Array of users, for which .my.cnf file will be copied to their home directory. Defaults to []
+#
+# * `mysql_servers`
+#   Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_users`
+#   Array of mysql_users, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_hostgroups`
+#   Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_rules`
+#   Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+#
+# * `schedulers`
+#   Array of schedulers, that will be created in ProxySQL. Defaults to undef
 #
 class proxysql (
   String $package_name = $::proxysql::params::package_name,
@@ -180,16 +224,16 @@ class proxysql (
 
 # lint:ignore:80chars
   $settings = {
-      datadir => $datadir,
-      admin_variables => {
-        admin_credentials => "${admin_username}:${admin_password.unwrap}",
-        mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-      },
-      mysql_variables => {
-        interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
-        monitor_username => "${monitor_username}",
-        monitor_password => "${monitor_password.unwrap}",
-      },
+    datadir => $datadir,
+    admin_variables => {
+      admin_credentials => "${admin_username}:${admin_password.unwrap}",
+      mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
+    },
+    mysql_variables => {
+      interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
+      monitor_username => "${monitor_username}",
+      monitor_password => "${monitor_password.unwrap}",
+    },
   }
 
   if $cluster_name {

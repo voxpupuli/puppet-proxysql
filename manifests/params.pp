@@ -17,7 +17,7 @@ class proxysql::params {
 
   $admin_username      = 'admin'
   $admin_password      = Sensitive('admin')
-  $admin_listen_ip     = '0.0.0.0'
+  $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
   case $::operatingsystem {
