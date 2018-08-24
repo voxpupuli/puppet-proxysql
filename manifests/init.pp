@@ -162,7 +162,7 @@ class proxysql (
   Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
 
   Hash $override_config_settings = {},
-  String $node_name = "${::fqdn}:${admin_listen_port}"
+  String $node_name = "${::fqdn}:${admin_listen_port}",
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
