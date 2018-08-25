@@ -215,6 +215,9 @@ Defaults to 'cluster'
 ##### `cluster_password`
 The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
 
+##### `mysql_client_package_name`
+The name of the mysql client package in your package manager. Defaults to undef
+
 ## Types
 #### proxy_global_variable
 `proxy_global_variable` manages a variable in the ProxySQL `global_variables` admin table.
