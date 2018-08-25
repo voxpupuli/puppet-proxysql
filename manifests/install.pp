@@ -44,8 +44,7 @@ class proxysql::install {
   }
 
   class { '::mysql::client':
-    package_name    => 'mysql-client',
-    package_ensure  => 'present',
+    package_name    => $::proxysql::mysql_client_package_name,
     bindings_enable => false,
   }
 

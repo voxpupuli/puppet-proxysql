@@ -5,6 +5,7 @@
 #
 class proxysql::params {
   $package_name  = 'proxysql'
+  $mysql_client_package_name = ''
   $package_ensure = 'installed'
   $package_install_options = []
 

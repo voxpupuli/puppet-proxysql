@@ -112,9 +112,13 @@
 # * `cluster_password`
 #   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
 #
+# * `mysql_client_package_name`
+#   The name of the mysql client package in your package manager. Defaults to ''
+#
 class proxysql (
   String $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
+  String $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
   String $package_ensure = $proxysql::params::package_ensure,
   Array[String] $package_install_options = $proxysql::params::package_install_options,
   String $service_name = $proxysql::params::service_name,
@@ -162,6 +166,7 @@ class proxysql (
   Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
 
   Hash $override_config_settings = {},
+
   String $node_name = "${::fqdn}:${admin_listen_port}",
 ) inherits ::proxysql::params {
 
@@ -179,7 +184,7 @@ class proxysql (
     },
   }
 
-  if $cluster_name {
+  if $cluster_name != '' {
     $settings_cluster = {
       admin_variables => {
         admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
@@ -187,7 +192,9 @@ class proxysql (
         cluster_password => "${cluster_password.unwrap}",
       },
     }
-  }
+  } else {
+      $settings_cluster = ''
+    }
 
   $settings_result = deep_merge($settings, $settings_cluster)
 
@@ -200,7 +207,6 @@ class proxysql (
   -> class { '::proxysql::config':}
   -> class { '::proxysql::service':}
   -> class { '::proxysql::admin_credentials':}
-  -> class { '::proxysql::cluster':}
   -> anchor { '::proxysql::end': }
 
   Class['::proxysql::install']
