@@ -103,7 +103,7 @@
 #
 # * `cluster_name`
 #   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
-#   synchronize their configuration parameters. Defaults to ''
+#   synchronize their configuration parameters. Defaults to undef
 #
 # * `cluster_username`
 #   The username ProxySQL will use to connect to the configured mysql_clusters
@@ -116,7 +116,7 @@
 #   The name of the mysql client package in your package manager. Defaults to ''
 #
 class proxysql (
-  String $cluster_name = $proxysql::params::cluster_name,
+  Optional[String] $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
   String $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
   String $package_ensure = $proxysql::params::package_ensure,

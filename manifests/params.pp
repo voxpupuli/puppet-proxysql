@@ -129,7 +129,7 @@ class proxysql::params {
   $load_to_runtime = true
   $save_to_disk    = true
 
-  $cluster_name = ''
+  $cluster_name = undef
   $cluster_username = 'cluster'
   $cluster_password = Sensitive('cluster')
 
