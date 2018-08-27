@@ -201,7 +201,7 @@ class proxysql (
     },
   }
 
-  if $cluster_name != '' {
+  if $cluster_name {
     $settings_cluster = {
       admin_variables => {
         admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
