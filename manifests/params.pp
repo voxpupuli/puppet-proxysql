@@ -133,7 +133,7 @@ class proxysql::params {
   $cluster_username = 'cluster'
   $cluster_password = Sensitive('cluster')
 
-  $cluster_name = ''
+  $cluster_name = undef
   $cluster_username = 'cluster'
   $cluster_password = Sensitive('cluster')
 
