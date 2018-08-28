@@ -113,12 +113,12 @@
 #   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
 #
 # * `mysql_client_package_name`
-#   The name of the mysql client package in your package manager. Defaults to ''
+#   The name of the mysql client package in your package manager. Defaults to undef
 #
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
-  String $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
+  Optional[String] $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
   String $package_ensure = $proxysql::params::package_ensure,
   Array[String] $package_install_options = $proxysql::params::package_install_options,
   String $service_name = $proxysql::params::service_name,
