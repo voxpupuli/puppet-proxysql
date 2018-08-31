@@ -167,6 +167,7 @@ class proxysql (
   Boolean $manage_repo = true,
   Hash $repo = $proxysql::params::repo,
 
+<<<<<<< HEAD
   String $package_source = $proxysql::params::package_source,
   String $package_checksum_value = $proxysql::params::package_checksum_value,
   String $package_checksum_type = $proxysql::params::package_checksum_type,
@@ -178,9 +179,21 @@ class proxysql (
 
   String $cluster_username = $::proxysql::params::cluster_username,
   Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+=======
+  String $package_source  =  $:proxysql::params::package_source,
+  String $package_provider =  $:proxysql::params::package_provider,
 
-  String $cluster_username = $::proxysql::params::cluster_username,
-  Sensitive[String] $cluster_password = $::proxysql::params::cluster_password,
+  String $sys_owner = $:proxysql::params::sys_owner,
+  String $sys_group = $:proxysql::params::sys_group,
+
+  String $rpm_repo_name   =  $:proxysql::params::rpm_repo_name,
+  String $rpm_repo_descr  =  $:proxysql::params::rpm_repo_descr,
+  String $rpm_repo        =  $:proxysql::params::rpm_repo,
+  String $rpm_repo_key    =  $:proxysql::params::rpm_repo_key,
+>>>>>>> change  to undef
+
+  String $cluster_username = $:proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $:proxysql::params::cluster_password,
 
   Hash $override_config_settings = {},
 
@@ -210,7 +223,7 @@ class proxysql (
       },
     }
   } else {
-      $settings_cluster = ''
+      $settings_cluster = undef
     }
 
   $settings_result = deep_merge($settings, $settings_cluster)
