@@ -1,0 +1,18 @@
+<%- | Hash $config_settings | -%>
+<% $config_settings.each |$key, $value| { -%>
+<% if $key == "mysql_servers" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
+<% if $key == "mysql_users" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
+<% if $key == "mysql_query_rules" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
+<% if $key == "scheduler" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
+<% if $key == "mysql_replication_hostgroups" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
+<% } -%>

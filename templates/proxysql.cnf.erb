@@ -40,7 +40,7 @@ end
 <%
     else
 -%>
-<% if scope.lookupvar('::proxysql::split_config') == false -%>
+<% if @split_config == false -%>
 <%= k %> = (
 <%
       v.each do |ki, vi|
@@ -67,6 +67,6 @@ end
 end
 -%>
 
-<% if scope.lookupvar('::proxysql::split_config') == true -%>
+<% if @split_config == true -%>
 @include  "<%= @proxy_config_file %>"
 <% end -%>
