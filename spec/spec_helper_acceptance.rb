@@ -1,37 +1,19 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
+require 'beaker-rspec'
+require 'beaker-puppet'
 require 'beaker/puppet_install_helper'
+require 'beaker/module_install_helper'
 
 run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
+install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
+install_module_on(hosts)
+install_module_dependencies_on(hosts)
 
 RSpec.configure do |c|
-  # Project root
-  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-
   # Readable test descriptions
   c.formatter = :documentation
-
-  # Configure all nodes in nodeset
-  c.before :suite do
-    # Install module and dependencies
-    puppet_module_install(source: proj_root, module_name: 'proxysql')
-    hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.11.0'), acceptable_exit_codes: [0, 1]
-
-      # uncomment the section below to add needed git repositories
-      # replace the module rbldnsd with the module(s) you need
-
-      #      on host, puppet('resource','package', 'git', 'ensure=present'), { :acceptable_exit_codes => [0,1] }
-      #      git_repos = [
-      #        { :mod => 'rbldnsd', :repo => 'https://github.com/rgevaert/puppet-rbldnsd.git', :ref => '1.0.0' },
-      #      ]
-      #      git_repos.each do |g|
-      #        step "Installing puppet module \'#{g[:repo]}\' from git on Master"
-      #        shell("[ -d /etc/puppetlabs/code/environments/production/modules/#{g[:mod]} ] || git clone #{g[:repo]} /etc/puppetlabs/code/environments/production/modules/#{g[:mod]}")
-      #        if g[:ref]
-      #          shell("cd /etc/puppetlabs/code/environments/production/modules/#{g[:mod]}; git checkout #{g[:ref]}")
-      #        end
-      #      end
+  hosts.each do |host|
+    if host[:platform] =~ %r{el-7-x86_64} && host[:hypervisor] =~ %r{docker}
+      on(host, "sed -i '/nodocs/d' /etc/yum.conf")
     end
   end
 end
