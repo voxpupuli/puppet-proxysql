@@ -187,7 +187,7 @@ class proxysql (
   Hash $override_config_settings = {},
 
   String $node_name = "${facts['fqdn']}:${admin_listen_port}",
-  Boolean $manage_hostgroup_for_servers = $::proxysql::params::manage_hostgroup_for_servers,
+  Boolean $manage_hostgroup_for_servers = $proxysql::params::manage_hostgroup_for_servers,
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,
   Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
@@ -226,14 +226,14 @@ class proxysql (
   $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
-  anchor { '::proxysql::begin': }
-  -> class { '::proxysql::repo':}
-  -> class { '::proxysql::install':}
-  -> class { '::proxysql::config':}
-  -> class { '::proxysql::service':}
-  -> class { '::proxysql::admin_credentials':}
-  -> class { '::proxysql::configure':}
-  -> anchor { '::proxysql::end': }
+  anchor { 'proxysql::begin': }
+  -> class { 'proxysql::repo':}
+  -> class { 'proxysql::install':}
+  -> class { 'proxysql::config':}
+  -> class { 'proxysql::service':}
+  -> class { 'proxysql::admin_credentials':}
+  -> class { 'proxysql::configure':}
+  -> anchor { 'proxysql::end': }
 
   Class['proxysql::install']
   ~> Class['proxysql::service']
