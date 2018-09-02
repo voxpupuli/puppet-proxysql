@@ -66,13 +66,17 @@ class proxysql::params {
             }
             '18.04': {
               # no upstream bionic builds are provided yet.
+              $package_source = undef
+              $package_checksum_value = undef
+              $package_checksum_type = undef
+              $package_dependencies = []
             }
             default: {
               $package_source = undef
               $package_checksum_value = undef
               $package_checksum_type = undef
               $package_dependencies = []
-          }
+            }
           }
         }
         default: {}
