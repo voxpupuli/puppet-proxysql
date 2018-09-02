@@ -11,7 +11,7 @@ class proxysql::repo inherits proxysql {
       }
       'RedHat': {
         yumrepo { 'proxysql_repo':
-          * => $::proxysql::repo
+          * => $::proxysql::repo,
         }
       }
       default: {
