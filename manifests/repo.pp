@@ -4,14 +4,14 @@
 # Manage the repos where the ProxySQL package might be
 #
 class proxysql::repo inherits proxysql {
-  if $::proxysql::manage_repo == true {
+  if $proxysql::manage_repo == true {
     case $facts['os']['family'] {
       'Debian': {
-        create_resources('::apt::source', { 'proxysql_repo' => $::proxysql::repo})
+        create_resources('::apt::source', { 'proxysql_repo' => $proxysql::repo})
       }
       'RedHat': {
         yumrepo { 'proxysql_repo':
-          * => $::proxysql::repo,
+          * => $proxysql::repo,
         }
       }
       default: {
