@@ -4,7 +4,7 @@
 #
 class proxysql::config {
 
-  $config_settings = $::proxysql::config_settings
+  $config_settings = $proxysql::config_settings
   if $proxysql::manage_config_file  {
     file { 'proxysql-config-file':
       ensure                  => file,

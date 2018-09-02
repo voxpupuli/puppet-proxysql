@@ -81,81 +81,70 @@
 #
 # * `repo`
 #   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
-#   to `apt::source`. Defaults to {}.
+#   to `apt::source` or `yumrepo` (depending on the OS family).
+#   Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
 #
 # * `package_source`
-#   location ot the proxysql package for the `package_provider`. Default to 'https://www.percona.com/redir/downloads/proxysql/proxysql-1.3.2/binary/redhat/6/x86_64/proxysql-1.3.2-1.1.x86_64.rpm'
+#   location ot the proxysql package for the `package_provider`.
+#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm' for RedHat based systems
+#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb' for Debian based systems
 #
 # * `package_provider`
 #   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
 #
 # * `sys_owner`
-#   owner of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
+#   owner of the datadir and config_file, defaults to root.
 #
 # * `sys_group`
-#   group of the datadir and config_file, defaults to root on most systems, to proxysql on redhat-based
-#
-# * `rpm_repo_name`
-#   title for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo'
-#
-# * `rpm_repo_descr`
-#   description for the yumrepo-resource in RedHat-based systems, defaults to 'percona_repo_contains_proxysql'
-#
-# * `rpm_repo`
-#   repo url for the yumrepo-resource in RedHat-based systems, defaults to 'http://repo.percona.com/release/$releasever/RPMS/$basearch'
-#
-# * `rpm_repo_key`
-#   key utl for the yumrepo-resource in RedHat-based systems, defaults to 'https://www.percona.com/downloads/RPM-GPG-KEY-percona'
+#   group of the datadir and config_file, defaults to root.
 #
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 class proxysql (
-  String $package_name = $::proxysql::params::package_name,
-  String $package_ensure = $::proxysql::params::package_ensure,
-  Array[String] $package_install_options = $::proxysql::params::package_install_options,
-  String $service_name = $::proxysql::params::service_name,
-  String $service_ensure = $::proxysql::params::service_ensure,
+  String $package_name = $proxysql::params::package_name,
+  String $package_ensure = $proxysql::params::package_ensure,
+  Array[String] $package_install_options = $proxysql::params::package_install_options,
+  String $service_name = $proxysql::params::service_name,
+  String $service_ensure = $proxysql::params::service_ensure,
 
-  String $datadir = $::proxysql::params::datadir,
+  String $datadir = $proxysql::params::datadir,
 
-  String $listen_ip = $::proxysql::params::listen_ip,
-  Integer $listen_port = $::proxysql::params::listen_port,
-  String $listen_socket = $::proxysql::params::listen_socket,
+  String $listen_ip = $proxysql::params::listen_ip,
+  Integer $listen_port = $proxysql::params::listen_port,
+  String $listen_socket = $proxysql::params::listen_socket,
 
-  String $admin_username = $::proxysql::params::admin_username,
-  Sensitive[String] $admin_password = $::proxysql::params::admin_password,
-  String $admin_listen_ip = $::proxysql::params::admin_listen_ip,
-  Integer $admin_listen_port = $::proxysql::params::admin_listen_port,
-  String $admin_listen_socket = $::proxysql::params::admin_listen_socket,
+  String $admin_username = $proxysql::params::admin_username,
+  Sensitive[String] $admin_password = $proxysql::params::admin_password,
+  String $admin_listen_ip = $proxysql::params::admin_listen_ip,
+  Integer $admin_listen_port = $proxysql::params::admin_listen_port,
+  String $admin_listen_socket = $proxysql::params::admin_listen_socket,
 
-  String $monitor_username = $::proxysql::params::monitor_username,
-  Sensitive[String] $monitor_password = $::proxysql::params::monitor_password,
+  String $monitor_username = $proxysql::params::monitor_username,
+  Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
 
-  String $config_file = $::proxysql::params::config_file,
-  Boolean $manage_config_file = $::proxysql::params::manage_config_file,
+  String $config_file = $proxysql::params::config_file,
+  Boolean $manage_config_file = $proxysql::params::manage_config_file,
 
-  String $mycnf_file_name = $::proxysql::params::mycnf_file_name,
-  Boolean $manage_mycnf_file = $::proxysql::params::manage_mycnf_file,
+  String $mycnf_file_name = $proxysql::params::mycnf_file_name,
+  Boolean $manage_mycnf_file = $proxysql::params::manage_mycnf_file,
 
-  Boolean $restart = $::proxysql::params::restart,
+  Boolean $restart = $proxysql::params::restart,
 
-  Boolean $load_to_runtime = $::proxysql::params::load_to_runtime,
-  Boolean $save_to_disk = $::proxysql::params::save_to_disk,
+  Boolean $load_to_runtime = $proxysql::params::load_to_runtime,
+  Boolean $save_to_disk = $proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
-  Hash $repo = {},
+  Hash $repo = $proxysql::params::repo,
 
-  String $package_source  =  $::proxysql::params::package_source,
-  String $package_provider =  $::proxysql::params::package_provider,
+  String $package_source = $proxysql::params::package_source,
+  String $package_checksum_value = $proxysql::params::package_checksum_value,
+  String $package_checksum_type = $proxysql::params::package_checksum_type,
+  Array $package_dependencies = $proxysql::params::package_dependencies,
+  String $package_provider= $proxysql::params::package_provider,
 
-  String $sys_owner = $::proxysql::params::sys_owner,
-  String $sys_group = $::proxysql::params::sys_group,
-
-  String $rpm_repo_name   =  $::proxysql::params::rpm_repo_name,
-  String $rpm_repo_descr  =  $::proxysql::params::rpm_repo_descr,
-  String $rpm_repo        =  $::proxysql::params::rpm_repo,
-  String $rpm_repo_key    =  $::proxysql::params::rpm_repo_key,
+  String $sys_owner = $proxysql::params::sys_owner,
+  String $sys_group = $proxysql::params::sys_group,
 
   Hash $override_config_settings = {},
 ) inherits ::proxysql::params {

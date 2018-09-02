@@ -5,15 +5,15 @@
 #
 class proxysql::service {
 
-  if $::proxysql::manage_config_file {
+  if $proxysql::manage_config_file {
     $service_require = File['proxysql-config-file']
   } else {
     $service_require = undef
   }
 
-  if $::proxysql::restart {
-    service { $::proxysql::service_name:
-      ensure     => $::proxysql::service_ensure,
+  if $proxysql::restart {
+    service { $proxysql::service_name:
+      ensure     => $proxysql::service_ensure,
       enable     => true,
       hasstatus  => true,
       hasrestart => false,
@@ -24,8 +24,8 @@ class proxysql::service {
       require    => $service_require,
     }
   } else {
-    service { $::proxysql::service_name:
-      ensure     => $::proxysql::service_ensure,
+    service { $proxysql::service_name:
+      ensure     => $proxysql::service_ensure,
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
@@ -38,7 +38,7 @@ class proxysql::service {
     unless    => "test -S ${::proxysql::admin_listen_socket}",
     tries     => '3',
     try_sleep => '10',
-    require   => Service[$::proxysql::service_name],
+    require   => Service[$proxysql::service_name],
     path      => '/bin:/usr/bin',
   }
 
