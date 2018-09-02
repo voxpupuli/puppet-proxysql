@@ -27,7 +27,56 @@ class proxysql::params {
   case $facts['os']['family'] {
     'Debian': {
       $package_provider = 'dpkg'
-      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb'
+      case $facts['os']['name'] {
+        'Debian': {
+          case $facts['os']['distro']['codename'] {
+            'jessie': {
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian8_amd64.deb'
+              $package_checksum_value = '98bab1b7cd719039b1483f7d51c30d7fc563def7'
+              $package_checksum_type = 'sha1'
+              $package_dependencies = []
+            }
+            'stretch': {
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian9_amd64.deb'
+              $package_checksum_value = 'd97a2f870e46d5f3218ab80d6c0db6bcc288127a'
+              $package_checksum_type = 'sha1'
+              $package_dependencies = []
+          }
+            default: {
+              $package_source = undef
+              $package_checksum_value = undef
+              $package_checksum_type = undef
+              $package_dependencies = []
+          }
+          }
+        }
+        'Ubuntu': {
+          case $facts['os']['distro']['codename'] {
+            'trusty': {
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu14_amd64.deb'
+              $package_checksum_value = '0b89f290bd9cd7e8bc2b7acd8a7799840a31af94'
+              $package_checksum_type = 'sha1'
+              $package_dependencies = []
+            }
+            'xenial': {
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu16_amd64.deb'
+              $package_checksum_value = 'df8695c6296678a0eeda036cddff679cc1ff604e'
+              $package_checksum_type = 'sha1'
+              $package_dependencies = []
+            }
+            'bionic': {
+              # no upstream bionic builds are provided yet.
+            }
+            default: {
+              $package_source = undef
+              $package_checksum_value = undef
+              $package_checksum_type = undef
+              $package_dependencies = []
+          }
+          }
+        }
+        default: {}
+      }
       $repo             = {
         comment  => 'ProxySQL APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${::facts['lsbdistcodename']}/",
@@ -41,7 +90,10 @@ class proxysql::params {
     }
     'RedHat': {
       $package_provider = 'rpm'
-      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm'
+      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql-1.4.10-1-centos67.x86_64.rpm'
+      $package_checksum_value = 'f5ca4efa9d69e9bd6ba9a96c724b031cd7326051'
+      $package_checksum_type = 'sha1'
+      $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
       $repo             = {
         descr    => 'ProxySQL YUM repository',
         baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/$releasever',

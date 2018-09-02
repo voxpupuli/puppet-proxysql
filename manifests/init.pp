@@ -138,6 +138,9 @@ class proxysql (
   Hash $repo = $::proxysql::params::repo,
 
   String $package_source = $::proxysql::params::package_source,
+  String $package_checksum_value = $::proxysql::params::package_checksum_value,
+  String $package_checksum_type = $::proxysql::params::package_checksum_type,
+  Array $package_dependencies = $::proxysql::params::package_dependencies,
   String $package_provider= $::proxysql::params::package_provider,
 
   String $sys_owner = $::proxysql::params::sys_owner,
