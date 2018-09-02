@@ -29,7 +29,7 @@ class proxysql::params {
       $package_provider = 'dpkg'
       case $facts['os']['name'] {
         'Debian': {
-          case $facts['os']['distro']['codename'] {
+          case $facts['lsbdistcodename'] {
             'jessie': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian8_amd64.deb'
               $package_checksum_value = '98bab1b7cd719039b1483f7d51c30d7fc563def7'
@@ -51,7 +51,7 @@ class proxysql::params {
           }
         }
         'Ubuntu': {
-          case $facts['os']['distro']['codename'] {
+          case $facts['lsbdistcodename'] {
             'trusty': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu14_amd64.deb'
               $package_checksum_value = '0b89f290bd9cd7e8bc2b7acd8a7799840a31af94'
@@ -79,7 +79,7 @@ class proxysql::params {
       }
       $repo             = {
         comment  => 'ProxySQL APT repository',
-        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${::facts['lsbdistcodename']}/",
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['lsbdistcodename']}/",
         release  => './',
         repos    => '',
         key      => {
