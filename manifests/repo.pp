@@ -10,7 +10,9 @@ class proxysql::repo inherits proxysql {
         create_resources('::apt::source', { 'proxysql_repo' => $::proxysql::repo})
       }
       'RedHat': {
-        create_resources('yumrepo', { 'proxysql_repo' => $::proxysql::repo})
+        yumrepo { 'proxysql_repo':
+          * => $::proxysql::repo
+        }
       }
       default: {
         fail('This operatingsystem is not supported (yet).')
