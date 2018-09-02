@@ -29,14 +29,14 @@ class proxysql::params {
       $package_provider = 'dpkg'
       case $facts['os']['name'] {
         'Debian': {
-          case $facts['lsbdistcodename'] {
-            'jessie': {
+          case $facts['os']['release']['major'] {
+            '8': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian8_amd64.deb'
               $package_checksum_value = '98bab1b7cd719039b1483f7d51c30d7fc563def7'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
-            'stretch': {
+            '9': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian9_amd64.deb'
               $package_checksum_value = 'd97a2f870e46d5f3218ab80d6c0db6bcc288127a'
               $package_checksum_type = 'sha1'
@@ -51,20 +51,20 @@ class proxysql::params {
           }
         }
         'Ubuntu': {
-          case $facts['lsbdistcodename'] {
-            'trusty': {
+          case $facts['os']['release']['major'] {
+            '14.04': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu14_amd64.deb'
               $package_checksum_value = '0b89f290bd9cd7e8bc2b7acd8a7799840a31af94'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
-            'xenial': {
+            '16.04': {
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu16_amd64.deb'
               $package_checksum_value = 'df8695c6296678a0eeda036cddff679cc1ff604e'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
-            'bionic': {
+            '18.04': {
               # no upstream bionic builds are provided yet.
             }
             default: {
