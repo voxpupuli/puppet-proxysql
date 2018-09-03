@@ -191,6 +191,19 @@ group of the datadir and config_file, defaults to 'root'
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to `{}` (empty hash).
 
+##### `cluster_name`
+If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
+Defaults to undef
+
+##### `cluster_username`
+The username ProxySQL will use to connect to the configured mysql_clusters
+Defaults to 'cluster'
+
+##### `cluster_password`
+The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+
+##### `mysql_client_package_name`
+The name of the mysql client package in your package manager. Defaults to undef
 
 ## Types
 #### proxy_global_variable
@@ -207,6 +220,18 @@ Specifies wheter the resource should be immediately save to disk. Boolean, defau
 
 ##### `value`
 The value of the variable.
+
+#### proxy_cluster
+`proxy_cluster` manages an entry in the ProxySQL `proxysql_clusters` admin table.
+
+##### `name`
+The name of the resource.
+
+##### `hostname`
+Hostname of the server. Required.
+
+##### `port`
+Port of the server. Required. Defaults to 3306.
 
 #### proxy_mysql_replication_hostgroup
 `proxy_mysql_replication_hostgroup` manages an entry in the ProxySQL `mysql_replication_hostgroups` admin table.

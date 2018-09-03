@@ -5,6 +5,7 @@
 #
 class proxysql::params {
   $package_name  = 'proxysql'
+  $mysql_client_package_name = undef
   $package_ensure = 'installed'
   $package_install_options = []
 
@@ -111,7 +112,6 @@ class proxysql::params {
     }
   }
 
-
   $monitor_username = 'monitor'
   $monitor_password = Sensitive('monitor')
 
@@ -127,6 +127,10 @@ class proxysql::params {
 
   $load_to_runtime = true
   $save_to_disk    = true
+
+  $cluster_name = undef
+  $cluster_username = 'cluster'
+  $cluster_password = Sensitive('cluster')
 
   $config_settings = {
     datadir => $datadir,

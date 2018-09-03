@@ -101,8 +101,38 @@
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to undef
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
+# * `mysql_client_package_name`
+#   The name of the mysql client package in your package manager. Defaults to undef
+#
+# * `cluster_name`
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   synchronize their configuration parameters. Defaults to undef
+#
+# * `cluster_username`
+#   The username ProxySQL will use to connect to the configured mysql_clusters
+#   Defaults to 'cluster'
+#
+# * `cluster_password`
+#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+#
+# * `mysql_client_package_name`
+#   The name of the mysql client package in your package manager. Defaults to undef
+#
 class proxysql (
+  Optional[String] $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
+  Optional[String] $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
   String $package_ensure = $proxysql::params::package_ensure,
   Array[String] $package_install_options = $proxysql::params::package_install_options,
   String $service_name = $proxysql::params::service_name,
@@ -146,7 +176,12 @@ class proxysql (
   String $sys_owner = $proxysql::params::sys_owner,
   String $sys_group = $proxysql::params::sys_group,
 
+  String $cluster_username = $proxysql::params::cluster_username,
+  Sensitive[String] $cluster_password = $proxysql::params::cluster_password,
+
   Hash $override_config_settings = {},
+
+  String $node_name = "${facts['fqdn']}:${admin_listen_port}",
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
@@ -162,23 +197,38 @@ class proxysql (
       monitor_password => $monitor_password.unwrap,
     },
   }
-  $config_settings = deep_merge($proxysql::params::config_settings, $settings, $override_config_settings)
+
+  if $cluster_name {
+    $settings_cluster = {
+      admin_variables => {
+        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        cluster_username => $cluster_username,
+        cluster_password => "${cluster_password.unwrap}",
+      },
+    }
+  } else {
+      $settings_cluster = undef
+    }
+
+  $settings_result = deep_merge($settings, $settings_cluster)
+
+  $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
-  anchor { '::proxysql::begin': }
-  -> class { '::proxysql::repo':}
-  -> class { '::proxysql::install':}
-  -> class { '::proxysql::config':}
-  -> class { '::proxysql::service':}
-  -> class { '::proxysql::admin_credentials':}
-  -> anchor { '::proxysql::end': }
+  anchor { 'proxysql::begin': }
+  -> class { 'proxysql::repo':}
+  -> class { 'proxysql::install':}
+  -> class { 'proxysql::config':}
+  -> class { 'proxysql::service':}
+  -> class { 'proxysql::admin_credentials':}
+  -> anchor { 'proxysql::end': }
 
-  Class['::proxysql::install']
-  ~> Class['::proxysql::service']
+  Class['proxysql::install']
+  ~> Class['proxysql::service']
 
   if $restart {
-    Class['::proxysql::config']
-    ~> Class['::proxysql::service']
+    Class['proxysql::config']
+    ~> Class['proxysql::service']
   }
 
 }

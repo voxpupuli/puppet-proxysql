@@ -34,8 +34,8 @@ class proxysql::service {
   }
 
   exec { 'wait_for_admin_socket_to_open':
-    command   => "test -S ${::proxysql::admin_listen_socket}",
-    unless    => "test -S ${::proxysql::admin_listen_socket}",
+    command   => "test -S ${proxysql::admin_listen_socket}",
+    unless    => "test -S ${proxysql::admin_listen_socket}",
     tries     => '3',
     try_sleep => '10',
     require   => Service[$proxysql::service_name],
