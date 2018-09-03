@@ -204,19 +204,6 @@ The password ProxySQL will use to connect to the configured mysql_clusters. Defa
 
 ##### `mysql_client_package_name`
 The name of the mysql client package in your package manager. Defaults to undef
-##### `cluster_name`
-If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
-Defaults to undef
-
-##### `cluster_username`
-The username ProxySQL will use to connect to the configured mysql_clusters
-Defaults to 'cluster'
-
-##### `cluster_password`
-The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
-
-##### `mysql_client_package_name`
-The name of the mysql client package in your package manager. Defaults to undef
 
 ## Types
 #### proxy_global_variable
