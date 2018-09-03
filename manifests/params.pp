@@ -25,7 +25,7 @@ class proxysql::params {
   $sys_owner           = 'root'
   $sys_group           = 'root'
 
-  case $facts['operatingsystem']{
+  case $facts['os']['family'] {
     'Debian': {
       $package_provider = 'dpkg'
       case $facts['os']['name'] {
