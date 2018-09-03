@@ -24,7 +24,6 @@ describe 'proxysql' do
 
           it { is_expected.to contain_anchor('proxysql::end') }
 
-
           it { is_expected.to contain_class('proxysql::install').that_notifies('Class[proxysql::service]') }
 
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
