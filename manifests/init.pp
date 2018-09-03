@@ -115,19 +115,24 @@
 # * `mysql_client_package_name`
 #   The name of the mysql client package in your package manager. Defaults to undef
 #
-# * `cluster_name`
-#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
-#   synchronize their configuration parameters. Defaults to undef
+# * `manage_hostgroup_for_servers`
+#   Determines wheter this module will manage hostgroup_id for mysql_servers. 
+#   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
-# * `cluster_username`
-#   The username ProxySQL will use to connect to the configured mysql_clusters
-#   Defaults to 'cluster'
+# * `mysql_servers`
+#   Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
 #
-# * `cluster_password`
-#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
+# * `mysql_users`
+#   Array of mysql_users, that will be created in ProxySQL. Defaults to undef
 #
-# * `mysql_client_package_name`
-#   The name of the mysql client package in your package manager. Defaults to undef
+# * `mysql_hostgroups`
+#   Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+#
+# * `mysql_rules`
+#   Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+#
+# * `schedulers`
+#   Array of schedulers, that will be created in ProxySQL. Defaults to undef
 #
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
@@ -182,6 +187,12 @@ class proxysql (
   Hash $override_config_settings = {},
 
   String $node_name = "${facts['fqdn']}:${admin_listen_port}",
+  Boolean $manage_hostgroup_for_servers = $proxysql::params::manage_hostgroup_for_servers,
+  Optional[Proxysql::Server] $mysql_servers = undef,
+  Optional[Proxysql::User] $mysql_users = undef,
+  Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
+  Optional[Proxysql::Rule] $mysql_rules = undef,
+  Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
@@ -221,6 +232,7 @@ class proxysql (
   -> class { 'proxysql::config':}
   -> class { 'proxysql::service':}
   -> class { 'proxysql::admin_credentials':}
+  -> class { 'proxysql::configure':}
   -> anchor { 'proxysql::end': }
 
   Class['proxysql::install']

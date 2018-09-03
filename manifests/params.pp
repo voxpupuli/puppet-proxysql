@@ -131,6 +131,7 @@ class proxysql::params {
   $cluster_name = undef
   $cluster_username = 'cluster'
   $cluster_password = Sensitive('cluster')
+  $manage_hostgroup_for_servers = true
 
   $config_settings = {
     datadir => $datadir,

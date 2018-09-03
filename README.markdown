@@ -34,17 +34,115 @@ The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (an
 ### Beginning with proxysql
 
 To install the ProxySQL software with all the default options:
-```
+```puppet
 include ::proxysql
 ```
 
 You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
-```
+```puppet
   class { '::proxysql':
     listen_port              => 3306,
     admin_password           => '654321',
     monitor_password         => '123456',
     override_config_settings => $override_settings,
+  }
+```
+
+You can configure users\hostgroups\rules\schedulers using class parameters
+```puppet
+  class { '::proxysql':
+  mysql_servers    => [ { 'db1' => { 'port'      => 3306,
+                                  'hostgroup_id' => 1, } },
+                        { 'db2' => { 'hostgroup_id' => 2, } },
+  ],
+  mysql_users      => [ { 'app' => { 'password'     => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
+                                'default_hostgroup' => 1, } },
+                        { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
+                                '     default_hostgroup' => 2, } },
+  ],
+  mysql_hostgroups => [ { 'hostgroup 1' => { 'writer_hostgroup' => 1,
+                                             'reader_hostgroup' => 2, } },
+  ],
+  mysql_rules      => [ { 'testable to test DB' => { 'rule_id'    => 1,
+                                                'match_pattern'   => 'testtable',
+                                                'replace_pattern' => 'test.newtable',
+                                                'apply'           => 1,
+                                                'active'          => 1, } },
+  ],
+  schedulers       => [ { 'test scheduler' => { 'scheduler_id' => 1,
+                                               'active'        => 0,
+                                               'filename'      => '/usr/bin/whoami', } },
+  ],
+```
+
+Or by using individual resources:
+```puppet
+  class { '::proxysql':
+    listen_port    => 3306,
+    admin_password => 'SuperSecretPassword',
+  }
+
+  proxy_mysql_server { '192.168.33.31:3306-31':
+    hostname     => '192.168.33.31',
+    port         => 3306,
+    hostgroup_id => 31,
+  }
+  proxy_mysql_server { '192.168.33.32:3306-31':
+    hostname     => '192.168.33.32',
+    port         => 3306,
+    hostgroup_id => 31,
+  }
+  proxy_mysql_server { '192.168.33.33:3306-31':
+    hostname     => '192.168.33.33',
+    port         => 3306,
+    hostgroup_id => 31,
+  }
+  proxy_mysql_server { '192.168.33.34:3306-31':
+    hostname     => '192.168.33.34',
+    port         => 3306,
+    hostgroup_id => 31,
+  }
+  proxy_mysql_server { '192.168.33.35:3306-31':
+    hostname     => '192.168.33.35',
+    port         => 3306,
+    hostgroup_id => 31,
+  }
+
+  proxy_mysql_replication_hostgroup { '30-31':
+    writer_hostgroup => 30,
+    reader_hostgroup => 31,
+    comment          => 'Replication Group 1',
+  }
+  proxy_mysql_replication_hostgroup { '20-21':
+    writer_hostgroup => 20,
+    reader_hostgroup => 21,
+    comment          => 'Replication Group 2',
+  }
+
+  proxy_mysql_user { 'tester':
+    password          => 'testerpwd',
+    default_hostgroup => 30,
+  }
+
+  proxy_mysql_query_rule { 'mysql_query_rule-1':
+    rule_id               => 1,
+    match_pattern         => '^SELECT',
+    apply                 => 1,
+    active                => 1,
+    destination_hostgroup => 31,
+  }
+
+  proxy_scheduler { 'scheduler-1':
+    scheduler_id => 1,
+    active       => 0,
+    filename     => '/usr/bin/whoami',
+  }
+
+  proxy_scheduler { 'scheduler-2':
+    scheduler_id => 2,
+    active       => 0,
+    interval_ms  => 1000,
+    filename     => '/usr/bin/id',
   }
 ```
 
@@ -56,7 +154,7 @@ Configuration is done by the `proxysql` class.
 
 You can override any configuration setting by using the `override_config_settings` hash. This hash resembles the structure of the `proxysql.cnf` file
 
-```
+```puppet
 {
     admin_variables => {
       refresh_interval => 2000,
@@ -204,6 +302,25 @@ The password ProxySQL will use to connect to the configured mysql_clusters. Defa
 
 ##### `mysql_client_package_name`
 The name of the mysql client package in your package manager. Defaults to undef
+
+##### `manage_hostgroup_for_servers`
+Determines wheter this module will manage hostgroup_id for mysql_servers. 
+If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
+
+##### `mysql_servers`
+Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_users`
+Array of mysql_users, that will be created in ProxySQL. Defaults to undef
+
+#####` mysql_hostgroups`
+Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
+
+##### `mysql_rules`
+Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
+
+##### `schedulers`
+Array of schedulers, that will be created in ProxySQL. Defaults to undef
 
 ## Types
 #### proxy_global_variable
