@@ -35,13 +35,13 @@ class proxysql::install {
     }
   }
 
-  group { $::proxysql::sys_group:
+  group { $proxysql::sys_group:
     ensure => 'present',
   }
 
-  user { $::proxysql::sys_owner:
+  user { $proxysql::sys_owner:
     ensure => 'present',
-    groups => $::proxysql::sys_group,
+    groups => $proxysql::sys_group,
   }
 
   file { 'proxysql-datadir':
