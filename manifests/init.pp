@@ -153,7 +153,7 @@ class proxysql (
   String $service_name = $proxysql::params::service_name,
   String $service_ensure = $proxysql::params::service_ensure,
 
-  Stdlib::Absolutepath $datadir = $proxysql::params::datadir,
+  String $datadir = $proxysql::params::datadir,
 
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
@@ -170,10 +170,10 @@ class proxysql (
 
   Boolean $split_config = $proxysql::params::split_config,
 
-  Stdlib::Absolutepath $proxy_config_file = $proxysql::params::proxy_config_file,
+  String $proxy_config_file = $proxysql::params::proxy_config_file,
   Boolean $manage_proxy_config_file = $proxysql::params::manage_proxy_config_file,
 
-  Stdlib::Absolutepath $config_file = $proxysql::params::config_file,
+  String $config_file = $proxysql::params::config_file,
   Boolean $manage_config_file = $proxysql::params::manage_config_file,
 
   String $mycnf_file_name = $proxysql::params::mycnf_file_name,
