@@ -102,7 +102,7 @@
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 # * `cluster_name`
-#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will
 #   synchronize their configuration parameters. Defaults to undef
 #
 # * `cluster_username`
@@ -116,7 +116,7 @@
 #   The name of the mysql client package in your package manager. Defaults to undef
 #
 # * `manage_hostgroup_for_servers`
-#   Determines wheter this module will manage hostgroup_id for mysql_servers. 
+#   Determines wheter this module will manage hostgroup_id for mysql_servers.
 #   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
 # * `mysql_servers`
@@ -242,6 +242,7 @@ class proxysql (
   # lint:endignore
 
   anchor { 'proxysql::begin': }
+  -> class { 'proxysql::prerequisites':}
   -> class { 'proxysql::repo':}
   -> class { 'proxysql::install':}
   -> class { 'proxysql::config':}
