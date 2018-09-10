@@ -102,7 +102,7 @@
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
 # * `cluster_name`
-#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will 
+#   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will
 #   synchronize their configuration parameters. Defaults to undef
 #
 # * `cluster_username`
@@ -116,7 +116,7 @@
 #   The name of the mysql client package in your package manager. Defaults to undef
 #
 # * `manage_hostgroup_for_servers`
-#   Determines wheter this module will manage hostgroup_id for mysql_servers. 
+#   Determines wheter this module will manage hostgroup_id for mysql_servers.
 #   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
 # * `mysql_servers`
@@ -133,6 +133,16 @@
 #
 # * `schedulers`
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
+# * `split_config`
+#   If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
+#   and proxy config file with servers\users\hostgroups\scheduler params. Defaults to false
+#
+# * `proxy_config_file`
+#   The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved
+#   This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
+#
+# * `manage_proxy_config_file`
+#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 #
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
@@ -157,6 +167,11 @@ class proxysql (
 
   String $monitor_username = $proxysql::params::monitor_username,
   Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
+
+  Boolean $split_config = $proxysql::params::split_config,
+
+  String $proxy_config_file = $proxysql::params::proxy_config_file,
+  Boolean $manage_proxy_config_file = $proxysql::params::manage_proxy_config_file,
 
   String $config_file = $proxysql::params::config_file,
   Boolean $manage_config_file = $proxysql::params::manage_config_file,
@@ -227,11 +242,13 @@ class proxysql (
   # lint:endignore
 
   anchor { 'proxysql::begin': }
+  -> class { 'proxysql::prerequisites':}
   -> class { 'proxysql::repo':}
   -> class { 'proxysql::install':}
   -> class { 'proxysql::config':}
   -> class { 'proxysql::service':}
   -> class { 'proxysql::admin_credentials':}
+  -> class { 'proxysql::reload_config':}
   -> class { 'proxysql::configure':}
   -> anchor { 'proxysql::end': }
 

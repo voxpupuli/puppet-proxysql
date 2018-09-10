@@ -12,7 +12,6 @@ default_handler = Proc.new do |k, v|
 <%
   end
 end
-
 hash_handler = Proc.new do |k, v|
   if v.is_a?(Hash)
 -%>
@@ -27,7 +26,6 @@ hash_handler = Proc.new do |k, v|
     default_handler.call(k, v)
   end
 end
-
 @config_settings.map do |k, v|
   if v.is_a?(Hash)
     if k == 'admin_variables' || k == 'mysql_variables'
@@ -42,6 +40,7 @@ end
 <%
     else
 -%>
+<% if @split_config == false -%>
 <%= k %> = (
 <%
       v.each do |ki, vi|
@@ -50,7 +49,6 @@ end
         else
           default_handler.call(ki, vi)
         end
-
         if v.keys.index(ki) < v.size - 1
 -%>
 ,
@@ -60,7 +58,7 @@ end
 -%>
 
 )
-
+<% end -%>
 <%
     end
   else
@@ -68,3 +66,7 @@ end
   end
 end
 -%>
+
+<% if @split_config == true -%>
+@include  "<%= @proxy_config_file %>"
+<% end -%>

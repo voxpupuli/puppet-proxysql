@@ -35,6 +35,7 @@ class proxysql::install {
     }
   }
 
+
   file { 'proxysql-datadir':
     ensure => directory,
     path   => $proxysql::datadir,

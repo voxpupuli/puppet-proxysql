@@ -32,14 +32,14 @@ class proxysql::params {
         'Debian': {
           case $facts['os']['release']['major'] {
             '8': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian8_amd64.deb'
-              $package_checksum_value = '98bab1b7cd719039b1483f7d51c30d7fc563def7'
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-debian8_amd64.deb'
+              $package_checksum_value = '813a91ea030ef480c0210b047df5e88ff1c27810'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
             '9': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-debian9_amd64.deb'
-              $package_checksum_value = 'd97a2f870e46d5f3218ab80d6c0db6bcc288127a'
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-debian9_amd64.deb'
+              $package_checksum_value = '65a3c2b98eefa42946ee59eef18ba18534c2a39d'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
           }
@@ -54,14 +54,14 @@ class proxysql::params {
         'Ubuntu': {
           case $facts['os']['release']['major'] {
             '14.04': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu14_amd64.deb'
-              $package_checksum_value = '0b89f290bd9cd7e8bc2b7acd8a7799840a31af94'
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-ubuntu14_amd64.deb'
+              $package_checksum_value = '42b99a12e8e43410aed88da4c5bbe902c43dbba1'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
             '16.04': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql_1.4.10-ubuntu16_amd64.deb'
-              $package_checksum_value = 'df8695c6296678a0eeda036cddff679cc1ff604e'
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-ubuntu16_amd64.deb'
+              $package_checksum_value = '6e7db2fee78eee1a22cdfabefaa50953c3d24501'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
@@ -95,8 +95,8 @@ class proxysql::params {
     }
     'RedHat': {
       $package_provider = 'rpm'
-      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.10/proxysql-1.4.10-1-centos67.x86_64.rpm'
-      $package_checksum_value = 'f5ca4efa9d69e9bd6ba9a96c724b031cd7326051'
+      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql-1.4.11-1-centos67.x86_64.rpm'
+      $package_checksum_value = '6f302beaea096b63851a136287818a1b6e049e28'
       $package_checksum_type = 'sha1'
       $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
       $repo             = {
@@ -117,8 +117,11 @@ class proxysql::params {
 
   $datadir = '/var/lib/proxysql'
 
-  $config_file        = '/etc/proxysql.cnf'
-  $manage_config_file = true
+  $split_config             = false
+  $config_file              = '/etc/proxysql.cnf'
+  $manage_config_file       = true
+  $proxy_config_file        = '/etc/proxysql_proxy.cnf'
+  $manage_proxy_config_file = true
 
   $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true
