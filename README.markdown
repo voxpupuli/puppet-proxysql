@@ -20,16 +20,16 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `scheduler` and `global_variables`.
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
 
 
 ## Setup
 
 ### Setup Requirements **OPTIONAL**
 
-The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
+The module requires Puppet 4.x over above.
 
-*Note:* the ProxySQL-package is currently not in any public upstream package manager. So you should consider uploading it to a private package manager and manage that before calling the proxysql-class.
+It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 2.5.x) and on the [puppetlabs](https://puppet.com/)/[apt](https://github.com/puppetlabs/puppetlabs-apt) module (>= 2.1.x) when using deb based systems.
 
 ### Beginning with proxysql
 
@@ -619,8 +619,7 @@ Optional comment.
 
 ## Limitations
 
-The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
-It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 3.x)
+The module requires Puppet 4.x or above.
 
 ## Development
 
