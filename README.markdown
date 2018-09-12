@@ -119,6 +119,13 @@ Or by using individual resources:
     comment          => 'Replication Group 2',
   }
 
+  proxy_mysql_group_replication_hostgroup { '5-2-10-11':
+    reader_hostgroup        => 10,
+    writer_hostgroup        => 5,
+    backup_writer_hostgroup => 2,
+    offline_hostgroup       => 11,
+  }
+
   proxy_mysql_user { 'tester':
     password          => 'testerpwd',
     default_hostgroup => 30,

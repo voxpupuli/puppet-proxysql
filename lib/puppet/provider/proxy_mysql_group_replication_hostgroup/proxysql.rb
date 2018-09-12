@@ -14,13 +14,13 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     # one big swoop.
     hostgroups.each do |line|
       writer_hostgroup, backup_writer_hostgroup, reader_hostgroup, offline_hostgroup, active, max_writers, writer_is_also_reader, max_transactions_behind, comment = line.split(%r{\t})
-      name = "#{writer_hostgroup}-#{reader_hostgroup}"
+      name = "#{writer_hostgroup}-#{backup_writer_hostgroup}-#{reader_hostgroup}-#{offline_hostgroup}"
 
       instances << new(
         name: name,
         ensure: :present,
         writer_hostgroup: writer_hostgroup,
-        backup_writer_hostgroup = backup_writer_hostgroup,
+        backup_writer_hostgroup: backup_writer_hostgroup,
         reader_hostgroup: reader_hostgroup,
         offline_hostgroup: offline_hostgroup,
         active: active,
@@ -56,7 +56,7 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     comment = @resource.value(:comment) || ''
 
     query = 'INSERT INTO `mysql_group_replication_hostgroups` (`writer_hostgroup`, `backup_writer_hostgroup`, `reader_hostgroup`, `offline_hostgroup`, `active`, `max_writers`, `writer_is_also_reader`, `max_transactions_behind`, `comment`)'
-    query << " VALUES (#{writer_hostgroup}, #{backup_writer_hostgroup}, #{reader_hostgroup}, #{offline_hostgroup}, #{active}, #{max_writers}, #{writer_is_also_reader}, #{max_transactions_behind} '#{comment}')"
+    query << " VALUES (#{writer_hostgroup}, #{backup_writer_hostgroup}, #{reader_hostgroup}, #{offline_hostgroup}, #{active}, #{max_writers}, #{writer_is_also_reader}, #{max_transactions_behind}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
