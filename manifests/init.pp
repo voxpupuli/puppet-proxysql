@@ -203,11 +203,11 @@ class proxysql (
 
   String $node_name = "${facts['fqdn']}:${admin_listen_port}",
   Boolean $manage_hostgroup_for_servers = $proxysql::params::manage_hostgroup_for_servers,
-  Optional[Tuple] $mysql_servers = undef,
-  Optional[Tuple] $mysql_users = undef,
-  Optional[Tuple] $mysql_hostgroups = undef,
-  Optional[Tuple] $mysql_rules = undef,
-  Optional[Tuple] $schedulers = undef,
+  Optional[Proxysql::Server] $mysql_servers = undef,
+  Optional[Proxysql::User] $mysql_users = undef,
+  Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
+  Optional[Proxysql::Rule] $mysql_rules = undef,
+  Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits ::proxysql::params {
 
   # lint:ignore:80chars
