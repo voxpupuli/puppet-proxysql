@@ -290,7 +290,7 @@ group of the datadir and config_file, defaults to 'root'
 Which configuration variables should be overriden. Hash, defaults to `{}` (empty hash).
 
 ##### `cluster_name`
-If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters. 
+If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will synchronize their configuration parameters.
 Defaults to undef
 
 ##### `cluster_username`
@@ -304,7 +304,7 @@ The password ProxySQL will use to connect to the configured mysql_clusters. Defa
 The name of the mysql client package in your package manager. Defaults to undef
 
 ##### `manage_hostgroup_for_servers`
-Determines wheter this module will manage hostgroup_id for mysql_servers. 
+Determines wheter this module will manage hostgroup_id for mysql_servers.
 If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 
 ##### `mysql_servers`
@@ -378,6 +378,48 @@ Id of the writer hostgroup. Required.
 
 ##### `reader_hostgroup`
 Id of the reader hostgroup. Required.
+
+##### `comment`
+Optional comment.
+
+#### mysql_group_replication_hostgroup
+`mysql_group_replication_hostgroup` manages an entry in the ProxySQL `mysql_group_replication_hostgroups` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `writer_hostgroup`
+Id of the writer hostgroup. Required.
+
+##### `backup_writer_hostgroup`
+Id of the backup writer hostgroup. Required.
+
+##### `reader_hostgroup`
+Id of the reader hostgroup. Required.
+
+##### `offline_hostgroup`
+Id of the offline hostgroup. Required.
+
+##### `active`
+Specifies wheter the resource is active or not. Integer, defaults to 1.
+
+##### `max_writers`
+Specifies how many active writers the resource has. Integer, defaults to 1.
+
+##### `writer_is_also_reader`
+Specifies if the writer is also a reader. Integer, defaults to 0.
+
+##### `max_transactions_behind`
+Specifies how many transactions a resource can be behind the "master" until shunned. Integer, defaults to 0.
 
 ##### `comment`
 Optional comment.

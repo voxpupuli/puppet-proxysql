@@ -15,4 +15,7 @@
 <% if $key == "mysql_replication_hostgroups" { -%>
 <%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
 <% } -%>
+<% if $key == "mysql_group_replication_hostgroups" { -%>
+<%= $key %> = (<% if $value != {} { -%><%= $value %><% } -%>)
+<% } -%>
 <% } -%>
