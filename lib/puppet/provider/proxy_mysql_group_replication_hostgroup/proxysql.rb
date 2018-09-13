@@ -17,17 +17,17 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
       name = "#{writer_hostgroup}-#{backup_writer_hostgroup}-#{reader_hostgroup}-#{offline_hostgroup}"
 
       instances << new(
-          name: name,
-          ensure: :present,
-          writer_hostgroup: writer_hostgroup,
-          backup_writer_hostgroup: backup_writer_hostgroup,
-          reader_hostgroup: reader_hostgroup,
-          offline_hostgroup: offline_hostgroup,
-          active: active,
-          max_writers: max_writers,
-          writer_is_also_reader: writer_is_also_reader,
-          max_transactions_behind: max_transactions_behind,
-          comment: comment
+        name: name,
+        ensure: :present,
+        writer_hostgroup: writer_hostgroup,
+        backup_writer_hostgroup: backup_writer_hostgroup,
+        reader_hostgroup: reader_hostgroup,
+        offline_hostgroup: offline_hostgroup,
+        active: active,
+        max_writers: max_writers,
+        writer_is_also_reader: writer_is_also_reader,
+        max_transactions_behind: max_transactions_behind,
+        comment: comment
       )
     end
     instances
