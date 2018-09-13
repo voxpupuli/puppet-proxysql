@@ -17,17 +17,17 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
       name = "#{writer_hostgroup}-#{backup_writer_hostgroup}-#{reader_hostgroup}-#{offline_hostgroup}"
 
       instances << new(
-        name: name,
-        ensure: :present,
-        writer_hostgroup: writer_hostgroup,
-        backup_writer_hostgroup: backup_writer_hostgroup,
-        reader_hostgroup: reader_hostgroup,
-        offline_hostgroup: offline_hostgroup,
-        active: active,
-        max_writers: max_writers,
-        writer_is_also_reader: writer_is_also_reader,
-        max_transactions_behind: max_transactions_behind,
-        comment: comment
+          name: name,
+          ensure: :present,
+          writer_hostgroup: writer_hostgroup,
+          backup_writer_hostgroup: backup_writer_hostgroup,
+          reader_hostgroup: reader_hostgroup,
+          offline_hostgroup: offline_hostgroup,
+          active: active,
+          max_writers: max_writers,
+          writer_is_also_reader: writer_is_also_reader,
+          max_transactions_behind: max_transactions_behind,
+          comment: comment
       )
     end
     instances
@@ -91,6 +91,58 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
 
   # Generates method for all properties of the property_hash
   mk_resource_methods
+
+  def active=(value)
+    writer_hostgroup = @resource.value(:writer_hostgroup)
+    backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
+    reader_hostgroup = @resource.value(:reader_hostgroup)
+    offline_hostgroup = @resource.value(:offline_hostgroup)
+    query = "UPDATE mysql_group_replication_hostgroups SET `active` = #{value}"
+    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    mysql([defaults_file, '-e', query].compact)
+
+    @property_hash.clear
+    exists? ? (return false) : (return true)
+  end
+
+  def max_writers=(value)
+    writer_hostgroup = @resource.value(:writer_hostgroup)
+    backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
+    reader_hostgroup = @resource.value(:reader_hostgroup)
+    offline_hostgroup = @resource.value(:offline_hostgroup)
+    query = "UPDATE mysql_group_replication_hostgroups SET `max_writers=` = #{value}"
+    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    mysql([defaults_file, '-e', query].compact)
+
+    @property_hash.clear
+    exists? ? (return false) : (return true)
+  end
+
+  def writer_is_also_reader=(value)
+    writer_hostgroup = @resource.value(:writer_hostgroup)
+    backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
+    reader_hostgroup = @resource.value(:reader_hostgroup)
+    offline_hostgroup = @resource.value(:offline_hostgroup)
+    query = "UPDATE mysql_group_replication_hostgroups SET `writer_is_also_reader` = #{value}"
+    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    mysql([defaults_file, '-e', query].compact)
+
+    @property_hash.clear
+    exists? ? (return false) : (return true)
+  end
+
+  def max_transactions_behind=(value)
+    writer_hostgroup = @resource.value(:writer_hostgroup)
+    backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
+    reader_hostgroup = @resource.value(:reader_hostgroup)
+    offline_hostgroup = @resource.value(:offline_hostgroup)
+    query = "UPDATE mysql_group_replication_hostgroups SET `max_transactions_behind=` = #{value}"
+    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    mysql([defaults_file, '-e', query].compact)
+
+    @property_hash.clear
+    exists? ? (return false) : (return true)
+  end
 
   def comment=(value)
     writer_hostgroup = @resource.value(:writer_hostgroup)
