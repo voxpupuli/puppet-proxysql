@@ -27,18 +27,17 @@ describe 'proxysql class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-        class { '::proxysql':
-          listen_port              => 3306,
-          admin_username           => 'admin',
-          admin_password           => Sensitive('654321'),
-          monitor_username         => 'monitor',
-          monitor_password         => Sensitive('123456'),
-          override_config_settings => {
-            mysql_variables => {
-              'monitor_writer_is_also_reader' => false,
-            }
-          },
-        }
+      class { '::proxysql':
+        listen_port              => 3306,
+        admin_username           => 'admin',
+        admin_password           => Sensitive('654321'),
+        monitor_username         => 'monitor',
+        monitor_password         => Sensitive('123456'),
+        override_config_settings => {
+          mysql_variables => {
+            'monitor_writer_is_also_reader' => false,
+          }
+        },
       }
 
       @proxy_mysql_replication_hostgroup { '10-20':
