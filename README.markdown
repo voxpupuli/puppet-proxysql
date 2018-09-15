@@ -80,7 +80,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      mysql_hostgroups => [ 
        { 
-         'hostgroup 1' => { 
+         '1-2' => { 
            'writer_hostgroup' => 1, 
            'reader_hostgroup' => 2, 
          } 
@@ -88,7 +88,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      mysql_rules      => [ 
        { 
-         'testable to test DB' => { 
+         'mysql_query_rule-1' => { 
            'rule_id'         => 1,
            'match_pattern'   => 'testtable',
            'replace_pattern' => 'test.newtable',
@@ -99,7 +99,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      schedulers       => [ 
        { 
-         'test scheduler' => { 
+         'scheduler-1' => { 
            'scheduler_id'  => 1,
            'active'        => 0,
            'filename'      => '/usr/bin/whoami', 
@@ -198,13 +198,15 @@ You can override any configuration setting by using the `override_config_setting
       ...
     },
     mysql_servers => {
-      'mysql1' => {
-         'address' => '127.0.0.1',
-         'port'    => 33061,
+      '127.0.0.1:33061-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33061,
+         'hostgroup_id' => 1.
        },
-      'mysql2' => {
-         'address' => '127.0.0.1',
-         'port'    => 33062,
+      '127.0.0.1:33062-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33062,
+         'hostgroup_id' => 1.
        },
       ...
     },
