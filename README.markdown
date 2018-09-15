@@ -35,12 +35,12 @@ It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/p
 
 To install the ProxySQL software with all the default options:
 ```puppet
-include ::proxysql
+include proxysql
 ```
 
 You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port              => 3306,
     admin_password           => Sensitive('654321'),
     monitor_password         => Sensitive('123456'),
@@ -50,7 +50,7 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
 
 You can configure users\hostgroups\rules\schedulers using class parameters
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
      mysql_servers    => [ 
        { 
          'db1' => { 
@@ -110,7 +110,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
 
 Or by using individual resources:
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port    => 3306,
     admin_password => Sensitive('SuperSecretPassword'),
   }
