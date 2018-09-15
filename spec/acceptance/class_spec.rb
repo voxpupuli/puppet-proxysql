@@ -65,22 +65,15 @@ describe 'proxysql class' do
         ensure            => 'present',
         password          => mysql_password('tester123'),
         default_hostgroup => 1,
-        default_schema    => 'test',
-        load_to_runtime   => false,
+        default_schema    => 'test1',
       }
 
       proxy_mysql_user { 'tester2':
         ensure            => 'present',
         password          => mysql_password('tester2'),
         default_hostgroup => 2,
-        default_schema    => 'test1234',
-      }
-
-      @proxy_mysql_user { 'tester5':
-        ensure            => 'present',
-        password          => mysql_password('tester5'),
-        default_hostgroup => 1,
-        default_schema    => 'test',
+        default_schema    => 'test2',
+        load_to_runtime   => false,
       }
 
       proxy_mysql_server { '127.0.0.1:3307-1':
@@ -127,48 +120,75 @@ describe 'proxysql class' do
       it { is_expected.to be_running }
     end
 
-    describe command("mysql -e \"SELECT comment FROM mysql_servers WHERE hostname = '127.0.0.1' AND port = 3307 AND hostgroup_id = 1;\"") do
+    describe command("mysql -NB -e \"SELECT comment FROM mysql_servers WHERE hostname = '127.0.0.1' AND port = 3307 AND hostgroup_id = 1;\"") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^localhost:3307-1$' }
     end
 
-    describe command("mysql -e \"SELECT comment FROM mysql_servers WHERE hostname = '127.0.0.1' AND port = 3307 AND hostgroup_id = 2;\"") do
+    describe command("mysql -NB -e \"SELECT comment FROM mysql_servers WHERE hostname = '127.0.0.1' AND port = 3307 AND hostgroup_id = 2;\"") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^localhost:3307-2$' }
     end
 
-    describe command("mysql -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 20;'") do
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 20;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^Test MySQL Cluster 10-20$' }
     end
 
-    describe command("mysql -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
     end
 
-    describe command("mysql -e \"SELECT username FROM mysql_users WHERE username = 'tester';\"") do
+    describe command("mysql -NB -e \"SELECT username FROM mysql_users WHERE username = 'tester';\"") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
     end
 
-    describe command("mysql -e 'SELECT username FROM mysql_users;'") do
+    describe command("mysql -NB -e 'SELECT username FROM mysql_users;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) do
         is_expected.to match 'tester1'
         is_expected.to match 'tester2'
-        is_expected.to match 'tester3'
-        is_expected.to match 'tester4'
-        is_expected.to match 'tester5'
       end
     end
 
-    describe command("mysql -e 'SELECT username FROM mysql_query_rules WHERE rule_id = 1;'") do
+    describe command("mysql -NB -e \"SELECT default_schema FROM mysql_users WHERE username = 'tester1';\"") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^test1$' }
+    end
+
+    describe command("mysql -NB -e \"SELECT default_hostgroup FROM mysql_users WHERE username = 'tester1';\"") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^1$' }
+    end
+
+    describe command("mysql -NB -e \"SELECT default_schema FROM mysql_users WHERE username = 'tester2';\"") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^test2$' }
+    end
+
+    describe command("mysql -NB -e \"SELECT default_hostgroup FROM mysql_users WHERE username = 'tester2';\"") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^2$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT username FROM runtime_mysql_users;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^tester1$' }
     end
 
-    describe command("mysql -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 1;'") do
+    describe command("mysql -NB -e \"SELECT username FROM runtime_mysql_users WHERE username = 'tester2';\"") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to eq('') }
+    end
+
+    describe command("mysql -NB -e 'SELECT username FROM mysql_query_rules WHERE rule_id = 1;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^tester1$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 1;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^\^SELECT$' }
     end
