@@ -42,8 +42,8 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
 ```puppet
   class { '::proxysql':
     listen_port              => 3306,
-    admin_password           => '654321',
-    monitor_password         => '123456',
+    admin_password           => Sensitive('654321'),
+    monitor_password         => Sensitive('123456'),
     override_config_settings => $override_settings,
   }
 ```
@@ -112,7 +112,7 @@ Or by using individual resources:
 ```puppet
   class { '::proxysql':
     listen_port    => 3306,
-    admin_password => 'SuperSecretPassword',
+    admin_password => Sensitive('SuperSecretPassword'),
   }
 
   proxy_mysql_server { '192.168.33.31:3306-31':
