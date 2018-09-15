@@ -27,7 +27,7 @@ describe 'proxysql class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { '::proxysql':
+      class { 'proxysql':
         listen_port              => 3306,
         admin_username           => 'admin',
         admin_password           => Sensitive('654321'),
@@ -40,30 +40,28 @@ describe 'proxysql class' do
         },
       }
 
-      @proxy_mysql_replication_hostgroup { '10-20':
+      proxy_mysql_replication_hostgroup { '10-20':
         ensure           => 'present',
         writer_hostgroup => 10,
         reader_hostgroup => 20,
         comment          => 'Test MySQL Cluster 10-20',
       }
 
-      @proxy_mysql_replication_hostgroup { '10-30':
+      proxy_mysql_replication_hostgroup { '10-30':
         ensure           => 'absent',
         writer_hostgroup => 10,
         reader_hostgroup => 30,
         comment          => 'Test MySQL Cluster 10-30',
       }
 
-      Proxy_mysql_replication_hostgroup <| |>
-
-      @proxy_mysql_user { 'tester':
+      proxy_mysql_user { 'tester':
         ensure            => 'absent',
         password          => mysql_password('tester'),
         default_hostgroup => 1,
         default_schema    => 'test',
       }
 
-      @proxy_mysql_user { 'tester1':
+      proxy_mysql_user { 'tester1':
         ensure            => 'present',
         password          => mysql_password('tester123'),
         default_hostgroup => 1,
@@ -71,23 +69,9 @@ describe 'proxysql class' do
         load_to_runtime   => false,
       }
 
-      @proxy_mysql_user { 'tester2':
+      proxy_mysql_user { 'tester2':
         ensure            => 'present',
         password          => mysql_password('tester2'),
-        default_hostgroup => 1,
-        default_schema    => 'test',
-      }
-
-      @proxy_mysql_user { 'tester3':
-        ensure            => 'present',
-        password          => mysql_password('tester3'),
-        default_hostgroup => 1,
-        default_schema    => 'test',
-      }
-
-      @proxy_mysql_user { 'tester4':
-        ensure            => 'present',
-        password          => mysql_password('tester4123'),
         default_hostgroup => 2,
         default_schema    => 'test1234',
       }
@@ -99,9 +83,7 @@ describe 'proxysql class' do
         default_schema    => 'test',
       }
 
-      Proxy_mysql_user <| |>
-
-      @proxy_mysql_server { '127.0.0.1:3307-1':
+      proxy_mysql_server { '127.0.0.1:3307-1':
         ensure       => 'present',
         hostname     => '127.0.0.1',
         port         => 3307,
@@ -111,7 +93,7 @@ describe 'proxysql class' do
         comment      => 'localhost:3307-1',
       }
 
-      @proxy_mysql_server { '127.0.0.1:3307-2':
+      proxy_mysql_server { '127.0.0.1:3307-2':
         ensure       => 'present',
         hostname     => '127.0.0.1',
         port         => 3307,
@@ -120,9 +102,7 @@ describe 'proxysql class' do
         comment      => 'localhost:3307-2',
       }
 
-      Proxy_mysql_server <| |>
-
-      @proxy_mysql_query_rule { 'mysql_query_rule-1':
+      proxy_mysql_query_rule { 'mysql_query_rule-1':
         rule_id               => 1,
         active                => 1,
         username              => 'tester1',
@@ -131,7 +111,6 @@ describe 'proxysql class' do
         apply                 => 1,
       }
 
-      Proxy_mysql_query_rule <| |>
       EOS
 
       # Run it twice and test for idempotency
