@@ -222,8 +222,13 @@ You can override any configuration setting by using the `override_config_setting
 * [`proxysql`](#proxysql): Installs and configures ProxySQL
 
 ### Private classes
-* `proxysql::install`: Installs the package(s)
+* `proxysql::admin_credentials`: Manages the admin credentials and admin interfaces
 * `proxysql::config`: Manages the configuration files and `global_variables`
+* `proxysql::configure`: Manages the resources specified in the public class
+* `proxysql::install`: Installs the package(s)
+* `proxysql::param`: Manages the default parameters
+* `proxysql::prerequisites`: Manages the user / group to own the proxysql files
+* `proxysql::reload_config`: Reloads admin and mysql variables if you enable the `manage_config_file` option
 * `proxysql::repo`: Manages the repo's where ProxySQL might be in.
 * `proxysql::service`: Manages the service
 
