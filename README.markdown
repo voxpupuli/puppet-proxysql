@@ -27,7 +27,7 @@ This module will install the ProxySQL and manage it's configuration. It also ext
 
 ### Setup Requirements **OPTIONAL**
 
-The module requires Puppet 4.x over above.
+The module requires Puppet 4.10.0 over above.
 
 It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 2.5.x) and on the [puppetlabs](https://puppet.com/)/[apt](https://github.com/puppetlabs/puppetlabs-apt) module (>= 2.1.x) when using deb based systems.
 
@@ -35,12 +35,12 @@ It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/p
 
 To install the ProxySQL software with all the default options:
 ```puppet
-include ::proxysql
+include proxysql
 ```
 
 You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port              => 3306,
     admin_password           => Sensitive('654321'),
     monitor_password         => Sensitive('123456'),
@@ -50,7 +50,7 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
 
 You can configure users\hostgroups\rules\schedulers using class parameters
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
      mysql_servers    => [ 
        { 
          'db1' => { 
@@ -80,7 +80,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      mysql_hostgroups => [ 
        { 
-         'hostgroup 1' => { 
+         '1-2' => { 
            'writer_hostgroup' => 1, 
            'reader_hostgroup' => 2, 
          } 
@@ -88,7 +88,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      mysql_rules      => [ 
        { 
-         'testable to test DB' => { 
+         'mysql_query_rule-1' => { 
            'rule_id'         => 1,
            'match_pattern'   => 'testtable',
            'replace_pattern' => 'test.newtable',
@@ -99,7 +99,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      ],
      schedulers       => [ 
        { 
-         'test scheduler' => { 
+         'scheduler-1' => { 
            'scheduler_id'  => 1,
            'active'        => 0,
            'filename'      => '/usr/bin/whoami', 
@@ -110,7 +110,7 @@ You can configure users\hostgroups\rules\schedulers using class parameters
 
 Or by using individual resources:
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port    => 3306,
     admin_password => Sensitive('SuperSecretPassword'),
   }
@@ -198,13 +198,15 @@ You can override any configuration setting by using the `override_config_setting
       ...
     },
     mysql_servers => {
-      'mysql1' => {
-         'address' => '127.0.0.1',
-         'port'    => 33061,
+      '127.0.0.1:33061-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33061,
+         'hostgroup_id' => 1,
        },
-      'mysql2' => {
-         'address' => '127.0.0.1',
-         'port'    => 33062,
+      '127.0.0.1:33062-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33062,
+         'hostgroup_id' => 1,
        },
       ...
     },
@@ -657,7 +659,7 @@ Optional comment.
 
 ## Limitations
 
-The module requires Puppet 4.x or above.
+The module requires Puppet 4.10.0 or above.
 
 ## Development
 
