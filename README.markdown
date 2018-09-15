@@ -201,12 +201,12 @@ You can override any configuration setting by using the `override_config_setting
       '127.0.0.1:33061-1' => {
          'address'      => '127.0.0.1',
          'port'         => 33061,
-         'hostgroup_id' => 1.
+         'hostgroup_id' => 1,
        },
       '127.0.0.1:33062-1' => {
          'address'      => '127.0.0.1',
          'port'         => 33062,
-         'hostgroup_id' => 1.
+         'hostgroup_id' => 1,
        },
       ...
     },
