@@ -63,13 +63,13 @@ describe 'proxysql class' do
         comment                 => 'Test MySQL GR Cluster 5-2-10-11',
       }
 
-      proxy_mysql_group_replication_hostgroup { '6-3-20-30':
+      proxy_mysql_group_replication_hostgroup { '3-20-6-30':
         ensure                  => 'absent',
         reader_hostgroup        => 6,
         writer_hostgroup        => 3,
         backup_writer_hostgroup => 20,
         offline_hostgroup       => 30,
-        comment                 => 'Test MySQL GR Cluster 6-3-20-30',
+        comment                 => 'Test MySQL GR Cluster 3-20-6-30',
       }
 
       proxy_mysql_user { 'tester':
