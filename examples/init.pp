@@ -3,32 +3,37 @@
 # variant 1
 
 class { '::proxysql':
-  mysql_servers    => [ { 'db1' => { 'port'      => 3306,
-                                  'hostgroup_id' => 1, } },
-                        { 'db2' => { 'hostgroup_id' => 2, } },
+  mysql_servers                      => [ { 'db1' => { 'port'         => 3306,
+                                                       'hostgroup_id' => 1, } },
+                                          { 'db2' => { 'hostgroup_id' => 2, } },
   ],
-  mysql_users      => [ { 'app' => { 'password'     => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
-                                'default_hostgroup' => 1, } },
-                        { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
-                                '     default_hostgroup' => 2, } },
+  mysql_users                        => [ { 'app' => { 'password'          => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
+                                                       'default_hostgroup' => 1, } },
+                                          { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
+                                                       'default_hostgroup' => 2, } },
   ],
-  mysql_hostgroups => [ { 'hostgroup 1' => { 'writer_hostgroup' => 1,
-                                             'reader_hostgroup' => 2, } },
+  mysql_hostgroups                   => [ { 'hostgroup 1' => { 'writer_hostgroup' => 1,
+                                                               'reader_hostgroup' => 2, } },
   ],
-  mysql_rules      => [ { 'testable to test DB' => { 'rule_id'    => 1,
-                                                'match_pattern'   => 'testtable',
-                                                'replace_pattern' => 'test.newtable',
-                                                'apply'           => 1,
-                                                'active'          => 1, } },
+  mysql_group_replication_hostgroups => [ { 'hostgroup 2' => { 'reader_hostgroup'        => 10,
+                                                               'writer_hostgroup'        => 5,
+                                                               'backup_writer_hostgroup' => 2,
+                                                               'offline_hostgroup'       => 11, } },
   ],
-  schedulers       => [ { 'test scheduler' => { 'scheduler_id' => 1,
-                                               'active'        => 0,
-                                               'filename'      => '/usr/bin/whoami', } },
+  mysql_rules                        => [ { 'testable to test DB' => { 'rule_id'         => 1,
+                                                                       'match_pattern'   => 'testtable',
+                                                                       'replace_pattern' => 'test.newtable',
+                                                                       'apply'           => 1,
+                                                                       'active'          => 1, } },
+  ],
+  schedulers                         => [ { 'test scheduler' => { 'scheduler_id' => 1,
+                                                                  'active'       => 0,
+                                                                  'filename'     => '/usr/bin/whoami', } },
   ],
 }
-# lint:endignore   
+# lint:endignore
 
-# variant 2 
+# variant 2
 
 class { '::proxysql':
   listen_port    => 3306,
@@ -70,6 +75,13 @@ proxy_mysql_replication_hostgroup { '20-21':
   writer_hostgroup => 20,
   reader_hostgroup => 21,
   comment          => 'Replication Group 2',
+}
+
+proxy_mysql_group_replication_hostgroup { '5-2-10-11':
+  reader_hostgroup        => 10,
+  writer_hostgroup        => 5,
+  backup_writer_hostgroup => 2,
+  offline_hostgroup       => 11,
 }
 
 proxy_mysql_user { 'tester':

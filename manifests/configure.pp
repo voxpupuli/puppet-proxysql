@@ -55,6 +55,34 @@ class proxysql::configure {
     }
   }
 
+  if $proxysql::mysql_group_replication_hostgroups {
+    $proxysql::mysql_group_replication_hostgroups.each |$hostgroup| {
+      $hostgroup.each |$k,$v| {
+        $comment          = $k
+        $reader           = $hostgroup[$k][reader]
+        $backup           = $hostgroup[$k][backup]
+        $writer           = $hostgroup[$k][writer]
+        $offline          = $hostgroup[$k][offline]
+        $active           = $hostgroup[$k][active]
+        $writers          = $hostgroup[$k][writers]
+        $writer_is_reader = $hostgroup[$k][writer_is_reader]
+        $max_transactions = $hostgroup[$k][max_transactions]
+
+        proxy_mysql_group_replication_hostgroup { "${writer}-${backup}-${reader}-${offline}":
+          writer_hostgroup        => $writer,
+          backup_writer_hostgroup => $backup,
+          reader_hostgroup        => $reader,
+          offline_hostgroup       => $offline,
+          active                  => $active,
+          max_writers             => $writers,
+          writer_is_also_reader   => $writer_is_reader,
+          max_transactions_behind => $max_transactions,
+          comment                 => $k,
+        }
+      }
+    }
+  }
+
   if $proxysql::mysql_rules {
     $proxysql::mysql_rules.each |$rule| {
       $rule.each |$k,$v| {

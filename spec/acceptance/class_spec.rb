@@ -54,6 +54,24 @@ describe 'proxysql class' do
         comment          => 'Test MySQL Cluster 10-30',
       }
 
+      proxy_mysql_group_replication_hostgroup { '5-2-10-11':
+        ensure                  => 'present',
+        reader_hostgroup        => 10,
+        writer_hostgroup        => 5,
+        backup_writer_hostgroup => 2,
+        offline_hostgroup       => 11,
+        comment                 => 'Test MySQL GR Cluster 5-2-10-11',
+      }
+
+      proxy_mysql_group_replication_hostgroup { '3-20-6-30':
+        ensure                  => 'absent',
+        reader_hostgroup        => 6,
+        writer_hostgroup        => 3,
+        backup_writer_hostgroup => 20,
+        offline_hostgroup       => 30,
+        comment                 => 'Test MySQL GR Cluster 3-20-6-30',
+      }
+
       proxy_mysql_user { 'tester':
         ensure            => 'absent',
         password          => mysql_password('tester'),
@@ -136,6 +154,16 @@ describe 'proxysql class' do
     end
 
     describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to eq('') }
+    end
+
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_group_replication_hostgroups WHERE writer_hostgroup = 5 AND backup_writer_hostgroup = 2 AND reader_hostgroup = 10 AND offline_hostgroup = 11;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^Test MySQL GR Cluster 5-2-10-11$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_group_replication_hostgroups WHERE writer_hostgroup = 6 AND backup_writer_hostgroup = 3 AND reader_hostgroup = 20 AND offline_hostgroup = 30;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
     end

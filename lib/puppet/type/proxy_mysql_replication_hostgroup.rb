@@ -31,7 +31,7 @@ Puppet::Type.newtype(:proxy_mysql_replication_hostgroup) do
   end
 
   newproperty(:writer_hostgroup) do
-    desc 'writer_hostgroup.'
+    desc 'Writer hostgroup.'
     newvalue(%r{\d+})
   end
 
