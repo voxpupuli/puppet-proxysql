@@ -20,66 +20,99 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `scheduler` and `global_variables`.
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
 
 
 ## Setup
 
 ### Setup Requirements **OPTIONAL**
 
-The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
+The module requires Puppet 4.10.0 over above.
 
-*Note:* the ProxySQL-package is currently not in any public upstream package manager. So you should consider uploading it to a private package manager and manage that before calling the proxysql-class.
+It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 2.5.x) and on the [puppetlabs](https://puppet.com/)/[apt](https://github.com/puppetlabs/puppetlabs-apt) module (>= 2.1.x) when using deb based systems.
 
 ### Beginning with proxysql
 
 To install the ProxySQL software with all the default options:
 ```puppet
-include ::proxysql
+include proxysql
 ```
 
 You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port              => 3306,
-    admin_password           => '654321',
-    monitor_password         => '123456',
+    admin_password           => Sensitive('654321'),
+    monitor_password         => Sensitive('123456'),
     override_config_settings => $override_settings,
   }
 ```
 
 You can configure users\hostgroups\rules\schedulers using class parameters
 ```puppet
-  class { '::proxysql':
-  mysql_servers    => [ { 'db1' => { 'port'      => 3306,
-                                  'hostgroup_id' => 1, } },
-                        { 'db2' => { 'hostgroup_id' => 2, } },
-  ],
-  mysql_users      => [ { 'app' => { 'password'     => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
-                                'default_hostgroup' => 1, } },
-                        { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
-                                '     default_hostgroup' => 2, } },
-  ],
-  mysql_hostgroups => [ { 'hostgroup 1' => { 'writer_hostgroup' => 1,
-                                             'reader_hostgroup' => 2, } },
-  ],
-  mysql_rules      => [ { 'testable to test DB' => { 'rule_id'    => 1,
-                                                'match_pattern'   => 'testtable',
-                                                'replace_pattern' => 'test.newtable',
-                                                'apply'           => 1,
-                                                'active'          => 1, } },
-  ],
-  schedulers       => [ { 'test scheduler' => { 'scheduler_id' => 1,
-                                               'active'        => 0,
-                                               'filename'      => '/usr/bin/whoami', } },
-  ],
+  class { 'proxysql':
+     mysql_servers    => [ 
+       { 
+         'db1' => { 
+           'port' => 3306, 
+           'hostgroup_id' => 1, 
+         } 
+       },
+       { 
+         'db2' => { 
+           'hostgroup_id' => 2, 
+         } 
+       },
+     ],
+     mysql_users      => [ 
+       { 
+         'app' => { 
+           'password' => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB', 
+           'default_hostgroup' => 1, 
+         } 
+       },
+       { 
+         'ro'  => { 
+           'password' => mysql_password('MyReadOnlyUserPassword'), 
+           'default_hostgroup' => 2, 
+         } 
+       },
+     ],
+     mysql_hostgroups => [ 
+       { 
+         '1-2' => { 
+           'writer_hostgroup' => 1, 
+           'reader_hostgroup' => 2, 
+         } 
+       },
+     ],
+     mysql_rules      => [ 
+       { 
+         'mysql_query_rule-1' => { 
+           'rule_id'         => 1,
+           'match_pattern'   => 'testtable',
+           'replace_pattern' => 'test.newtable',
+           'apply'           => 1,
+           'active'          => 1, 
+         }
+       },
+     ],
+     schedulers       => [ 
+       { 
+         'scheduler-1' => { 
+           'scheduler_id'  => 1,
+           'active'        => 0,
+           'filename'      => '/usr/bin/whoami', 
+         }
+       },
+     ],
 ```
 
 Or by using individual resources:
 ```puppet
-  class { '::proxysql':
+  class { 'proxysql':
     listen_port    => 3306,
-    admin_password => 'SuperSecretPassword',
+    admin_password => Sensitive('SuperSecretPassword'),
   }
 
   proxy_mysql_server { '192.168.33.31:3306-31':
@@ -172,13 +205,15 @@ You can override any configuration setting by using the `override_config_setting
       ...
     },
     mysql_servers => {
-      'mysql1' => {
-         'address' => '127.0.0.1',
-         'port'    => 33061,
+      '127.0.0.1:33061-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33061,
+         'hostgroup_id' => 1,
        },
-      'mysql2' => {
-         'address' => '127.0.0.1',
-         'port'    => 33062,
+      '127.0.0.1:33062-1' => {
+         'address'      => '127.0.0.1',
+         'port'         => 33062,
+         'hostgroup_id' => 1,
        },
       ...
     },
@@ -196,8 +231,13 @@ You can override any configuration setting by using the `override_config_setting
 * [`proxysql`](#proxysql): Installs and configures ProxySQL
 
 ### Private classes
-* `proxysql::install`: Installs the package(s)
+* `proxysql::admin_credentials`: Manages the admin credentials and admin interfaces
 * `proxysql::config`: Manages the configuration files and `global_variables`
+* `proxysql::configure`: Manages the resources specified in the public class
+* `proxysql::install`: Installs the package(s)
+* `proxysql::param`: Manages the default parameters
+* `proxysql::prerequisites`: Manages the user / group to own the proxysql files
+* `proxysql::reload_config`: Reloads admin and mysql variables if you enable the `manage_config_file` option
 * `proxysql::repo`: Manages the repo's where ProxySQL might be in.
 * `proxysql::service`: Manages the service
 
@@ -668,8 +708,7 @@ Optional comment.
 
 ## Limitations
 
-The module requires Puppet 4.x and currently supports only Debian 8 "Jessie" (and possibly Debian 7 "Wheezy").
-It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 3.x)
+The module requires Puppet 4.10.0 or above.
 
 ## Development
 
