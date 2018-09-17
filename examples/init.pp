@@ -7,7 +7,7 @@ class { '::proxysql':
                                                        'hostgroup_id' => 1, } },
                                           { 'db2' => { 'hostgroup_id' => 2, } },
   ],
-  mysql_users                        => [ { 'app' => { 'password'     => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
+  mysql_users                        => [ { 'app' => { 'password'          => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
                                                        'default_hostgroup' => 1, } },
                                           { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
                                                        'default_hostgroup' => 2, } },
