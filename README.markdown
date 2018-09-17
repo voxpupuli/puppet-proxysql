@@ -86,6 +86,16 @@ You can configure users\hostgroups\rules\schedulers using class parameters
          } 
        },
      ],
+     mysql_group_replication_hostgroups => [
+       {
+         'hostgroup 2' => {
+           'reader_hostgroup'        => 10,
+           'writer_hostgroup'        => 5,
+           'backup_writer_hostgroup' => 2,
+           'offline_hostgroup'       => 11,
+         }
+       },
+     ],
      mysql_rules      => [ 
        { 
          'mysql_query_rule-1' => { 
