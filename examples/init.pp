@@ -20,6 +20,11 @@ class { 'proxysql':
                                                                'backup_writer_hostgroup' => 2,
                                                                'offline_hostgroup'       => 11, } },
   ],
+  mysql_galera_hostgroups => [ { 'hostgroup 3' => { 'reader_hostgroup'        => 10,
+                                                               'writer_hostgroup'        => 5,
+                                                               'backup_writer_hostgroup' => 2,
+                                                               'offline_hostgroup'       => 11, } },
+  ],
   mysql_rules                        => [ { 'testable to test DB' => { 'rule_id'         => 1,
                                                                        'match_pattern'   => 'testtable',
                                                                        'replace_pattern' => 'test.newtable',
@@ -78,6 +83,13 @@ proxy_mysql_replication_hostgroup { '20-21':
 }
 
 proxy_mysql_group_replication_hostgroup { '5-2-10-11':
+  reader_hostgroup        => 10,
+  writer_hostgroup        => 5,
+  backup_writer_hostgroup => 2,
+  offline_hostgroup       => 11,
+}
+
+proxy_mysql_galera_hostgroup { '5-2-10-11':
   reader_hostgroup        => 10,
   writer_hostgroup        => 5,
   backup_writer_hostgroup => 2,

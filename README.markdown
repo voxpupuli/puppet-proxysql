@@ -20,7 +20,7 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_galera_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
 
 
 ## Setup
@@ -89,6 +89,16 @@ You can configure users\hostgroups\rules\schedulers using class parameters
      mysql_group_replication_hostgroups => [
        {
          'hostgroup 2' => {
+           'reader_hostgroup'        => 10,
+           'writer_hostgroup'        => 5,
+           'backup_writer_hostgroup' => 2,
+           'offline_hostgroup'       => 11,
+         }
+       },
+     ],
+     mysql_galera_hostgroups => [
+       {
+         'hostgroup 3' => {
            'reader_hostgroup'        => 10,
            'writer_hostgroup'        => 5,
            'backup_writer_hostgroup' => 2,
