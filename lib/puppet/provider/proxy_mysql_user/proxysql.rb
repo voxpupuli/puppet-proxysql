@@ -55,14 +55,20 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
     schema_locked = @resource.value(:schema_locked) || 0
     transaction_persistent = @resource.value(:transaction_persistent) || 1
     fast_forward = @resource.value(:fast_forward) || 0
-    backend = @resource.value(:backend) || 1
-    frontend = @resource.value(:frontend) || 1
+    backend = @resource.value(:backend)
+    frontend = @resource.value(:frontend)
     max_connections = @resource.value(:max_connections) || 10_000
 
     query = 'INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, '
-    query << ' `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) '
+    query << ' `schema_locked`, `transaction_persistent`, `fast_forward`, '
+    query << ' `backend`,' if defined?(backend).nil?
+    query << ' `frontend`,' if defined?(frontend).nil?
+    query << ' `max_connections`)'
     query << " VALUES ('#{name}', '#{password}', #{active}, #{use_ssl}, #{default_hostgroup}, '#{default_schema}', "
-    query << " #{schema_locked}, #{transaction_persistent}, #{fast_forward}, #{backend}, #{frontend}, #{max_connections})"
+    query << " #{schema_locked}, #{transaction_persistent}, #{fast_forward}, "
+    query << " #{backend}," if defined?(backend).nil?
+    query << " #{frontend}," if defined?(frontend).nil?
+    query << " #{max_connections})"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
