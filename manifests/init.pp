@@ -98,6 +98,9 @@
 # * `sys_group`
 #   group of the datadir and config_file, defaults to root.
 #
+# * `permissions`
+#   Permissions for proxysql folder and configuration files. Defaults to 600.
+#
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
 #
@@ -186,6 +189,8 @@ class proxysql (
 
   Boolean $manage_repo = true,
   Hash $repo = $proxysql::params::repo,
+
+  String $permissions = $proxysql::params::permissions,
 
   String $package_source = $proxysql::params::package_source,
   String $package_checksum_value = $proxysql::params::package_checksum_value,

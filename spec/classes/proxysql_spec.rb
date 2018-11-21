@@ -41,7 +41,7 @@ describe 'proxysql' do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
                                                                      owner: sys_user,
                                                                      group: sys_group,
-                                                                     mode: '0640',
+                                                                     mode: '0600',
                                                                      path: '/etc/proxysql.cnf')
           end
 
@@ -57,7 +57,7 @@ describe 'proxysql' do
             is_expected.to contain_file('root-mycnf-file').with(ensure: 'file',
                                                                 owner: sys_user,
                                                                 group: sys_group,
-                                                                mode: '0400',
+                                                                mode: '0600',
                                                                 path: '/root/.my.cnf')
           end
 

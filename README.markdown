@@ -343,6 +343,9 @@ owner of the datadir and config_file, defaults to 'root'
 ##### `sys_group`
 group of the datadir and config_file, defaults to 'root'
 
+##### `permissions`
+permissions for proxysql folder and configuration files, defaults to 600
+
 ##### `override_config_settings`
 Which configuration variables should be overriden. Hash, defaults to `{}` (empty hash).
 

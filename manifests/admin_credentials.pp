@@ -30,7 +30,7 @@ class proxysql::admin_credentials {
       content => template('proxysql/my.cnf.erb'),
       owner   => $proxysql::sys_owner,
       group   => $proxysql::sys_group,
-      mode    => '0400',
+      mode    => $proxysql::permissions,
     }
   }
 
