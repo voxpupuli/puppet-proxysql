@@ -72,6 +72,29 @@ describe 'proxysql class' do
         comment                 => 'Test MySQL GR Cluster 3-20-6-30',
       }
 
+      proxy_mysql_galera_hostgroup { '1-2-3-4':
+        ensure                  => 'present',
+        writer_hostgroup        => 1,
+        backup_writer_hostgroup => 2,
+        reader_hostgroup        => 3,
+        offline_hostgroup       => 4,
+        active                  => 1,
+        max_writers             => 1,
+        writer_is_also_reader   => 1,
+        max_transactions_behind => 100,
+        comment                 => 'Test MySQL Galera Cluster 1-2-3-4',
+      }
+
+      proxy_mysql_galera_hostgroup { '5-6-7-8':
+        ensure                  => 'absent',
+        writer_hostgroup        => 5,
+        backup_writer_hostgroup => 6,
+        reader_hostgroup        => 7,
+        offline_hostgroup       => 8,
+        max_transactions_behind => 100,
+        comment                 => 'Test MySQL Galera Cluster 5-6-7-8',
+      }
+
       proxy_mysql_user { 'tester':
         ensure            => 'absent',
         password          => mysql_password('tester'),
@@ -154,6 +177,16 @@ describe 'proxysql class' do
     end
 
     describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to eq('') }
+    end
+
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 1 AND backup_writer_hostgroup = 2 AND reader_hostgroup = 3 AND offline_hostgroup = 4;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^Test MySQL Cluster 1-2-3-4$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 5 AND backup_writer_hostgroup = 6 AND reader_hostgroup = 7 AND offline_hostgroup = 8;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
     end

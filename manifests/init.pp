@@ -207,6 +207,7 @@ class proxysql (
   Optional[Proxysql::User] $mysql_users = undef,
   Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
   Optional[Proxysql::GroupReplicationHostgroup] $mysql_group_replication_hostgroups = undef,
+  Optional[Proxysql::GaleraHostgroup] $mysql_galera_hostgroups = undef,
   Optional[Proxysql::Rule] $mysql_rules = undef,
   Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits ::proxysql::params {

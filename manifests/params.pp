@@ -151,6 +151,7 @@ class proxysql::params {
     scheduler => {},
     mysql_replication_hostgroups => {},
     mysql_group_replication_hostgroups => {},
+    mysql_galera_hostgroups => {},
   }
 
 }
