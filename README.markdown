@@ -20,8 +20,7 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
-
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_galera_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
 
 ## Setup
 
@@ -93,6 +92,16 @@ You can configure users\hostgroups\rules\schedulers using class parameters
            'writer'  => 5,
            'backup'  => 2,
            'offline' => 11,
+         }
+       },
+     ],
+     mysql_galera_hostgroups => [
+       {
+         'galera hostgroup 1' => {
+           'writer_hostgroup'        => 1,
+           'backup_writer_hostgroup' => 2,
+           'reader_hostgroup'        => 3,
+           'offline_hostgroup'       => 4,
          }
        },
      ],
@@ -169,6 +178,13 @@ Or by using individual resources:
     offline_hostgroup       => 11,
   }
 
+  proxy_mysql_galera_hostgroup { '1-2-3-4':
+    writer_hostgroup        => 1,
+    backup_writer_hostgroup => 2,
+    reader_hostgroup        => 3,
+    offline_hostgroup       => 4,
+  }
+
   proxy_mysql_user { 'tester':
     password          => 'testerpwd',
     default_hostgroup => 30,
@@ -231,6 +247,7 @@ You can override any configuration setting by using the `override_config_setting
     mysql_query_rules => { ... },
     scheduler => { ... },
     mysql_replication_hostgroups => { ... },
+    mysql_galera_hostgroups => { ... },
 
 }
 ```
@@ -445,6 +462,48 @@ Optional comment.
 
 #### mysql_group_replication_hostgroup
 `mysql_group_replication_hostgroup` manages an entry in the ProxySQL `mysql_group_replication_hostgroups` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `name`
+Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `load_to_runtime`
+Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `writer_hostgroup`
+Id of the writer hostgroup. Required.
+
+##### `backup_writer_hostgroup`
+Id of the backup writer hostgroup. Required.
+
+##### `reader_hostgroup`
+Id of the reader hostgroup. Required.
+
+##### `offline_hostgroup`
+Id of the offline hostgroup. Required.
+
+##### `active`
+Specifies wheter the resource is active or not. Integer, defaults to 1.
+
+##### `max_writers`
+Specifies how many active writers the resource has. Integer, defaults to 1.
+
+##### `writer_is_also_reader`
+Specifies if the writer is also a reader. Integer, defaults to 0.
+
+##### `max_transactions_behind`
+Specifies how many transactions a resource can be behind the "master" until shunned. Integer, defaults to 0.
+
+##### `comment`
+Optional comment.
+
+#### proxy_mysql_galera_hostgroup
+`proxy_mysql_galera_hostgroup` manages an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
 
 ##### `ensure`
 Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
