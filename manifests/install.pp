@@ -30,7 +30,9 @@ class proxysql::install {
       require         => Archive[$real_package_source],
     }
   } else {
-    Exec['apt_update'] -> Package[$proxysql::package_name]
+    if $facts['os']['family'] == 'Debian' {
+      Exec['apt_update'] -> Package[$proxysql::package_name]
+    }
 
     package { $proxysql::package_name:
       ensure          => $proxysql::package_ensure,
