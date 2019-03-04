@@ -5,6 +5,8 @@
 class proxysql::install {
 
   if !$proxysql::manage_repo {
+    $require_package = undef
+
     case $facts['os']['family'] {
       'Debian': {
         archive { '/root/proxysql-package.deb':
@@ -15,6 +17,7 @@ class proxysql::install {
         }
 
         $real_package_source = '/root/proxysql-package.deb'
+        $require_package = Archive[$real_package_source]
       }
       default: {
         $real_package_source = $proxysql::package_source
@@ -27,7 +30,7 @@ class proxysql::install {
       source          => $real_package_source,
       provider        => $proxysql::package_provider,
       install_options => $proxysql::package_install_options,
-      require         => Archive[$real_package_source],
+      require         => $require_package,
     }
   } else {
     if $facts['os']['family'] == 'Debian' {
