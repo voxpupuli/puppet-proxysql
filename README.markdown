@@ -27,7 +27,7 @@ This module will install the ProxySQL and manage it's configuration. It also ext
 
 ### Setup Requirements **OPTIONAL**
 
-The module requires Puppet 4.10.0 over above.
+The module requires Puppet 5.5.8 over above.
 
 It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 2.5.x) and on the [puppetlabs](https://puppet.com/)/[apt](https://github.com/puppetlabs/puppetlabs-apt) module (>= 2.1.x) when using deb based systems.
 
