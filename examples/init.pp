@@ -2,7 +2,7 @@
 # lint:ignore:2sp_soft_tabs
 # variant 1
 
-class { '::proxysql':
+class { 'proxysql':
   mysql_servers                      => [ { 'db1' => { 'port'         => 3306,
                                                        'hostgroup_id' => 1, } },
                                           { 'db2' => { 'hostgroup_id' => 2, } },
@@ -35,7 +35,7 @@ class { '::proxysql':
 
 # variant 2
 
-class { '::proxysql':
+class { 'proxysql':
   listen_port    => 3306,
   admin_password => 'SuperSecretPassword',
 }
