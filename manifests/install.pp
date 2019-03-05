@@ -4,17 +4,27 @@
 #
 class proxysql::install {
 
-  if !$proxysql::manage_repo {
+  if $proxysql::manage_repo {
+    if $facts['os']['family'] == 'Debian' {
+      Class['apt::update'] -> Package[$proxysql::package_name]
+    }
+
+    package { $proxysql::package_name:
+      ensure          => $proxysql::package_ensure,
+      install_options => $proxysql::package_install_options,
+    }
+  } else {
     case $facts['os']['family'] {
       'Debian': {
-        archive { '/root/proxysql-package.deb':
+        $real_package_source = '/root/proxysql-package.deb'
+
+        archive { $real_package_source:
           ensure        => present,
           source        => $proxysql::package_source,
           checksum      => $proxysql::package_checksum_value,
           checksum_type => $proxysql::package_checksum_type,
+          before        => Package[$proxysql::package_name],
         }
-
-        $real_package_source = '/root/proxysql-package.deb'
       }
       default: {
         $real_package_source = $proxysql::package_source
@@ -27,19 +37,8 @@ class proxysql::install {
       source          => $real_package_source,
       provider        => $proxysql::package_provider,
       install_options => $proxysql::package_install_options,
-      require         => Archive[$real_package_source],
-    }
-  } else {
-    if $facts['os']['family'] == 'Debian' {
-      Exec['apt_update'] -> Package[$proxysql::package_name]
-    }
-
-    package { $proxysql::package_name:
-      ensure          => $proxysql::package_ensure,
-      install_options => $proxysql::package_install_options,
     }
   }
-
 
   file { 'proxysql-datadir':
     ensure => directory,
