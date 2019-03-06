@@ -249,6 +249,7 @@ You can override any configuration setting by using the `override_config_setting
 * `proxysql::prerequisites`: Manages the user / group to own the proxysql files
 * `proxysql::reload_config`: Reloads admin and mysql variables if you enable the `manage_config_file` option
 * `proxysql::repo`: Manages the repo's where ProxySQL might be in.
+* `proxysql::repo_version`: Specifies the repo. Possible values are '1.4.x' and '2.0.x'.
 * `proxysql::service`: Manages the service
 
 ### parameters
@@ -327,6 +328,9 @@ Determines wheter this module will manage the repositories where ProxySQL might 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source` or `yumrepo` (depending on the OS family).
 Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
+
+#### `repo_version`
+Specifies the repo version. Possible values are '1.4.x' and '2.0.x'. String, efaults to '1.4.x'.
 
 
 ##### `package_source`
