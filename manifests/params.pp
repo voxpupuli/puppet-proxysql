@@ -82,9 +82,19 @@ class proxysql::params {
         }
         default: {}
       }
-      $repo             = {
-        comment  => 'ProxySQL APT repository',
+      $repo14             = {
+        comment  => 'ProxySQL 1.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['lsbdistcodename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        },
+      }
+      $repo20             = {
+        comment  => 'ProxySQL 2.0.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/${facts['lsbdistcodename']}/",
         release  => './',
         repos    => '',
         key      => {
@@ -99,9 +109,16 @@ class proxysql::params {
       $package_checksum_value = '6f302beaea096b63851a136287818a1b6e049e28'
       $package_checksum_type = 'sha1'
       $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
-      $repo             = {
-        descr    => 'ProxySQL YUM repository',
+      $repo14             = {
+        descr    => 'ProxySQL 1.4.x YUM repository',
         baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/$releasever',
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo20             = {
+        descr    => 'ProxySQL 2.0.x YUM repository',
+        baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/$releasever',
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
