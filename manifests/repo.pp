@@ -9,13 +9,13 @@ class proxysql::repo inherits proxysql {
       'Debian': {
         case $proxysql::repo_version {
           '2.0.x': {
-            create_resources('::apt::source', { 'proxysql_repo' => $proxysql::repo20})
+            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo20})
           }
           '1.4.x': {
-            create_resources('::apt::source', { 'proxysql_repo' => $proxysql::repo14})
+            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo14})
           }
           default: {
-            create_resources('::apt::source', { 'proxysql_repo' => $proxysql::repo14})
+            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo14})
           }
         }
       }
