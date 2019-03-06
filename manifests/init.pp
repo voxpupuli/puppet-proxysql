@@ -185,7 +185,8 @@ class proxysql (
   Boolean $save_to_disk = $proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
-  Hash $repo = $proxysql::params::repo,
+  Hash $repo = $proxysql::params::repo14,
+  Enum['2.0.x','1.4.x'] = $repo_version = '1.4.x',
 
   String $package_source = $proxysql::params::package_source,
   String $package_checksum_value = $proxysql::params::package_checksum_value,
