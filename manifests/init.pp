@@ -84,6 +84,9 @@
 #   to `apt::source` or `yumrepo` (depending on the OS family).
 #   Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
 #
+# * `repo_version`
+#   Specifies the repo version of ProxySQL to be configured. Defaults to '1.4.x'.
+#
 # * `package_source`
 #   location ot the proxysql package for the `package_provider`.
 #   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm' for RedHat based systems
