@@ -66,10 +66,9 @@ class proxysql::params {
               $package_dependencies = []
             }
             '18.04': {
-              # no upstream bionic builds are provided yet.
-              $package_source = undef
-              $package_checksum_value = undef
-              $package_checksum_type = undef
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.2/proxysql_2.0.2-ubuntu18_amd64.deb'
+              $package_checksum_value = 'c376bd539aef4207e56535b1dd8a7bd98a490db2'
+              $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
             default: {
