@@ -15,7 +15,7 @@ describe 'proxysql class' do
 
     describe package('proxysql') do
       it { is_expected.to be_installed }
-      its('version') { is_expected.to contain %r{^1\.4.*} }
+      its('version') { is_expected.to start_with(1) }
     end
 
     describe service('proxysql') do
@@ -133,7 +133,7 @@ describe 'proxysql class' do
 
     describe package('proxysql') do
       it { is_expected.to be_installed }
-      its('version') { is_expected.to contain %r{^2\.0.*} }
+      its('version') { is_expected.to start_with(2) }
     end
 
     describe service('proxysql') do
