@@ -14,16 +14,13 @@ class proxysql::params {
 
   $listen_ip     = '0.0.0.0'
   $listen_port   = 6033
-  $listen_socket = '/tmp/proxysql.sock'
 
   $admin_username      = 'admin'
   $admin_password      = Sensitive('admin')
   $admin_listen_ip     = '127.0.0.1'
   $admin_listen_port   = 6032
 
-  $admin_listen_socket = '/tmp/proxysql_admin.sock'
-  $sys_owner           = 'root'
-  $sys_group           = 'root'
+  $datadir = '/var/lib/proxysql'
 
   case $facts['os']['family'] {
     'Debian': {
@@ -66,6 +63,14 @@ class proxysql::params {
               $package_dependencies = []
             }
             '18.04': {
+              $_repo_version = '2.0.x'
+              $_sys_owner   = 'proxysql'
+              $_sys_group   = 'proxysql'
+
+              # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
+              # This limits where we can write sockets.
+              $_listen_socket = "${datadir}/proxysql.sock"
+              $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.2/proxysql_2.0.2-ubuntu18_amd64.deb'
               $package_checksum_value = 'c376bd539aef4207e56535b1dd8a7bd98a490db2'
               $package_checksum_type = 'sha1'
@@ -128,10 +133,15 @@ class proxysql::params {
     }
   }
 
+  $sys_owner = pick(getvar('_sys_owner'),'root')
+  $sys_group = pick(getvar('_sys_group'),'root')
+  $repo_version = pick(getvar('_repo_version'),'1.4.x')
+  $listen_socket = pick(getvar('_listen_socket'),'/tmp/proxysql.sock')
+  $admin_listen_socket = pick(getvar('_admin_listen_socket'),'/tmp/proxysql_admin.sock')
+
   $monitor_username = 'monitor'
   $monitor_password = Sensitive('monitor')
 
-  $datadir = '/var/lib/proxysql'
 
   $split_config             = false
   $config_file              = '/etc/proxysql.cnf'
