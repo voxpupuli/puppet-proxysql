@@ -85,7 +85,7 @@
 #   Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
 #
 # * `repo_version`
-#   Specifies the repo version of ProxySQL to be configured. Defaults to '1.4.x'.
+#   Specifies the repo version of ProxySQL to be configured. Defaults to '1.4.x' ('2.0.x' for Ubuntu 18.04).
 #
 # * `package_source`
 #   location ot the proxysql package for the `package_provider`.
@@ -189,7 +189,7 @@ class proxysql (
 
   Boolean $manage_repo = true,
   Hash $repo = $proxysql::params::repo14,
-  Enum['2.0.x','1.4.x']  $repo_version = '1.4.x',
+  Enum['2.0.x','1.4.x']  $repo_version = pick(getvar('proxysql::params::repo_version'),'1.4.x'),
 
   String $package_source = $proxysql::params::package_source,
   String $package_checksum_value = $proxysql::params::package_checksum_value,
@@ -197,8 +197,8 @@ class proxysql (
   Array $package_dependencies = $proxysql::params::package_dependencies,
   String $package_provider= $proxysql::params::package_provider,
 
-  String $sys_owner = $proxysql::params::sys_owner,
-  String $sys_group = $proxysql::params::sys_group,
+  String $sys_owner = pick(getvar('proxysql::params::sys_owner'),'root'),
+  String $sys_group = pick(getvar('proxysql::params::sys_group'),'root'),
 
   String $cluster_username = $proxysql::params::cluster_username,
   Sensitive[String] $cluster_password = $proxysql::params::cluster_password,

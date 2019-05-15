@@ -34,8 +34,13 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
-          let(:sys_user) { 'root' }
-          let(:sys_group) { 'root' }
+          if facts[:operatingsystemrelease] == '18.04'
+            sys_user = 'proxysql'
+            sys_group = 'proxysql'
+          else
+            sys_user = 'root'
+            sys_group = 'root'
+          end
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',

@@ -22,8 +22,6 @@ class proxysql::params {
   $admin_listen_port   = 6032
 
   $admin_listen_socket = '/tmp/proxysql_admin.sock'
-  $sys_owner           = 'root'
-  $sys_group           = 'root'
 
   case $facts['os']['family'] {
     'Debian': {
@@ -66,6 +64,9 @@ class proxysql::params {
               $package_dependencies = []
             }
             '18.04': {
+              $repo_version = '2.0.x'
+              $sys_owner    = 'proxysql'
+              $sys_group    = 'proxysql'
               $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.2/proxysql_2.0.2-ubuntu18_amd64.deb'
               $package_checksum_value = 'c376bd539aef4207e56535b1dd8a7bd98a490db2'
               $package_checksum_type = 'sha1'
