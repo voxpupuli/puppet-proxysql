@@ -34,8 +34,15 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
-          let(:sys_user) { 'root' }
-          let(:sys_group) { 'root' }
+          if facts[:operatingsystemrelease] == '18.04'
+            sys_user = 'proxysql'
+            sys_group = 'proxysql'
+            admin_socket = '/var/lib/proxysql/proxysql_admin.sock'
+          else
+            sys_user = 'root'
+            sys_group = 'root'
+            admin_socket = '/tmp/proxysql_admin.sock'
+          end
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
@@ -70,8 +77,8 @@ describe 'proxysql' do
 
           it do
             is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
-              command:   'test -S /tmp/proxysql_admin.sock',
-              unless:    'test -S /tmp/proxysql_admin.sock',
+              command:   "test -S #{admin_socket}",
+              unless:    "test -S #{admin_socket}",
               tries:     3,
               try_sleep: 10,
               require:   'Service[proxysql]',
