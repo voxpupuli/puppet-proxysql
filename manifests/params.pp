@@ -71,8 +71,8 @@ class proxysql::params {
               # This limits where we can write sockets.
               $_listen_socket = "${datadir}/proxysql.sock"
               $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.2/proxysql_2.0.2-ubuntu18_amd64.deb'
-              $package_checksum_value = 'c376bd539aef4207e56535b1dd8a7bd98a490db2'
+              $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.4/proxysql_2.0.4-ubuntu18_amd64.deb'
+              $package_checksum_value = '397e7244663d8e15134d788e918d9d75c0802b5a'
               $package_checksum_type = 'sha1'
               $package_dependencies = []
             }
