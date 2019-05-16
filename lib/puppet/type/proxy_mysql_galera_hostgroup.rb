@@ -1,75 +1,109 @@
-# This has to be a separate type to enable collecting
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
   @doc = 'Manage a ProxySQL mysql_galera_hostgroup.'
-
-  ensurable
 
   autorequire(:file) { '/root/.my.cnf' }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 
+  def self.title_patterns
+    [
+      [
+        %r{^((\d+)-(\d+)-(\d+)-(\d+))$},
+        [
+          [:name],
+          [:writer_hostgroup],
+          [:backup_writer_hostgroup],
+          [:reader_hostgroup],
+          [:offline_hostgroup]
+        ]
+      ],
+      [
+        %r{^(.*)$},
+        [
+          [:name]
+        ]
+      ]
+    ]
+  end
+
+  ensurable do
+    defaultvalues
+    defaultto :present
+  end
+
   validate do
-    raise('writer_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:writer_hostgroup].nil?
-    raise('backup_writer_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:backup_writer_hostgroup].nil?
-    raise('reader_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:reader_hostgroup].nil?
-    raise('offline_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:offline_hostgroup].nil?
-    raise('name must match writer_hostgroup-backup_writer_hostgroup-reader_hostgroup-offline_hostgroup parameters') if self[:name] != "#{self[:writer_hostgroup]}-#{self[:backup_writer_hostgroup]}-#{self[:reader_hostgroup]}-#{self[:offline_hostgroup]}"
+    [
+      :writer_hostgroup,
+      :backup_writer_hostgroup,
+      :reader_hostgroup,
+      :offline_hostgroup
+    ].each do |namevar|
+      raise Puppet::Error, "proxy_mysql_galera_hostgroup: #{namevar} is required or use `<writer_hostgroup>-<backup_writer_hostgroup>-<reader_hostgroup>-<offline_hostgroup>` style resource title" unless self[namevar]
+    end
   end
 
   newparam(:name, namevar: true) do
     desc 'name to describe the hostgroup config'
+    munge do |_discard|
+      [
+        @resource.original_parameters[:writer_hostgroup],
+        @resource.original_parameters[:backup_writer_hostgroup],
+        @resource.original_parameters[:reader_hostgroup],
+        @resource.original_parameters[:offline_hostgroup]
+      ].join('-')
+    end
   end
 
-  newparam(:load_to_runtime) do
-    desc 'Load this entry to the active runtime.'
-    defaultto :true
-    newvalues(:true, :false)
-  end
-
-  newparam(:save_to_disk) do
-    desc 'Perist this entry to the disk.'
-    defaultto :true
-    newvalues(:true, :false)
-  end
-
-  newproperty(:writer_hostgroup) do
+  newparam(:writer_hostgroup, namevar: true) do
     desc 'Writer hostgroup.'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
-  newproperty(:backup_writer_hostgroup) do
+  newparam(:backup_writer_hostgroup, namevar: true) do
     desc 'Backup Writer hostgroup.'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
-  newproperty(:reader_hostgroup) do
+  newparam(:reader_hostgroup, namevar: true) do
     desc 'Reader hostgroup.'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
-  newproperty(:offline_hostgroup) do
+  newparam(:offline_hostgroup, namevar: true) do
     desc 'Offline hostgroup.'
-    newvalue(%r{\d+})
+    munge(&:to_i)
+  end
+
+  newparam(:load_to_runtime, boolean: true, parent: Puppet::Parameter::Boolean) do
+    desc 'Load this entry to the active runtime.'
+    defaultto true
+  end
+
+  newparam(:save_to_disk, boolean: true, parent: Puppet::Parameter::Boolean) do
+    desc 'Perist this entry to the disk.'
+    defaultto true
   end
 
   newproperty(:active) do
     desc 'active'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
   newproperty(:max_writers) do
     desc 'Maximum Writers'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
   newproperty(:writer_is_also_reader) do
     desc 'A writer is also used for reading'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
   newproperty(:max_transactions_behind) do
     desc 'Maximum Transaction Galera Node out-of-sync'
-    newvalue(%r{\d+})
+    munge(&:to_i)
   end
 
   newproperty(:comment) do

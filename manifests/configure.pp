@@ -97,10 +97,6 @@ class proxysql::configure {
         $max_transactions = $hostgroup[$k][max_transactions]
 
         proxy_mysql_galera_hostgroup { "${writer}-${backup}-${reader}-${offline}":
-          writer_hostgroup        => $writer,
-          backup_writer_hostgroup => $backup,
-          reader_hostgroup        => $reader,
-          offline_hostgroup       => $offline,
           active                  => $active,
           max_writers             => $writers,
           writer_is_also_reader   => $writer_is_reader,

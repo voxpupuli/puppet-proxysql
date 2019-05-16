@@ -57,27 +57,27 @@
 #   Defaults to '/etc/proxysql.cnf'
 #
 # * `manage_config_file`
-#   Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+#   Determines whether this module will configure the ProxySQL configuration file. Defaults to 'true'
 #
 # * `mycnf_file_name`
 #   Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 #   This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
 #
 # * `manage_mycnf_file`
-#   Determines wheter this module will configure the my.cnf file to connect to the admin interface.
+#   Determines whether this module will configure the my.cnf file to connect to the admin interface.
 #   This is required for the providers to work. Defaults to 'true'
 #
 # * `restart`
-#   Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
+#   Determines whether this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 #
 # * `load_to_runtime`
-#   Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+#   Specifies whether te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 #
 # * `save_to_disk`
-#   Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
+#   Specifies whether te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
 #
 # * `manage_repo`
-#   Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
+#   Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 #
 # * `repo`
 #   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
@@ -119,7 +119,7 @@
 #   The name of the mysql client package in your package manager. Defaults to undef
 #
 # * `manage_hostgroup_for_servers`
-#   Determines wheter this module will manage hostgroup_id for mysql_servers.
+#   Determines whether this module will manage hostgroup_id for mysql_servers.
 #   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 #
 # * `mysql_servers`
@@ -145,7 +145,7 @@
 #   This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
 #
 # * `manage_proxy_config_file`
-#   Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
+#   Determines whether this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 #
 class proxysql (
   Optional[String] $cluster_name = $proxysql::params::cluster_name,
