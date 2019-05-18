@@ -51,68 +51,68 @@ You can customize options such as (but not limited to) `listen_port`, `admin_pas
 You can configure users\hostgroups\rules\schedulers using class parameters
 ```puppet
   class { 'proxysql':
-     mysql_servers    => [ 
-       { 
-         'db1' => { 
-           'port' => 3306, 
-           'hostgroup_id' => 1, 
-         } 
+     mysql_servers    => [
+       {
+         'db1' => {
+           'port' => 3306,
+           'hostgroup_id' => 1,
+         }
        },
-       { 
-         'db2' => { 
-           'hostgroup_id' => 2, 
-         } 
-       },
-     ],
-     mysql_users      => [ 
-       { 
-         'app' => { 
-           'password' => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB', 
-           'default_hostgroup' => 1, 
-         } 
-       },
-       { 
-         'ro'  => { 
-           'password' => mysql_password('MyReadOnlyUserPassword'), 
-           'default_hostgroup' => 2, 
-         } 
+       {
+         'db2' => {
+           'hostgroup_id' => 2,
+         }
        },
      ],
-     mysql_hostgroups => [ 
-       { 
-         '1-2' => { 
-           'writer_hostgroup' => 1, 
-           'reader_hostgroup' => 2, 
-         } 
+     mysql_users      => [
+       {
+         'app' => {
+           'password' => '*92C74DFBDA5D60ABD41EFD7EB0DAE389F4646ABB',
+           'default_hostgroup' => 1,
+         }
+       },
+       {
+         'ro'  => {
+           'password' => mysql_password('MyReadOnlyUserPassword'),
+           'default_hostgroup' => 2,
+         }
+       },
+     ],
+     mysql_hostgroups => [
+       {
+         '1-2' => {
+           'writer' => 1,
+           'reader' => 2,
+         }
        },
      ],
      mysql_group_replication_hostgroups => [
        {
          'hostgroup 2' => {
-           'reader_hostgroup'        => 10,
-           'writer_hostgroup'        => 5,
-           'backup_writer_hostgroup' => 2,
-           'offline_hostgroup'       => 11,
+           'reader'  => 10,
+           'writer'  => 5,
+           'backup'  => 2,
+           'offline' => 11,
          }
        },
      ],
-     mysql_rules      => [ 
-       { 
-         'mysql_query_rule-1' => { 
+     mysql_rules      => [
+       {
+         'mysql_query_rule-1' => {
            'rule_id'         => 1,
            'match_pattern'   => 'testtable',
            'replace_pattern' => 'test.newtable',
            'apply'           => 1,
-           'active'          => 1, 
+           'active'          => 1,
          }
        },
      ],
-     schedulers       => [ 
-       { 
-         'scheduler-1' => { 
+     schedulers       => [
+       {
+         'scheduler-1' => {
            'scheduler_id'  => 1,
            'active'        => 0,
-           'filename'      => '/usr/bin/whoami', 
+           'filename'      => '/usr/bin/whoami',
          }
        },
      ],
