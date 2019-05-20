@@ -115,14 +115,14 @@ class proxysql::params {
       $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
       $repo14             = {
         descr    => 'ProxySQL 1.4.x YUM repository',
-        baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/$releasever',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/${facts['os']['release']['major']}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
       }
       $repo20             = {
         descr    => 'ProxySQL 2.0.x YUM repository',
-        baseurl  => 'http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/$releasever',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/${facts['os']['release']['major']}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
