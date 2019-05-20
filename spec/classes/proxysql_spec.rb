@@ -29,6 +29,10 @@ describe 'proxysql' do
 
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
+          if facts[:osfamily] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_repo').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/#{facts[:operatingsystemmajrelease]}") }
+          end
+
           it do
             is_expected.to contain_package('proxysql').with(ensure: 'installed',
                                                             install_options: [])
