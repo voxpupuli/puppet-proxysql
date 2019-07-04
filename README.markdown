@@ -20,8 +20,7 @@
 
 The proxysql module installs, configures and manages the [ProxySQL](https://github.com/sysown/proxysql) service.
 
-This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
-
+This module will install the ProxySQL and manage it's configuration. It also extends Puppet to be able to manage `mysql_users`, `mysql_servers`, `mysql_replication_hostgroups`, `mysql_galera_hostgroups`, `mysql_query_rules`, `proxysql_servers`, `scheduler` and `global_variables`.
 
 ## Setup
 
@@ -93,6 +92,16 @@ You can configure users\hostgroups\rules\schedulers using class parameters
            'writer'  => 5,
            'backup'  => 2,
            'offline' => 11,
+         }
+       },
+     ],
+     mysql_galera_hostgroups => [
+       {
+         'galera hostgroup 1' => {
+           'writer'  => 1,
+           'backup'  => 2,
+           'reader'  => 3,
+           'offline' => 4,
          }
        },
      ],
@@ -169,6 +178,13 @@ Or by using individual resources:
     offline_hostgroup       => 11,
   }
 
+  proxy_mysql_galera_hostgroup { '1-2-3-4':
+    writer_hostgroup        => 1,
+    backup_writer_hostgroup => 2,
+    reader_hostgroup        => 3,
+    offline_hostgroup       => 4,
+  }
+
   proxy_mysql_user { 'tester':
     password          => 'testerpwd',
     default_hostgroup => 30,
@@ -231,6 +247,7 @@ You can override any configuration setting by using the `override_config_setting
     mysql_query_rules => { ... },
     scheduler => { ... },
     mysql_replication_hostgroups => { ... },
+    mysql_galera_hostgroups => { ... },
 
 }
 ```
@@ -304,26 +321,26 @@ The file where the ProxySQL configuration is saved. This will only be configured
 Defaults to '/etc/proxysql.cnf'
 
 ##### `manage_config_file`
-Determines wheter this module will configure the ProxySQL configuration file. Defaults to 'true'
+Determines whether this module will configure the ProxySQL configuration file. Defaults to 'true'
 
 ##### `mycnf_file_name`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
 
 ##### `manage_mycnf_file`
-Determines wheter this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
+Determines whether this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'
 
 ##### `restart`
-Determines wheter this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
+Determines whether this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
 
 ##### `load_to_runtime`
-Specifies wheter te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `manage_repo`
-Determines wheter this module will manage the repositories where ProxySQL might be. Defaults to 'true'
+Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 
 ##### `repo`
 These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source` or `yumrepo` (depending on the OS family).
@@ -365,7 +382,7 @@ The password ProxySQL will use to connect to the configured mysql_clusters. Defa
 The name of the mysql client package in your package manager. Defaults to undef
 
 ##### `manage_hostgroup_for_servers`
-Determines wheter this module will manage hostgroup_id for mysql_servers.
+Determines whether this module will manage hostgroup_id for mysql_servers.
 If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
 
 ##### `mysql_servers`
@@ -389,7 +406,7 @@ If set, ProxySQL config file will be split in 2: main config file with admin and
 The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved. This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
 
 #####`manage_proxy_config_file`
-Determines wheter this module will update the ProxySQL proxy configuration file. Defaults to 'true'
+Determines whether this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 
 ## Types
 #### proxy_global_variable
@@ -399,10 +416,10 @@ Determines wheter this module will update the ProxySQL proxy configuration file.
 The name of the variable.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `value`
 The value of the variable.
@@ -429,10 +446,10 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`reader_hostgroup`' format.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `writer_hostgroup`
 Id of the writer hostgroup. Required.
@@ -453,10 +470,10 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 Name to describe the hostgroup config. Must be in a '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `writer_hostgroup`
 Id of the writer hostgroup. Required.
@@ -471,7 +488,7 @@ Id of the reader hostgroup. Required.
 Id of the offline hostgroup. Required.
 
 ##### `active`
-Specifies wheter the resource is active or not. Integer, defaults to 1.
+Specifies whether the resource is active or not. Integer, defaults to 1.
 
 ##### `max_writers`
 Specifies how many active writers the resource has. Integer, defaults to 1.
@@ -481,6 +498,45 @@ Specifies if the writer is also a reader. Integer, defaults to 0.
 
 ##### `max_transactions_behind`
 Specifies how many transactions a resource can be behind the "master" until shunned. Integer, defaults to 0.
+
+##### `comment`
+Optional comment.
+
+#### proxy_mysql_galera_hostgroup
+`proxy_mysql_galera_hostgroup` manages an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
+
+##### `ensure`
+Whether the resource is present. Valid values are 'present', 'absent'. Defaults to 'present'.
+
+##### `load_to_runtime`
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+
+##### `save_to_disk`
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
+
+##### `writer_hostgroup`
+Id of the writer hostgroup. Required if the title of the resource doesn't match the '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `backup_writer_hostgroup`
+Id of the backup writer hostgroup. Required if the title of the resource doesn't match the '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `reader_hostgroup`
+Id of the reader hostgroup. Required if the title of the resource doesn't match the '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `offline_hostgroup`
+Id of the offline hostgroup. Required if the title of the resource doesn't match the '`writer_hostgroup`-`backup_writer_hostgroup`-`reader_hostgroup`-`offline_hostgroup`' format.
+
+##### `active`
+Specifies whether the resource is active or not. Integer. On creation defaults to proxysql default setting (1).
+
+##### `max_writers`
+Specifies how many active writers the resource has. Integer. On creation defaults to proxysql default setting (1).
+
+##### `writer_is_also_reader`
+Specifies if the writer is also a reader. Integer. On creation defaults to proxysql default setting (0).
+
+##### `max_transactions_behind`
+Specifies how many transactions a resource can be behind the "master" until shunned. Integer. On creation defaults to proxysql default setting (0).
 
 ##### `comment`
 Optional comment.
@@ -495,10 +551,10 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 Name to describe the hostgroup config. Must be in a '`hostname`:`port`-`hostgroup_id`' format.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `hostgroup_id`
 Id of the hostgroup this server wil be configured to be part of. Integer value, required.
@@ -544,13 +600,13 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 Username for the user. Required.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `encrypt_password`
-Specifies wheter the user password should be encrypted (requires ProxySQL setting `admin-hash_password` = `true`). Boolean, defaults to 'true'.
+Specifies whether the user password should be encrypted (requires ProxySQL setting `admin-hash_password` = `true`). Boolean, defaults to 'true'.
 
 ##### `password`
 Password for the user. Required.
@@ -594,10 +650,10 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 The name of the query rule entry, Must be in a 'mysql_query_rule-`rule_id`' format.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `rule_id`
 Id of the scheduler entry. Integer value, required.
@@ -688,10 +744,10 @@ Whether the resource is present. Valid values are 'present', 'absent'. Defaults 
 The name of the scheduler entry, Must be in a 'scheduler-`scheduler_id`' format.
 
 ##### `load_to_runtime`
-Specifies wheter the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
 
 ##### `save_to_disk`
-Specifies wheter the resource should be immediately save to disk. Boolean, defaults to 'true'.
+Specifies whether the resource should be immediately save to disk. Boolean, defaults to 'true'.
 
 ##### `scheduler_id`
 Id of the scheduler entry. Integer value, required.

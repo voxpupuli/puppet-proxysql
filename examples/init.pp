@@ -12,13 +12,18 @@ class { 'proxysql':
                                           { 'ro'  => { 'password'          => '*86935F2843252CFAAC4CE713C0D5FF80CF444F3B',
                                                        'default_hostgroup' => 2, } },
   ],
-  mysql_hostgroups                   => [ { 'hostgroup 1' => { 'writer_hostgroup' => 1,
-                                                               'reader_hostgroup' => 2, } },
+  mysql_hostgroups                   => [ { 'hostgroup 1' => { 'writer' => 1,
+                                                               'reader' => 2, } },
   ],
-  mysql_group_replication_hostgroups => [ { 'hostgroup 2' => { 'reader_hostgroup'        => 10,
-                                                               'writer_hostgroup'        => 5,
-                                                               'backup_writer_hostgroup' => 2,
-                                                               'offline_hostgroup'       => 11, } },
+  mysql_group_replication_hostgroups => [ { 'hostgroup 2' => { 'reader'  => 10,
+                                                               'writer'  => 5,
+                                                               'backup'  => 2,
+                                                               'offline' => 11, } },
+  ],
+  mysql_galera_hostgroups            => [ { 'hostgroup 2' => { 'reader'  => 10,
+                                                               'writer'  => 5,
+                                                               'backup'  => 2,
+                                                               'offline' => 11, } },
   ],
   mysql_rules                        => [ { 'testable to test DB' => { 'rule_id'         => 1,
                                                                        'match_pattern'   => 'testtable',
@@ -82,6 +87,21 @@ proxy_mysql_group_replication_hostgroup { '5-2-10-11':
   writer_hostgroup        => 5,
   backup_writer_hostgroup => 2,
   offline_hostgroup       => 11,
+}
+
+proxy_mysql_galera_hostgroup { '1-2-3-4':
+  writer_hostgroup        => 1,
+  backup_writer_hostgroup => 2,
+  reader_hostgroup        => 3,
+  offline_hostgroup       => 4,
+  comment                 => 'Galera Replication Group 1',
+}
+proxy_mysql_galera_hostgroup { '5-6-7-8':
+  writer_hostgroup        => 5,
+  backup_writer_hostgroup => 6,
+  reader_hostgroup        => 7,
+  offline_hostgroup       => 8,
+  comment                 => 'Galera Replication Group 2',
 }
 
 proxy_mysql_user { 'tester':

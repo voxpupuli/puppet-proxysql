@@ -21,6 +21,11 @@ describe 'proxysql class' do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
+
+    describe command('proxysql --version') do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stderr) { is_expected.to match %r{ProxySQL version} }
+    end
   end
 
   context 'extended testing' do
@@ -70,6 +75,43 @@ describe 'proxysql class' do
         backup_writer_hostgroup => 20,
         offline_hostgroup       => 30,
         comment                 => 'Test MySQL GR Cluster 3-20-6-30',
+      }
+
+      if $facts['proxysql_version'] =~ /^2/ {
+        proxy_mysql_galera_hostgroup { '1-2-3-4':
+          ensure                  => 'present',
+          writer_hostgroup        => 1,
+          backup_writer_hostgroup => 2,
+          reader_hostgroup        => 3,
+          offline_hostgroup       => 4,
+          active                  => 1,
+          max_writers             => 1,
+          writer_is_also_reader   => 1,
+          max_transactions_behind => 100,
+          comment                 => 'Test MySQL Galera Cluster 1-2-3-4',
+        }
+
+        proxy_mysql_galera_hostgroup { '5-6-7-8':
+          ensure                  => 'absent',
+          writer_hostgroup        => 5,
+          backup_writer_hostgroup => 6,
+          reader_hostgroup        => 7,
+          offline_hostgroup       => 8,
+          max_transactions_behind => 100,
+          comment                 => 'Test MySQL Galera Cluster 5-6-7-8',
+        }
+        proxy_mysql_galera_hostgroup { '9-10-11-12':
+          ensure                  => 'present',
+          comment                 => 'Test MySQL Galera Cluster 9-10-11-12',
+        }
+        proxy_mysql_galera_hostgroup { 'another galera hostgroup':
+          ensure                  => 'present',
+          writer_hostgroup        => 13,
+          backup_writer_hostgroup => 14,
+          reader_hostgroup        => 15,
+          offline_hostgroup       => 16,
+          comment                 => 'Test MySQL Galera Cluster 13-14-15-16',
+        }
       }
 
       proxy_mysql_user { 'tester':
@@ -156,6 +198,28 @@ describe 'proxysql class' do
     describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
+    end
+
+    if fact('proxysql_version') =~ %r{^2}
+      describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 1 AND backup_writer_hostgroup = 2 AND reader_hostgroup = 3 AND offline_hostgroup = 4;'") do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stdout) { is_expected.to match '^Test MySQL Galera Cluster 1-2-3-4$' }
+      end
+
+      describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 5 AND backup_writer_hostgroup = 6 AND reader_hostgroup = 7 AND offline_hostgroup = 8;'") do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stdout) { is_expected.to eq('') }
+      end
+
+      describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 9;'") do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stdout) { is_expected.to match '^Test MySQL Galera Cluster 9-10-11-12$' }
+      end
+
+      describe command("mysql -NB -e 'SELECT comment FROM mysql_galera_hostgroups WHERE writer_hostgroup = 13;'") do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stdout) { is_expected.to match '^Test MySQL Galera Cluster 13-14-15-16$' }
+      end
     end
 
     describe command("mysql -NB -e 'SELECT comment FROM mysql_group_replication_hostgroups WHERE writer_hostgroup = 5 AND backup_writer_hostgroup = 2 AND reader_hostgroup = 10 AND offline_hostgroup = 11;'") do
