@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v3.0.0) (2019-07-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v2.0.0...v3.0.0)
+
+**Breaking changes:**
+
+- modulesync 2.5.1 & drop Puppet 4 [\#86](https://github.com/voxpupuli/puppet-proxysql/pull/86) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add proxy\_mysql\_galera\_hostgroup type [\#103](https://github.com/voxpupuli/puppet-proxysql/pull/103) ([alexjfisher](https://github.com/alexjfisher))
+- Added the ability to forcibly set NULL for fields in settings proxy\_mysql\_query\_rule [\#98](https://github.com/voxpupuli/puppet-proxysql/pull/98) ([identw](https://github.com/identw))
+- add repo for 2.0.x [\#94](https://github.com/voxpupuli/puppet-proxysql/pull/94) ([kubicgruenfeld](https://github.com/kubicgruenfeld))
+- Support for Group Replication Hostgroups [\#68](https://github.com/voxpupuli/puppet-proxysql/pull/68) ([CyberLine](https://github.com/CyberLine))
+
+**Fixed bugs:**
+
+- Fix `Proxysql::GroupReplicationHostgroup` type [\#105](https://github.com/voxpupuli/puppet-proxysql/pull/105) ([alexjfisher](https://github.com/alexjfisher))
+- Fix and refactor install.pp relationships [\#93](https://github.com/voxpupuli/puppet-proxysql/pull/93) ([alexjfisher](https://github.com/alexjfisher))
+- Bugfix: Add missing dependencies [\#91](https://github.com/voxpupuli/puppet-proxysql/pull/91) ([theosotr](https://github.com/theosotr))
+- fix bug in types that int\[0,1\] were boolean [\#81](https://github.com/voxpupuli/puppet-proxysql/pull/81) ([MaxFedotov](https://github.com/MaxFedotov))
+
+**Closed issues:**
+
+- Ubuntu 18.04 Bionic Beaver support [\#75](https://github.com/voxpupuli/puppet-proxysql/issues/75)
+- Installation failure on deb 9.5 [\#69](https://github.com/voxpupuli/puppet-proxysql/issues/69)
+- readd stdlib dependency; bump mysql/apt dependency [\#65](https://github.com/voxpupuli/puppet-proxysql/issues/65)
+
+**Merged pull requests:**
+
+- Allow puppetlabs/stdlib 6 and puppetlabs/mysql 10 [\#107](https://github.com/voxpupuli/puppet-proxysql/pull/107) ([alexjfisher](https://github.com/alexjfisher))
+- Fix RedHat yum repo baseurls [\#106](https://github.com/voxpupuli/puppet-proxysql/pull/106) ([alexjfisher](https://github.com/alexjfisher))
+- readd stdlib module; allow puppetlabs/mysql 8.x [\#104](https://github.com/voxpupuli/puppet-proxysql/pull/104) ([bastelfreak](https://github.com/bastelfreak))
+- Support Ubuntu 18.04 with proxysql 2.0 [\#102](https://github.com/voxpupuli/puppet-proxysql/pull/102) ([alexjfisher](https://github.com/alexjfisher))
+- Allow puppetlabs/apt 7.x [\#100](https://github.com/voxpupuli/puppet-proxysql/pull/100) ([dhoppe](https://github.com/dhoppe))
+- Fix `Proxysql::User` data type to match what's expected by `proxy\_mysql\_user` resource type [\#88](https://github.com/voxpupuli/puppet-proxysql/pull/88) ([CyberLine](https://github.com/CyberLine))
+- Allow puppetlabs-mysql 7.x [\#87](https://github.com/voxpupuli/puppet-proxysql/pull/87) ([ekohl](https://github.com/ekohl))
+- modulesync 2.2.0 and allow puppet 6.x [\#79](https://github.com/voxpupuli/puppet-proxysql/pull/79) ([bastelfreak](https://github.com/bastelfreak))
+- Minor doc update [\#73](https://github.com/voxpupuli/puppet-proxysql/pull/73) ([mcrauwel](https://github.com/mcrauwel))
+- Update Readme me and add a link to our CoC [\#72](https://github.com/voxpupuli/puppet-proxysql/pull/72) ([mcrauwel](https://github.com/mcrauwel))
+- implemented more extensive acceptance tests than just "include proxysql" [\#71](https://github.com/voxpupuli/puppet-proxysql/pull/71) ([mcrauwel](https://github.com/mcrauwel))
+- allow puppetlabs/apt 6.x [\#70](https://github.com/voxpupuli/puppet-proxysql/pull/70) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v2.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v2.0.0) (2018-09-10)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.2...v2.0.0)
