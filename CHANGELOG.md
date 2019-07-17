@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v3.1.0) (2019-07-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v3.0.0...v3.1.0)
+
+**Implemented enhancements:**
+
+- Add `datadir\_mode` parameter [\#109](https://github.com/voxpupuli/puppet-proxysql/pull/109) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [v3.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v3.0.0) (2019-07-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v2.0.0...v3.0.0)
