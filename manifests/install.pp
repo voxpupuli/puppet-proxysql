@@ -45,7 +45,7 @@ class proxysql::install {
     path   => $proxysql::datadir,
     owner  => $proxysql::sys_owner,
     group  => $proxysql::sys_group,
-    mode   => '0600',
+    mode   => $proxysql::datadir_mode,
   }
 
   class { 'mysql::client':

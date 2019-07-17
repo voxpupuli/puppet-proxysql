@@ -90,6 +90,12 @@ describe 'proxysql' do
             )
           end
         end
+
+        context 'with parameter datadir_mode set' do
+          let(:params) { { 'datadir_mode' => '0644' } }
+
+          it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
+        end
       end
     end
   end

@@ -19,7 +19,10 @@
 #   The ensure of the ProxySQL service resource. Defaults to 'running'
 #
 # * `datadir`
-#   The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
+#   The directory where ProxySQL will store its data. Defaults to '/var/lib/proxysql'
+#
+# * `datadir_mode`
+#   The filesystem mode for the `datadir`. Defaults to '0600'
 #
 # * `listen_ip`
 #   The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
@@ -157,6 +160,7 @@ class proxysql (
   String $service_ensure = $proxysql::params::service_ensure,
 
   String $datadir = $proxysql::params::datadir,
+  Stdlib::Filemode $datadir_mode = $proxysql::params::datadir_mode,
 
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
