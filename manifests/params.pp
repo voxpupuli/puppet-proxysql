@@ -21,6 +21,7 @@ class proxysql::params {
   $admin_listen_port   = 6032
 
   $datadir = '/var/lib/proxysql'
+  $datadir_mode = '0600'
 
   case $facts['os']['family'] {
     'Debian': {
