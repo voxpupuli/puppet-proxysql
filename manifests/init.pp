@@ -195,11 +195,11 @@ class proxysql (
   Hash $repo = $proxysql::params::repo14,
   Enum['2.0.x','1.4.x']  $repo_version = $proxysql::params::repo_version,
 
-  String $package_source = $proxysql::params::package_source,
-  String $package_checksum_value = $proxysql::params::package_checksum_value,
-  String $package_checksum_type = $proxysql::params::package_checksum_type,
-  Array $package_dependencies = $proxysql::params::package_dependencies,
-  String $package_provider= $proxysql::params::package_provider,
+  Optional[String[1]] $package_source         = undef,
+  Optional[String[1]] $package_checksum_value = undef,
+  Optional[String[1]] $package_checksum_type  = undef,
+  Array[String[1]]    $package_dependencies   = $proxysql::params::package_dependencies,
+  Enum['dpkg','rpm']  $package_provider       = $proxysql::params::package_provider,
 
   String $sys_owner = $proxysql::params::sys_owner,
   String $sys_group = $proxysql::params::sys_group,

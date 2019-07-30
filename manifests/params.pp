@@ -26,67 +26,19 @@ class proxysql::params {
   case $facts['os']['family'] {
     'Debian': {
       $package_provider = 'dpkg'
-      case $facts['os']['name'] {
-        'Debian': {
-          case $facts['os']['release']['major'] {
-            '8': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-debian8_amd64.deb'
-              $package_checksum_value = '813a91ea030ef480c0210b047df5e88ff1c27810'
-              $package_checksum_type = 'sha1'
-              $package_dependencies = []
-            }
-            '9': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-debian9_amd64.deb'
-              $package_checksum_value = '65a3c2b98eefa42946ee59eef18ba18534c2a39d'
-              $package_checksum_type = 'sha1'
-              $package_dependencies = []
-          }
-            default: {
-              $package_source = undef
-              $package_checksum_value = undef
-              $package_checksum_type = undef
-              $package_dependencies = []
-          }
-          }
-        }
-        'Ubuntu': {
-          case $facts['os']['release']['major'] {
-            '14.04': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-ubuntu14_amd64.deb'
-              $package_checksum_value = '42b99a12e8e43410aed88da4c5bbe902c43dbba1'
-              $package_checksum_type = 'sha1'
-              $package_dependencies = []
-            }
-            '16.04': {
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-ubuntu16_amd64.deb'
-              $package_checksum_value = '6e7db2fee78eee1a22cdfabefaa50953c3d24501'
-              $package_checksum_type = 'sha1'
-              $package_dependencies = []
-            }
-            '18.04': {
-              $_repo_version = '2.0.x'
-              $_sys_owner   = 'proxysql'
-              $_sys_group   = 'proxysql'
+      $package_dependencies = []
 
-              # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
-              # This limits where we can write sockets.
-              $_listen_socket = "${datadir}/proxysql.sock"
-              $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
-              $package_source = 'https://github.com/sysown/proxysql/releases/download/v2.0.4/proxysql_2.0.4-ubuntu18_amd64.deb'
-              $package_checksum_value = '397e7244663d8e15134d788e918d9d75c0802b5a'
-              $package_checksum_type = 'sha1'
-              $package_dependencies = []
-            }
-            default: {
-              $package_source = undef
-              $package_checksum_value = undef
-              $package_checksum_type = undef
-              $package_dependencies = []
-            }
-          }
-        }
-        default: {}
+      if $facts['os']['release']['major'] == '18.04' {
+        $_repo_version = '2.0.x'
+        $_sys_owner   = 'proxysql'
+        $_sys_group   = 'proxysql'
+
+        # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
+        # This limits where we can write sockets.
+        $_listen_socket = "${datadir}/proxysql.sock"
+        $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
       }
+
       $repo14             = {
         comment  => 'ProxySQL 1.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['lsbdistcodename']}/",
@@ -110,9 +62,6 @@ class proxysql::params {
     }
     'RedHat': {
       $package_provider = 'rpm'
-      $package_source   = 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql-1.4.11-1-centos67.x86_64.rpm'
-      $package_checksum_value = '6f302beaea096b63851a136287818a1b6e049e28'
-      $package_checksum_type = 'sha1'
       $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
       $repo14             = {
         descr    => 'ProxySQL 1.4.x YUM repository',
@@ -130,7 +79,7 @@ class proxysql::params {
       }
     }
     default: {
-      $package_provider = undef
+      fail("osfamily ${facts['os']['family']} is not supported")
     }
   }
 
