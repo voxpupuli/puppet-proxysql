@@ -19,7 +19,9 @@ describe 'proxysql' do
           it { is_expected.to contain_class('proxysql::config').that_comes_before('Class[proxysql::service]') }
           it { is_expected.to contain_class('proxysql::service').that_comes_before('Class[proxysql::admin_credentials]') }
           it { is_expected.to contain_class('proxysql::admin_credentials').that_comes_before('Class[proxysql::reload_config]') }
+          it { is_expected.to contain_class('proxysql::admin_credentials').that_requires('Class[mysql::client::install]') }
           it { is_expected.to contain_class('proxysql::reload_config').that_comes_before('Class[proxysql::configure]') }
+          it { is_expected.to contain_class('proxysql::reload_config').that_requires('Class[mysql::client::install]') }
           it { is_expected.to contain_class('proxysql::configure').that_comes_before('Anchor[proxysql::end]') }
 
           it { is_expected.to contain_anchor('proxysql::end') }
