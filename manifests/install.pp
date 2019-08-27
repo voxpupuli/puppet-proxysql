@@ -53,4 +53,10 @@ class proxysql::install {
     bindings_enable => false,
   }
 
+  Class['mysql::client::install']
+  -> Class['proxysql::admin_credentials']
+
+  Class['mysql::client::install']
+  -> Class['proxysql::reload_config']
+
 }
