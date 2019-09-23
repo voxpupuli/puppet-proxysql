@@ -37,6 +37,37 @@ To install the ProxySQL software with all the default options:
 include proxysql
 ```
 
+By default, packages come from the official upstream package repositories which the module will configure.
+Most operating systems currently default to 1.4.x packages, but this can be changed with the `repo_version` parameter.
+
+To use your Operating System's own packages set `manage_repo => false`.
+```puppet
+class { 'proxysql':
+  manage_repo => false,
+}
+```
+
+or you can configure your own repository by eg. declaring your own `yumrepo`, `pulp_rpmbind` or `rhn_channel` resource and setting `manage_repo => false`.
+
+For example, using `pulp` and [katello/pulp](https://forge.puppet.com/katello/pulp)
+```puppet
+pulp_rpmbind { 'my_proxysql_repo':}
+
+class { 'proxysql':
+  manage_repo => false,
+  require     => Pulp_rpmbind['my_proxysql_repo'],
+}
+```
+
+Alternatively, you can specify a `package_source` and associated options.  This mimics the old, (pre version 4), behaviour of this module.
+```puppet
+class { 'proxysql':
+  package_source         => 'https://github.com/sysown/proxysql/releases/download/v1.4.11/proxysql_1.4.11-debian9_amd64.deb',
+  package_checksum_value => '65a3c2b98eefa42946ee59eef18ba18534c2a39d',
+  package_checksum_type  => 'sha1',
+}
+```
+
 You can customize options such as (but not limited to) `listen_port`, `admin_password`, `monitor_password`, ...
 ```puppet
   class { 'proxysql':
@@ -266,7 +297,6 @@ You can override any configuration setting by using the `override_config_setting
 * `proxysql::prerequisites`: Manages the user / group to own the proxysql files
 * `proxysql::reload_config`: Reloads admin and mysql variables if you enable the `manage_config_file` option
 * `proxysql::repo`: Manages the repo's where ProxySQL might be in.
-* `proxysql::repo_version`: Specifies the repo. Possible values are '1.4.x' and '2.0.x'.
 * `proxysql::service`: Manages the service
 
 ### parameters
@@ -342,21 +372,15 @@ Specifies whether the managed ProxySQL resources should be immediately save to d
 ##### `manage_repo`
 Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 
-##### `repo`
-These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on to `apt::source` or `yumrepo` (depending on the OS family).
-Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
-
 #### `repo_version`
-Specifies the repo version. Possible values are '1.4.x' and '2.0.x'. String, efaults to '1.4.x'.
-
+Specifies the repo version. Possible values are '1.4.x' and '2.0.x'. String, defaults to '1.4.x' ('2.0.x' for Ubuntu 18.04).
 
 ##### `package_source`
-location ot the proxysql package for the `package_provider`.
- - Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm' for RedHat based systems
- - Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb' for Debian based systems
+location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
+Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
 
 ##### `package_provider`
-provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or `undef` for others
+provider for `package_source`. Defaults to `dpkg` for debian-based, and `rpm` for redhat systems.
 
 ##### `sys_owner`
 owner of the datadir and config_file, defaults to 'root'
@@ -778,11 +802,12 @@ Optional comment.
 
 ## Limitations
 
-The module requires Puppet 4.10.0 or above.
+The module requires Puppet 5.5 or above.
 
 ## Development
 
 This module is originally developed by [Matthias Crauwels](mailto:matthias@crauwels.net) for use at [Ghent University, Belgium](http://www.ugent.be). This module is published under the Apache 2.0 license.
+It is now maintained by [Vox Pupuli](https://voxpupuli.org)
 
 We are open to feature requests, bug reports, contributions, etc...
 
