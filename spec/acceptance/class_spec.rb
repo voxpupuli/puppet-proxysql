@@ -22,9 +22,16 @@ describe 'proxysql class' do
       it { is_expected.to be_running }
     end
 
-    describe command('proxysql --version') do
-      its(:exit_status) { is_expected.to eq 0 }
-      its(:stderr) { is_expected.to match %r{ProxySQL version} }
+    if fact('os.release.major') == '18.04'
+      describe command('proxysql --version') do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.0\.} }
+      end
+    else
+      describe command('proxysql --version') do
+        its(:exit_status) { is_expected.to eq 0 }
+        its(:stderr) { is_expected.to match %r{ProxySQL version} }
+      end
     end
   end
 

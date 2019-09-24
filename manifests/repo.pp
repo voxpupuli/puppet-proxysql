@@ -3,39 +3,24 @@
 #
 # Manage the repos where the ProxySQL package might be
 #
-class proxysql::repo inherits proxysql {
-  if $proxysql::manage_repo == true {
+class proxysql::repo {
+  assert_private()
+
+  if $proxysql::manage_repo and !$proxysql::package_source {
+    $repo = $proxysql::repo_version ? {
+      '2.0.x' => $proxysql::params::repo20,
+      '1.4.x' => $proxysql::params::repo14,
+    }
     case $facts['os']['family'] {
       'Debian': {
-        case $proxysql::repo_version {
-          '2.0.x': {
-            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo20})
-          }
-          '1.4.x': {
-            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo14})
-          }
-          default: {
-            create_resources('apt::source', { 'proxysql_repo' => $proxysql::repo14})
-          }
+        apt::source { 'proxysql_repo':
+          * => $repo,
         }
+        Class['apt::update'] -> Package[$proxysql::package_name]
       }
       'RedHat': {
-        case $proxysql::repo_version {
-          '2.0.x': {
-            yumrepo { 'proxysql_repo':
-            * => $proxysql::repo20,
-            }
-          }
-          '1.4.x': {
-            yumrepo { 'proxysql_repo':
-            * => $proxysql::repo14,
-            }
-          }
-          default: {
-            yumrepo { 'proxysql_repo':
-            * => $proxysql::repo14,
-            }
-          }
+        yumrepo { 'proxysql_repo':
+          * => $repo,
         }
       }
       default: {

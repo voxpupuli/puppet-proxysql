@@ -82,21 +82,21 @@
 # * `manage_repo`
 #   Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 #
-# * `repo`
-#   These are the repo's we will configure. Currently only Debian is supported. This hash will be passed on
-#   to `apt::source` or `yumrepo` (depending on the OS family).
-#   Defaults to the official upstream repo for your OS. See http://repo.proxysql.com for more info.
-#
 # * `repo_version`
 #   Specifies the repo version of ProxySQL to be configured. Defaults to '1.4.x' ('2.0.x' for Ubuntu 18.04).
 #
 # * `package_source`
-#   location ot the proxysql package for the `package_provider`.
-#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql-1.4.7-1-centos7.x86_64.rpm' for RedHat based systems
-#   Default to 'https://github.com/sysown/proxysql/releases/download/v1.4.7/proxysql_1.4.7-ubuntu16_amd64.deb' for Debian based systems
+#   location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
+#   Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
 #
 # * `package_provider`
-#   provider for package-resource. defaults to `dpkg` for debian-based, `rpm` for redhat base or undef for others
+#   provider for `package_source`. defaults to `dpkg` for debian-based, and `rpm` for redhat systems.
+#
+# * `package_checksum_value`
+#   The checksum of the package. Optional and only applicable when `package_source` is provided.
+#
+# * `package_checksum_type`
+#   The 'type' of `package_checksum_value`. Optional and only applicable when `package_checksum_value` is provided.
 #
 # * `sys_owner`
 #   owner of the datadir and config_file, defaults to root.
@@ -192,14 +192,13 @@ class proxysql (
   Boolean $save_to_disk = $proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
-  Hash $repo = $proxysql::params::repo14,
   Enum['2.0.x','1.4.x']  $repo_version = $proxysql::params::repo_version,
 
-  String $package_source = $proxysql::params::package_source,
-  String $package_checksum_value = $proxysql::params::package_checksum_value,
-  String $package_checksum_type = $proxysql::params::package_checksum_type,
-  Array $package_dependencies = $proxysql::params::package_dependencies,
-  String $package_provider= $proxysql::params::package_provider,
+  Optional[String[1]] $package_source         = undef,
+  Optional[String[1]] $package_checksum_value = undef,
+  Optional[String[1]] $package_checksum_type  = undef,
+  Array[String[1]]    $package_dependencies   = $proxysql::params::package_dependencies,
+  Enum['dpkg','rpm']  $package_provider       = $proxysql::params::package_provider,
 
   String $sys_owner = $proxysql::params::sys_owner,
   String $sys_group = $proxysql::params::sys_group,
@@ -218,7 +217,7 @@ class proxysql (
   Optional[Proxysql::GaleraHostgroup] $mysql_galera_hostgroups = undef,
   Optional[Proxysql::Rule] $mysql_rules = undef,
   Optional[Proxysql::Scheduler] $schedulers = undef,
-) inherits ::proxysql::params {
+) inherits proxysql::params {
 
   # lint:ignore:80chars
   $settings = {
