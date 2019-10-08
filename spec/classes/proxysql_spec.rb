@@ -32,7 +32,7 @@ describe 'proxysql' do
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           if facts[:osfamily] == 'RedHat'
-            it { is_expected.to contain_yumrepo('proxysql_repo').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/#{facts[:operatingsystemmajrelease]}") }
+            it { is_expected.to contain_yumrepo('proxysql_repo').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
           end
 
           it do
@@ -40,15 +40,14 @@ describe 'proxysql' do
                                                             install_options: [])
           end
 
-          if facts[:operatingsystemrelease] == '18.04'
-            sys_user = 'proxysql'
-            sys_group = 'proxysql'
-            admin_socket = '/var/lib/proxysql/proxysql_admin.sock'
-          else
-            sys_user = 'root'
-            sys_group = 'root'
-            admin_socket = '/tmp/proxysql_admin.sock'
-          end
+          sys_user = 'proxysql'
+          sys_group = 'proxysql'
+
+          admin_socket = if facts[:operatingsystemrelease] == '18.04'
+                           '/var/lib/proxysql/proxysql_admin.sock'
+                         else
+                           '/tmp/proxysql_admin.sock'
+                         end
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
