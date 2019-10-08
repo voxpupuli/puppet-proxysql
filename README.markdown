@@ -24,11 +24,15 @@ This module will install the ProxySQL and manage it's configuration. It also ext
 
 ## Setup
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-The module requires Puppet 5.5.8 over above.
+The module requires Puppet 5.5.8 and above. It also depends on:
+* [puppetlabs/mysql](https://forge.puppet.com/puppetlabs/mysql)
+* [puppetlabs/apt](https://forge.puppet.com/puppetlabs/apt) - (Not strictly required on non Debian based systems)
+* [puppetlabs/stdlib](https://forge.puppet.com/puppetlabs/stdlib)
+* [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd) - (Not strictly required if installing ProxySQL 1.4)
 
-It depends on the [puppetlabs](https://puppet.com/)/[mysql](https://github.com/puppetlabs/puppetlabs-mysql) module (>= 2.5.x) and on the [puppetlabs](https://puppet.com/)/[apt](https://github.com/puppetlabs/puppetlabs-apt) module (>= 2.1.x) when using deb based systems.
+For up to date details on external dependencies, please see the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json) or for released versions, the [puppet forge page](https://forge.puppet.com/puppet/proxysql/dependencies).
 
 ### Beginning with proxysql
 

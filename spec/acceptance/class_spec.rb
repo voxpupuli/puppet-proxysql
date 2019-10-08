@@ -320,4 +320,28 @@ describe 'proxysql class' do
       its(:stdout) { is_expected.to match '^\^SELECT$' }
     end
   end
+  context 'with restart => true' do
+    it 'works idempotently with no errors' do
+      pp = <<-EOS
+      class { 'proxysql':
+        restart                  => true,
+        listen_port              => 3306,
+        admin_username           => 'admin',
+        admin_password           => Sensitive('654321'),
+        monitor_username         => 'monitor',
+        monitor_password         => Sensitive('123456'),
+        override_config_settings => {
+          mysql_variables => {
+            'monitor_writer_is_also_reader' => true,
+          }
+        },
+      }
+      EOS
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+    describe service('proxysql') do
+      it { is_expected.to be_running }
+    end
+  end
 end

@@ -4,24 +4,47 @@
 # It ensure the service is running.
 #
 class proxysql::service {
+  assert_private()
 
-  if $proxysql::restart {
+  # systemd unit files replaced use of `init.d` in version 2.0.0 for some operating systems but only in 2.0.7 for CentOS/Redhat
+  if (versioncmp($proxysql::version, '2.0.7') >= 0 and fact('os.family') == 'RedHat' and versioncmp(fact('os.release.major'),'7')     >= 0)
+  or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.name')   == 'Ubuntu' and versioncmp(fact('os.release.major'),'18.04') >= 0)
+  or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.name')   == 'Debian' and versioncmp(fact('os.release.major'),'9')     >= 0)
+  {
+    $drop_in_ensure = $proxysql::restart ? {
+      true  => 'present',
+      false => 'absent',
+    }
+    systemd::dropin_file { 'proxysql ExecStart override':
+      ensure   => $drop_in_ensure,
+      filename => 'puppet.conf',
+      unit     => "${proxysql::service_name}.service",
+      content  => "[Service]\nExecStart=\nExecStart=/usr/bin/proxysql --reload -c /etc/proxysql.cnf\n",
+      notify   => Service[$proxysql::service_name],
+    }
     service { $proxysql::service_name:
-      ensure     => $proxysql::service_ensure,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => false,
-      provider   => 'base',
-      status     => '/etc/init.d/proxysql status',
-      start      => '/usr/bin/proxysql --reload',
-      stop       => '/etc/init.d/proxysql stop',
+      ensure => $proxysql::service_ensure,
+      enable => true,
     }
   } else {
-    service { $proxysql::service_name:
-      ensure     => $proxysql::service_ensure,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
+    if $proxysql::restart {
+      service { $proxysql::service_name:
+        ensure     => $proxysql::service_ensure,
+        enable     => true,
+        hasstatus  => true,
+        hasrestart => false,
+        provider   => 'base',
+        status     => '/etc/init.d/proxysql status',
+        start      => '/usr/bin/proxysql --reload',
+        stop       => '/etc/init.d/proxysql stop',
+      }
+    } else {
+      service { $proxysql::service_name:
+        ensure     => $proxysql::service_ensure,
+        enable     => true,
+        hasstatus  => true,
+        hasrestart => true,
+      }
     }
   }
 

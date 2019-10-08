@@ -75,9 +75,14 @@ describe 'proxysql' do
 
           it do
             is_expected.to contain_service('proxysql').with(ensure: 'running',
-                                                            enable: true,
-                                                            hasstatus: true,
-                                                            hasrestart: true)
+                                                            enable: true)
+          end
+
+          unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
+                 (facts[:operatingsystem] == 'Ubuntu' && facts[:operatingsystemmajrelease] == '18.04') ||
+                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] == '9')
+            it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
+            it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
           end
 
           it do
