@@ -82,8 +82,11 @@
 # * `manage_repo`
 #   Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
 #
-# * `repo_version`
-#   Specifies the repo version of ProxySQL to be configured. Defaults to '1.4.x' ('2.0.x' for Ubuntu 18.04).
+# * `version`
+#   The version of proxysql being managed.  This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
+#   It does not affect the package version being installed.  It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
+#   deployed, use `package_name` or `package_source`.  Defaults to the version currently installed, or `2.0.7` if the `proxysql_version` fact is not yet
+#   available.
 #
 # * `package_source`
 #   location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
@@ -99,10 +102,10 @@
 #   The 'type' of `package_checksum_value`. Optional and only applicable when `package_checksum_value` is provided.
 #
 # * `sys_owner`
-#   owner of the datadir and config_file, defaults to root.
+#   owner of the datadir and config_file, defaults to root or proxysql depending on `version`
 #
 # * `sys_group`
-#   group of the datadir and config_file, defaults to root.
+#   group of the datadir and config_file, defaults to root or proxysql depending on `version`
 #
 # * `override_config_settings`
 #   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
@@ -192,7 +195,7 @@ class proxysql (
   Boolean $save_to_disk = $proxysql::params::save_to_disk,
 
   Boolean $manage_repo = true,
-  Enum['2.0.x','1.4.x']  $repo_version = $proxysql::params::repo_version,
+  Pattern[/^[1|2]\.\d+\.\d+/] $version = $proxysql::params::version,
 
   Optional[String[1]] $package_source         = undef,
   Optional[String[1]] $package_checksum_value = undef,
@@ -200,8 +203,11 @@ class proxysql (
   Array[String[1]]    $package_dependencies   = $proxysql::params::package_dependencies,
   Enum['dpkg','rpm']  $package_provider       = $proxysql::params::package_provider,
 
-  String $sys_owner = $proxysql::params::sys_owner,
-  String $sys_group = $proxysql::params::sys_group,
+  String $sys_owner = $version ? {
+    /^1/ => 'root',
+    /^2/ => 'proxysql',
+  },
+  String $sys_group = $sys_owner,
 
   String $cluster_username = $proxysql::params::cluster_username,
   Sensitive[String] $cluster_password = $proxysql::params::cluster_password,
