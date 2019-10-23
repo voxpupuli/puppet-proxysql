@@ -816,9 +816,30 @@ The 5th argument for the scheduler script to run. Optional, defaults to NULL.
 ##### `comment`
 Optional comment.
 
+### `proxysql\_runtime` fact
+
+This module ships a fact that you may find useful in your profiles.  It is not used by the module itself.
+The `proxysql_runtime` fact queries ProxySQL and returns a hash containing the contents of several of the [runtime tables](https://github.com/sysown/proxysql/wiki/Main-(runtime)).
+
+The fact will only return data if the [mysql2](https://rubygems.org/gems/mysql2) library is installed in your puppet agent's gem environment.
+
+For systems using official puppet packages, (All In One packages), the following code can be used to install this gem and make the fact
+available.
+```puppet
+$dev_packages = ['mariadb-devel','make','gcc']
+ensure_packages($dev_packages)
+
+package { 'mysql2 gem':
+  ensure   => present,
+  name     => 'mysql',
+  provider => 'puppet_gem',
+  require  => Package[$dev_packages],
+}
+```
+
 ## Limitations
 
-The module requires Puppet 5.5 or above.
+The module requires Puppet 5.5 or above. The `proxysql_runtime` fact only works when using the default value for `mycnf_file_name`.
 
 ## Development
 
