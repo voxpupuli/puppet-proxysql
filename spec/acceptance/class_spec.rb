@@ -1,7 +1,8 @@
 require 'spec_helper_acceptance'
 
 describe 'proxysql class' do
-  unless fact('os.release.major') == '18.04' # There are no proxysql 1.4 packages for bionic
+  unless fact('os.release.major') == '18.04' ||
+         (fact('os.name') == 'Debian' && fact('os.release.major') == '10') # There are no proxysql 1.4 packages for these OSes
     context 'version 1.4' do
       it 'works idempotently with no errors' do
         pp = <<-EOS
