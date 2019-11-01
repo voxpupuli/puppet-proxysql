@@ -80,7 +80,7 @@ describe 'proxysql' do
 
           unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
                  (facts[:operatingsystem] == 'Ubuntu' && facts[:operatingsystemmajrelease] == '18.04') ||
-                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] == '9')
+                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10)$})
             it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
             it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
           end
