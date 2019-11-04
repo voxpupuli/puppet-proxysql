@@ -214,7 +214,7 @@ class proxysql (
 
   Hash $override_config_settings = {},
 
-  String $node_name = "${facts['fqdn']}:${admin_listen_port}",
+  String $node_name = "${facts['networking']['fqdn']}:${admin_listen_port}",
   Boolean $manage_hostgroup_for_servers = $proxysql::params::manage_hostgroup_for_servers,
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,

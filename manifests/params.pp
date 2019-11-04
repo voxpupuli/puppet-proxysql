@@ -37,7 +37,7 @@ class proxysql::params {
 
       $repo14             = {
         comment  => 'ProxySQL 1.4.x APT repository',
-        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['lsbdistcodename']}/",
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => '',
         key      => {
@@ -47,7 +47,7 @@ class proxysql::params {
       }
       $repo20             = {
         comment  => 'ProxySQL 2.0.x APT repository',
-        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/${facts['lsbdistcodename']}/",
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => '',
         key      => {
