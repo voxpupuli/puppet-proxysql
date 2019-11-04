@@ -4,13 +4,40 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v4.0.0) (2019-11-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v3.1.0...v4.0.0)
+
+**Breaking changes:**
+
+- Replace `repo_version` with `version`, default to installing ProxySQL 2 and fix `restart => true` [\#116](https://github.com/voxpupuli/puppet-proxysql/pull/116) ([alexjfisher](https://github.com/alexjfisher))
+- Don't install from github when `manage_repo` is false and remove unused `repo` parameter [\#112](https://github.com/voxpupuli/puppet-proxysql/pull/112) ([alexjfisher](https://github.com/alexjfisher))
+
+**Implemented enhancements:**
+
+- Add debian 10 support [\#119](https://github.com/voxpupuli/puppet-proxysql/pull/119) ([alexjfisher](https://github.com/alexjfisher))
+- Add `proxysql_runtime` fact [\#117](https://github.com/voxpupuli/puppet-proxysql/pull/117) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Service management broken with ProxySQL 2 when `restart => true` [\#115](https://github.com/voxpupuli/puppet-proxysql/issues/115)
+- Bugfix: Make classes dependent on the mysql package [\#113](https://github.com/voxpupuli/puppet-proxysql/pull/113) ([theosotr](https://github.com/theosotr))
+
+**Closed issues:**
+
+- Debian 10 Buster support [\#114](https://github.com/voxpupuli/puppet-proxysql/issues/114)
+
+**Merged pull requests:**
+
+- Clean up acceptance spec helper [\#118](https://github.com/voxpupuli/puppet-proxysql/pull/118) ([ekohl](https://github.com/ekohl))
+
 ## [v3.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v3.1.0) (2019-07-17)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v3.0.0...v3.1.0)
 
 **Implemented enhancements:**
 
-- Add `datadir\_mode` parameter [\#109](https://github.com/voxpupuli/puppet-proxysql/pull/109) ([alexjfisher](https://github.com/alexjfisher))
+- Add `datadir_mode` parameter [\#109](https://github.com/voxpupuli/puppet-proxysql/pull/109) ([alexjfisher](https://github.com/alexjfisher))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v3.0.0) (2019-07-09)
 
@@ -47,7 +74,7 @@ These should not affect the functionality of the module.
 - readd stdlib module; allow puppetlabs/mysql 8.x [\#104](https://github.com/voxpupuli/puppet-proxysql/pull/104) ([bastelfreak](https://github.com/bastelfreak))
 - Support Ubuntu 18.04 with proxysql 2.0 [\#102](https://github.com/voxpupuli/puppet-proxysql/pull/102) ([alexjfisher](https://github.com/alexjfisher))
 - Allow puppetlabs/apt 7.x [\#100](https://github.com/voxpupuli/puppet-proxysql/pull/100) ([dhoppe](https://github.com/dhoppe))
-- Fix `Proxysql::User` data type to match what's expected by `proxy\_mysql\_user` resource type [\#88](https://github.com/voxpupuli/puppet-proxysql/pull/88) ([CyberLine](https://github.com/CyberLine))
+- Fix `Proxysql::User` data type to match what's expected by `proxy_mysql_user` resource type [\#88](https://github.com/voxpupuli/puppet-proxysql/pull/88) ([CyberLine](https://github.com/CyberLine))
 - Allow puppetlabs-mysql 7.x [\#87](https://github.com/voxpupuli/puppet-proxysql/pull/87) ([ekohl](https://github.com/ekohl))
 - modulesync 2.2.0 and allow puppet 6.x [\#79](https://github.com/voxpupuli/puppet-proxysql/pull/79) ([bastelfreak](https://github.com/bastelfreak))
 - Minor doc update [\#73](https://github.com/voxpupuli/puppet-proxysql/pull/73) ([mcrauwel](https://github.com/mcrauwel))
@@ -142,7 +169,6 @@ These should not affect the functionality of the module.
 - proper Markdown formatting for release regex to pass [\#7](https://github.com/voxpupuli/puppet-proxysql/pull/7) ([mcrauwel](https://github.com/mcrauwel))
 - create 1.1.0 release [\#6](https://github.com/voxpupuli/puppet-proxysql/pull/6) ([mcrauwel](https://github.com/mcrauwel))
 - update metadata to point to voxpupuli repo [\#5](https://github.com/voxpupuli/puppet-proxysql/pull/5) ([mcrauwel](https://github.com/mcrauwel))
-- \[WIP\]Modulesync 0.19.3 [\#4](https://github.com/voxpupuli/puppet-proxysql/pull/4) ([bastelfreak](https://github.com/bastelfreak))
 - updated docs [\#3](https://github.com/voxpupuli/puppet-proxysql/pull/3) ([mcrauwel](https://github.com/mcrauwel))
 - manage repo's [\#2](https://github.com/voxpupuli/puppet-proxysql/pull/2) ([mcrauwel](https://github.com/mcrauwel))
 
