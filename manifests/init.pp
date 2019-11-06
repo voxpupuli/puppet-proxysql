@@ -248,24 +248,31 @@ class proxysql (
       },
     }
   } else {
-      $settings_cluster = undef
-    }
+    $settings_cluster = undef
+  }
 
   $settings_result = deep_merge($settings, $settings_cluster)
 
   $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
   # lint:endignore
 
-  anchor { 'proxysql::begin': }
-  -> class { 'proxysql::prerequisites':}
-  -> class { 'proxysql::repo':}
-  -> class { 'proxysql::install':}
-  -> class { 'proxysql::config':}
-  -> class { 'proxysql::service':}
-  -> class { 'proxysql::admin_credentials':}
-  -> class { 'proxysql::reload_config':}
-  -> class { 'proxysql::configure':}
-  -> anchor { 'proxysql::end': }
+  contain proxysql::prerequisites
+  contain proxysql::repo
+  contain proxysql::install
+  contain proxysql::config
+  contain proxysql::service
+  contain proxysql::admin_credentials
+  contain proxysql::reload_config
+  contain proxysql::configure
+
+  Class['proxysql::prerequisites']
+  -> Class['proxysql::repo']
+  -> Class['proxysql::install']
+  -> Class['proxysql::config']
+  -> Class['proxysql::service']
+  -> Class['proxysql::admin_credentials']
+  -> Class['proxysql::reload_config']
+  -> Class['proxysql::configure']
 
   Class['proxysql::install']
   ~> Class['proxysql::service']
