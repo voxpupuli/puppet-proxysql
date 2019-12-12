@@ -24,6 +24,10 @@
 # * `datadir_mode`
 #   The filesystem mode for the `datadir`. Defaults to '0600'
 #
+# * `manage_selinux`
+#   Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
+#   This parameter also requires the `puppet/selinux` module to be installed.
+#
 # * `listen_ip`
 #   The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
 #
@@ -142,6 +146,7 @@
 #
 # * `schedulers`
 #   Array of schedulers, that will be created in ProxySQL. Defaults to undef
+#
 # * `split_config`
 #   If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
 #   and proxy config file with servers\users\hostgroups\scheduler params. Defaults to false
@@ -164,6 +169,7 @@ class proxysql (
 
   String $datadir = $proxysql::params::datadir,
   Stdlib::Filemode $datadir_mode = $proxysql::params::datadir_mode,
+  Boolean $manage_selinux = true,
 
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
@@ -266,6 +272,10 @@ class proxysql (
   contain proxysql::admin_credentials
   contain proxysql::reload_config
   contain proxysql::configure
+
+  if $manage_selinux and extlib::has_module('puppet/selinux') and fact('os.selinux.current_mode') in ['enforcing','permissive'] {
+    include proxysql::selinux
+  }
 
   Class['proxysql::prerequisites']
   -> Class['proxysql::repo']

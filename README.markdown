@@ -34,6 +34,8 @@ The module requires Puppet 5.5.8 and above. It also depends on:
 
 For up to date details on external dependencies, please see the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json) or for released versions, the [puppet forge page](https://forge.puppet.com/puppet/proxysql/dependencies).
 
+[puppet/selinux](https://forge.puppet.com/puppet/selinux) is an optional `soft` dependency and not even listed in the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json).  No Operating Systems *require* this module to be present, but if it is, it will be used to install SELinux rules that allow logrotate to work.  See [manage\_selinux](#manage_selinux)
+
 ### Beginning with proxysql
 
 To install the ProxySQL software with all the default options:
@@ -328,6 +330,10 @@ The ensure of the ProxySQL service resource. Defaults to 'running'
 
 ##### `datadir`
 The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
+
+##### `manage_selinux`
+Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
+This parameter also requires the [puppet/selinux](https://forge.puppet.com/puppet/selinux) module to be installed.
 
 ##### `listen_ip`
 The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine

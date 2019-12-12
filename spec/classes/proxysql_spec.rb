@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'deep_merge'
 
 describe 'proxysql' do
   context 'supported operating systems' do
@@ -99,6 +100,27 @@ describe 'proxysql' do
           let(:params) { { 'datadir_mode' => '0644' } }
 
           it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
+        end
+
+        if facts[:osfamily] == 'RedHat'
+          describe 'manage_selinux' do
+            context 'on systems with selinux enabled' do
+              let(:facts) do
+                facts.deep_merge(
+                  os: { selinux: { current_mode: 'enforcing' } }
+                )
+              end
+
+              context 'by default' do
+                it { is_expected.to contain_class('proxysql::selinux') }
+              end
+              context 'when manage_selinux is `false`' do
+                let(:params) { { 'manage_selinux' => false } }
+
+                it { is_expected.not_to contain_class('proxysql::selinux') }
+              end
+            end
+          end
         end
       end
     end
