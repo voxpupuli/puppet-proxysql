@@ -111,23 +111,4 @@ class proxysql::params {
   $cluster_username = 'cluster'
   $cluster_password = Sensitive('cluster')
   $manage_hostgroup_for_servers = true
-
-  $config_settings = {
-    datadir => $datadir,
-    admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password}",
-      mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-    },
-    mysql_variables => {
-      interfaces => "${listen_ip}:${listen_port};${listen_socket}",
-    },
-    mysql_servers => {},
-    mysql_users => {},
-    mysql_query_rules => {},
-    scheduler => {},
-    mysql_replication_hostgroups => {},
-    mysql_group_replication_hostgroups => {},
-    mysql_galera_hostgroups => {},
-  }
-
 }
