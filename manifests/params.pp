@@ -4,25 +4,6 @@
 # It sets variables according to platform.
 #
 class proxysql::params {
-  $package_name  = 'proxysql'
-  $mysql_client_package_name = undef
-  $package_ensure = 'installed'
-  $package_install_options = []
-
-  $service_name = 'proxysql'
-  $service_ensure = 'running'
-
-  $listen_ip     = '0.0.0.0'
-  $listen_port   = 6033
-
-  $admin_username      = 'admin'
-  $admin_password      = Sensitive('admin')
-  $admin_listen_ip     = '127.0.0.1'
-  $admin_listen_port   = 6032
-
-  $datadir = '/var/lib/proxysql'
-  $datadir_mode = '0600'
-
   case $facts['os']['family'] {
     'Debian': {
       $package_provider = 'dpkg'
@@ -89,29 +70,6 @@ class proxysql::params {
   $listen_socket = pick(getvar('_listen_socket'),'/tmp/proxysql.sock')
   $admin_listen_socket = pick(getvar('_admin_listen_socket'),'/tmp/proxysql_admin.sock')
 
-  $monitor_username = 'monitor'
-  $monitor_password = Sensitive('monitor')
-
-
-  $split_config             = false
-  $config_file              = '/etc/proxysql.cnf'
-  $manage_config_file       = true
-  $proxy_config_file        = '/etc/proxysql_proxy.cnf'
-  $manage_proxy_config_file = true
-
-  $mycnf_file_name   = '/root/.my.cnf'
-  $manage_mycnf_file = true
-
-  $restart = false
-
-  $load_to_runtime = true
-  $save_to_disk    = true
-
-  $cluster_name = undef
-  $cluster_username = 'cluster'
-  $cluster_password = Sensitive('cluster')
-  $manage_hostgroup_for_servers = true
-
   $config_settings = {
     datadir => $datadir,
     admin_variables => {
@@ -129,5 +87,4 @@ class proxysql::params {
     mysql_group_replication_hostgroups => {},
     mysql_galera_hostgroups => {},
   }
-
 }
