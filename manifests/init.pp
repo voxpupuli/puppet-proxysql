@@ -154,7 +154,7 @@
 #   Determines whether this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 #
 class proxysql (
-  Optional[String] $cluster_name = $proxysql::params::cluster_name,
+  Optional[String[1]] $cluster_name = $proxysql::params::cluster_name,
   String $package_name = $proxysql::params::package_name,
   Optional[String] $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
   String $package_ensure = $proxysql::params::package_ensure,
@@ -225,36 +225,38 @@ class proxysql (
   Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits proxysql::params {
 
-  # lint:ignore:80chars
-  $settings = {
+  $default_settings = {
     datadir => $datadir,
     admin_variables => {
       admin_credentials => "${admin_username}:${admin_password.unwrap}",
-      mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
+      mysql_ifaces      => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
       monitor_password => $monitor_password.unwrap,
     },
+    mysql_servers => {},
+    mysql_users => {},
+    mysql_query_rules => {},
+    scheduler => {},
+    mysql_replication_hostgroups => {},
+    mysql_group_replication_hostgroups => {},
+    mysql_galera_hostgroups => {},
   }
 
-  if $cluster_name {
-    $settings_cluster = {
+  $cluster_settings = $cluster_name ? {
+    String  => {
       admin_variables => {
         admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
-        cluster_username => $cluster_username,
-        cluster_password => "${cluster_password.unwrap}",
+        cluster_username  => $cluster_username,
+        cluster_password  => "${cluster_password.unwrap}",
       },
-    }
-  } else {
-    $settings_cluster = undef
+    },
+    default => {},
   }
 
-  $settings_result = deep_merge($settings, $settings_cluster)
-
-  $config_settings = deep_merge($proxysql::params::config_settings, $settings_result, $override_config_settings)
-  # lint:endignore
+  $config_settings = deep_merge($default_settings, $cluster_settings, $override_config_settings)
 
   contain proxysql::prerequisites
   contain proxysql::repo
