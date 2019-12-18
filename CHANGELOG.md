@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.0) (2019-12-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v4.0.0...v5.0.0)
+
+**Breaking changes:**
+
+- drop Ubuntu 14.04 support [\#123](https://github.com/voxpupuli/puppet-proxysql/pull/123) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Manage SELinux rules to allow logrotate to work [\#126](https://github.com/voxpupuli/puppet-proxysql/pull/126) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Run acceptance tests on CentOS 7.6 [\#129](https://github.com/voxpupuli/puppet-proxysql/pull/129) ([alexjfisher](https://github.com/alexjfisher))
+- Remove default `config_settings` from params.pp [\#128](https://github.com/voxpupuli/puppet-proxysql/pull/128) ([alexjfisher](https://github.com/alexjfisher))
+- Remove duplicate CONTRIBUTING.md file [\#124](https://github.com/voxpupuli/puppet-proxysql/pull/124) ([dhoppe](https://github.com/dhoppe))
+- Replace `anchor` pattern with `contain` [\#122](https://github.com/voxpupuli/puppet-proxysql/pull/122) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v4.0.0) (2019-11-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v3.1.0...v4.0.0)
