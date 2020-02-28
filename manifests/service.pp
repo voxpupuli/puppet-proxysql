@@ -28,6 +28,13 @@ class proxysql::service {
     }
   } else {
     if $proxysql::restart {
+      if versioncmp($proxysql::version, '2') >= 0 and fact('os.family') == 'RedHat' {
+        # In proxysql version 2, the init.d scripts, (EL6 and EL7 with proxysql < 2.0.7) support a `reload` option.
+        # Use this instead of `/usr/bin/proxysql --reload`, (which will run as root).
+        $start = '/etc/init.d/proxysql reload'
+      } else {
+        $start = '/usr/bin/proxysql --reload'
+      }
       service { $proxysql::service_name:
         ensure     => $proxysql::service_ensure,
         enable     => true,
@@ -35,7 +42,7 @@ class proxysql::service {
         hasrestart => false,
         provider   => 'base',
         status     => '/etc/init.d/proxysql status',
-        start      => '/usr/bin/proxysql --reload',
+        start      => $start,
         stop       => '/etc/init.d/proxysql stop',
       }
     } else {

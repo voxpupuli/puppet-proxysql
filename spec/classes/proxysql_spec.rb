@@ -79,6 +79,21 @@ describe 'proxysql' do
                                                             enable: true)
           end
 
+          if facts[:osfamily] == 'RedHat'
+            context 'with restart = true' do
+              context 'and proxysql 1.4.16' do
+                let(:params) { { 'restart' => true, 'version' => '1.4.16' } }
+
+                it { is_expected.to contain_service('proxysql').with_start('/usr/bin/proxysql --reload') }
+              end
+              context 'and proxysql 2.0.6' do
+                let(:params) { { 'restart' => true, 'version' => '2.0.6' } }
+
+                it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
+              end
+            end
+          end
+
           unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
                  (facts[:operatingsystem] == 'Ubuntu' && facts[:operatingsystemmajrelease] == '18.04') ||
                  (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10)$})
