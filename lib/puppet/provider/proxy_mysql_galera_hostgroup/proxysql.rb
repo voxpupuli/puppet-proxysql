@@ -118,20 +118,20 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
   end
 
   def self.namevar_db_fields
-    %i[
-      writer_hostgroup
-      backup_writer_hostgroup
-      reader_hostgroup
-      offline_hostgroup
+    [
+      :writer_hostgroup,
+      :backup_writer_hostgroup,
+      :reader_hostgroup,
+      :offline_hostgroup
     ]
   end
 
   def self.integer_db_fields
-    namevar_db_fields + %i[
-      active
-      max_writers
-      writer_is_also_reader
-      max_transactions_behind
+    namevar_db_fields + [
+      :active,
+      :max_writers,
+      :writer_is_also_reader,
+      :max_transactions_behind
     ]
   end
 
