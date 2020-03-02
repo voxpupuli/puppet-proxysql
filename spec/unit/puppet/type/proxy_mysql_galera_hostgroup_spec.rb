@@ -3,12 +3,12 @@ require 'puppet'
 
 describe Puppet::Type.type(:proxy_mysql_galera_hostgroup) do
   describe 'parameters' do
-    %i[name provider writer_hostgroup backup_writer_hostgroup reader_hostgroup offline_hostgroup load_to_runtime save_to_disk].each do |param|
+    [:name, :provider, :writer_hostgroup, :backup_writer_hostgroup, :reader_hostgroup, :offline_hostgroup, :load_to_runtime, :save_to_disk].each do |param|
       it "should have a #{param} parameter" do
         expect(described_class.attrtype(param)).to eq(:param)
       end
     end
-    %i[ensure active max_writers writer_is_also_reader max_transactions_behind comment].each do |prop|
+    [:ensure, :active, :max_writers, :writer_is_also_reader, :max_transactions_behind, :comment].each do |prop|
       it "should have a #{prop} property" do
         expect(described_class.attrtype(prop)).to eq(:property)
       end
@@ -19,7 +19,7 @@ describe Puppet::Type.type(:proxy_mysql_galera_hostgroup) do
     it 'has 5 namevars' do
       expect(described_class.key_attributes.size).to eq(5)
     end
-    %i[name writer_hostgroup backup_writer_hostgroup reader_hostgroup offline_hostgroup].each do |param|
+    [:name, :writer_hostgroup, :backup_writer_hostgroup, :reader_hostgroup, :offline_hostgroup].each do |param|
       it "'#{param}' should be a namevar" do
         expect(described_class.key_attributes).to include(param)
       end
