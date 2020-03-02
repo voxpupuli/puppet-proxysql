@@ -20,8 +20,16 @@ class proxysql::repo {
         Class['apt::update'] -> Package[$proxysql::package_name]
       }
       'RedHat': {
-        yumrepo { 'proxysql_repo':
+        yumrepo { $repo['name']:
           * => $repo,
+        }
+
+        $purge_repo = $proxysql::version ? {
+          /^2\.0\./ => $proxysql::params::repo14['name'],
+          /^1\.4\./ => $proxysql::params::repo20['name'],
+        }
+        yumrepo { ['proxysql_repo', $purge_repo]:
+          ensure => absent,
         }
       }
       default: {
