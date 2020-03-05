@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.1](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.1) (2020-03-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.0...v5.0.1)
+
+**Fixed bugs:**
+
+- ProxySQL 2 gets restarted as root [\#134](https://github.com/voxpupuli/puppet-proxysql/issues/134)
+- Use distinct names for yum repos [\#138](https://github.com/voxpupuli/puppet-proxysql/pull/138) ([alexjfisher](https://github.com/alexjfisher))
+
+**Closed issues:**
+
+- Acceptance tests on CentOS 6 stopped working [\#137](https://github.com/voxpupuli/puppet-proxysql/issues/137)
+- ProxySQL errors after 2.0.9 release [\#133](https://github.com/voxpupuli/puppet-proxysql/issues/133)
+
+**Merged pull requests:**
+
+- Avoid reloading proxysql 2 as root [\#135](https://github.com/voxpupuli/puppet-proxysql/pull/135) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [v5.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.0) (2019-12-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v4.0.0...v5.0.0)
