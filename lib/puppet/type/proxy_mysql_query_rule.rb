@@ -3,7 +3,7 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   ensurable
 
-  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:class) { 'proxysql::admin_credentials' }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 
