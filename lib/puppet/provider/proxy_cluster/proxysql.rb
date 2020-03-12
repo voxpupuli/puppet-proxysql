@@ -4,7 +4,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
   commands mysql: 'mysql'
 
   def self.mysql_running
-    system("mysql #{defaults_file} -NBe 'SELECT 1' >out 2>&1", out: '/dev/null')
+    system("mysql #{defaults_file} -NBe 'SELECT 1' 2>&1", out: '/dev/null')
   end
 
   # Build a property_hash containing all the discovered information about MySQL
