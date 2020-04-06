@@ -1,20 +1,5 @@
-require 'beaker-rspec'
-require 'beaker-puppet'
-require 'beaker/puppet_install_helper'
-require 'beaker/module_install_helper'
+require 'voxpupuli/acceptance/spec_helper_acceptance'
 
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
-
-RSpec.configure do |c|
-  # Readable test descriptions
-  c.formatter = :documentation
-
-  # Configure all nodes in nodeset
-  c.before :suite do
-    install_module
-    install_module_dependencies
-    hosts.each do |host|
-      on host, puppet('module', 'install', 'puppet/selinux')
-    end
-  end
+configure_beaker do |host|
+  install_module_from_forge_on(host, 'puppet/selinux', '>= 0')
 end
