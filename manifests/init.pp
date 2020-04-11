@@ -43,6 +43,12 @@
 # * `admin_password`
 #   The password to connect to the ProxySQL admin interface. Defaults to 'admin'
 #
+# * `stats_username`
+#   The username to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
+#
+# * `stats_password`
+#   The password to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
+#
 # * `admin_listen_ip`
 #   The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'
 #
@@ -181,6 +187,9 @@ class proxysql (
   Integer $admin_listen_port = $proxysql::params::admin_listen_port,
   String $admin_listen_socket = $proxysql::params::admin_listen_socket,
 
+  String $stats_username = $proxysql::params::stats_username,
+  Sensitive[String] $stats_password = $proxysql::params::stats_password,
+
   String $monitor_username = $proxysql::params::monitor_username,
   Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
 
@@ -236,6 +245,7 @@ class proxysql (
     admin_variables => {
       admin_credentials => "${admin_username}:${admin_password.unwrap}",
       mysql_ifaces      => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
+      stats_credentials => "${stats_username}:${stats_password.unwrap}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",

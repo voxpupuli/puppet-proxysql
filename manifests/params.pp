@@ -23,6 +23,9 @@ class proxysql::params {
   $datadir = '/var/lib/proxysql'
   $datadir_mode = '0600'
 
+  $stats_username      = 'stats'
+  $stats_password      = Sensitive('stats')
+
   case $facts['os']['family'] {
     'Debian': {
       $package_provider = 'dpkg'
