@@ -31,7 +31,11 @@ describe 'proxysql' do
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           if facts[:osfamily] == 'RedHat'
-            it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
+            if facts[:operatingsystem] == 'Amazon' && facts[:operatingsystemmajrelease] == '2016'
+              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/6') }
+            else
+              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
+            end
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_1_4').with_ensure('absent') }
           end
