@@ -59,10 +59,14 @@ class proxysql::params {
     'RedHat': {
       $package_provider = 'rpm'
       $package_dependencies = ['perl-DBI', 'perl-DBD-mysql']
+      $repo_os_major_version = $facts['os']['release']['major'] ? {
+        '2016'  => '6',
+        default => $facts['os']['release']['major'],
+      }
       $repo14             = {
         name     => 'proxysql_1_4',
         descr    => 'ProxySQL 1.4.x YUM repository',
-        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/${facts['os']['release']['major']}",
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/centos/${repo_os_major_version}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
@@ -70,7 +74,7 @@ class proxysql::params {
       $repo20             = {
         name     => 'proxysql_2_0',
         descr    => 'ProxySQL 2.0.x YUM repository',
-        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/${facts['os']['release']['major']}",
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/${repo_os_major_version}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
