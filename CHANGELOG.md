@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.2](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.2) (2020-05-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.1...v5.0.2)
+
+**Fixed bugs:**
+
+- Fixup Amazon 2016 issues [\#148](https://github.com/voxpupuli/puppet-proxysql/pull/148) ([alexjfisher](https://github.com/alexjfisher))
+- provider: explicitly stringify output of mysql query [\#142](https://github.com/voxpupuli/puppet-proxysql/pull/142) ([SimonPe](https://github.com/SimonPe))
+- Stop creating spurious files [\#141](https://github.com/voxpupuli/puppet-proxysql/pull/141) ([saz](https://github.com/saz))
+
+**Merged pull requests:**
+
+- Use voxpupuli-acceptance [\#144](https://github.com/voxpupuli/puppet-proxysql/pull/144) ([ekohl](https://github.com/ekohl))
+
 ## [v5.0.1](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.1) (2020-03-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.0...v5.0.1)
@@ -175,14 +189,6 @@ These should not affect the functionality of the module.
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.1...v1.1.2)
 
-**Merged pull requests:**
-
-- release 1.1.2 [\#14](https://github.com/voxpupuli/puppet-proxysql/pull/14) ([mcrauwel](https://github.com/mcrauwel))
-
-## [v1.1.1](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.1) (2017-02-12)
-
-[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.0...v1.1.1)
-
 **Implemented enhancements:**
 
 - make ensure for package and service configurable [\#11](https://github.com/voxpupuli/puppet-proxysql/pull/11) ([mcrauwel](https://github.com/mcrauwel))
@@ -190,6 +196,10 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - modulesync 0.20.0 [\#12](https://github.com/voxpupuli/puppet-proxysql/pull/12) ([mcrauwel](https://github.com/mcrauwel))
+
+## [v1.1.1](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.1) (2017-02-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.0...v1.1.1)
 
 ## [v1.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.0) (2017-02-11)
 
