@@ -28,6 +28,10 @@
 #   Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
 #   This parameter also requires the `puppet/selinux` module to be installed.
 #
+# * `manage_mysql_client`
+#   Whether to include the mysql::client class. Defaults to `true`
+#   You may have mysql::client included or managed with different parameters elsewhere in your catalogue.
+#
 # * `listen_ip`
 #   The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
 #
@@ -170,6 +174,7 @@ class proxysql (
   String $datadir = $proxysql::params::datadir,
   Stdlib::Filemode $datadir_mode = $proxysql::params::datadir_mode,
   Boolean $manage_selinux = true,
+  Boolean $manage_mysql_client = $proxysql::params::manage_mysql_client,
 
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
