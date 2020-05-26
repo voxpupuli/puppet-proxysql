@@ -45,15 +45,17 @@ class proxysql::install {
     mode   => $proxysql::datadir_mode,
   }
 
-  class { 'mysql::client':
-    package_name    => $proxysql::mysql_client_package_name,
-    bindings_enable => false,
+  if $proxysql::manage_mysql_client {
+    class { 'mysql::client':
+      package_name    => $proxysql::mysql_client_package_name,
+      bindings_enable => false,
+    }
+
+    Class['mysql::client::install']
+    -> Class['proxysql::admin_credentials']
+
+    Class['mysql::client::install']
+    -> Class['proxysql::reload_config']
   }
-
-  Class['mysql::client::install']
-  -> Class['proxysql::admin_credentials']
-
-  Class['mysql::client::install']
-  -> Class['proxysql::reload_config']
 
 }
