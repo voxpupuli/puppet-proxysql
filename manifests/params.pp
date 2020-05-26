@@ -100,7 +100,6 @@ class proxysql::params {
   $manage_config_file       = true
   $proxy_config_file        = '/etc/proxysql_proxy.cnf'
   $manage_proxy_config_file = true
-  $manage_mysql_client      = true
 
   $mycnf_file_name   = '/root/.my.cnf'
   $manage_mycnf_file = true

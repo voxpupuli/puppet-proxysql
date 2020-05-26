@@ -174,7 +174,7 @@ class proxysql (
   String $datadir = $proxysql::params::datadir,
   Stdlib::Filemode $datadir_mode = $proxysql::params::datadir_mode,
   Boolean $manage_selinux = true,
-  Boolean $manage_mysql_client = $proxysql::params::manage_mysql_client,
+  Boolean $manage_mysql_client = true,
 
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
