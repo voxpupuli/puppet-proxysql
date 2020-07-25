@@ -235,7 +235,6 @@ class proxysql (
   Optional[Proxysql::Rule] $mysql_rules = undef,
   Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits proxysql::params {
-
   $default_settings = {
     datadir => $datadir,
     admin_variables => {
@@ -298,5 +297,4 @@ class proxysql (
     Class['proxysql::config']
     ~> Class['proxysql::service']
   }
-
 }
