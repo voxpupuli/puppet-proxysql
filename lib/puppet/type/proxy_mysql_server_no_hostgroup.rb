@@ -49,6 +49,11 @@ Puppet::Type.newtype(:proxy_mysql_server_no_hostgroup) do
     newvalue(%r{\d+})
   end
 
+  newproperty(:gtid_port) do
+    desc 'the backend server port where ProxySQL Binlog Reader listens on for GTID tracking. ProxySQL 2.0+ only.'
+    newvalue(%r{\d+})
+  end
+
   newproperty(:status) do
     desc 'Server status.'
     newvalues(:ONLINE, :SHUNNED, :OFFLINE_SOFT, :OFFLINE_HARD)
