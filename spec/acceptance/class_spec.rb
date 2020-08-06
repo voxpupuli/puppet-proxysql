@@ -72,6 +72,8 @@ describe 'proxysql class' do
         listen_port              => 3306,
         admin_username           => 'admin',
         admin_password           => Sensitive('654321'),
+        stats_username           => 'stats',
+        stats_password           => Sensitive('567890'),
         monitor_username         => 'monitor',
         monitor_password         => Sensitive('123456'),
         override_config_settings => {
@@ -329,6 +331,8 @@ describe 'proxysql class' do
         listen_port              => 3306,
         admin_username           => 'admin',
         admin_password           => Sensitive('654321'),
+        stats_username           => 'stats',
+        stats_password           => Sensitive('567890'),
         monitor_username         => 'monitor',
         monitor_password         => Sensitive('123456'),
         override_config_settings => {

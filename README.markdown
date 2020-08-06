@@ -350,6 +350,12 @@ The username to connect to the ProxySQL admin interface. Defaults to 'admin'
 ##### `admin_password`
 The password to connect to the ProxySQL admin interface. Defaults to 'admin'
 
+##### `stats_username`
+The username to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
+
+##### `stats_password`
+The password to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
+
 ##### `admin_listen_ip`
 The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'
 
