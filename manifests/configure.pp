@@ -3,13 +3,12 @@
 # This class is called from proxysql for all proxy configuration.
 #
 class proxysql::configure {
-
   if $proxysql::mysql_servers {
     $proxysql::mysql_servers.each |$server| {
       $server.each |$k,$v| {
         $hostname = $k
         $port = $server[$k][port] ? { undef   => 3306,
-                                      default => $server[$k][port], }
+        default => $server[$k][port], }
         $hostgroup_id = $server[$k][hostgroup_id]
 
         if $proxysql::manage_hostgroup_for_servers {
@@ -135,4 +134,3 @@ class proxysql::configure {
     }
   }
 }
-

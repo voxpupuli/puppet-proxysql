@@ -3,7 +3,6 @@
 # This class is called from proxysql for install.
 #
 class proxysql::install {
-
   if $proxysql::package_source {
     case $facts['os']['family'] {
       'Debian': {
@@ -57,5 +56,4 @@ class proxysql::install {
     Class['mysql::client::install']
     -> Class['proxysql::reload_config']
   }
-
 }

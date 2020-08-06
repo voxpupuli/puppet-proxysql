@@ -98,7 +98,6 @@ class proxysql::params {
   $monitor_username = 'monitor'
   $monitor_password = Sensitive('monitor')
 
-
   $split_config             = false
   $config_file              = '/etc/proxysql.cnf'
   $manage_config_file       = true

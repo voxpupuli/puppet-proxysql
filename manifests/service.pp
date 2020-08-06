@@ -9,8 +9,7 @@ class proxysql::service {
   # systemd unit files replaced use of `init.d` in version 2.0.0 for some operating systems but only in 2.0.7 for CentOS/Redhat
   if (versioncmp($proxysql::version, '2.0.7') >= 0 and fact('os.family') == 'RedHat' and fact('os.name') != 'Amazon' and versioncmp(fact('os.release.major'),'7') >= 0)
   or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.name')   == 'Ubuntu' and versioncmp(fact('os.release.major'),'18.04') >= 0)
-  or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.name')   == 'Debian' and versioncmp(fact('os.release.major'),'9')     >= 0)
-  {
+  or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.name')   == 'Debian' and versioncmp(fact('os.release.major'),'9')     >= 0) {
     $drop_in_ensure = $proxysql::restart ? {
       true  => 'present',
       false => 'absent',
@@ -63,5 +62,4 @@ class proxysql::service {
     require   => Service[$proxysql::service_name],
     path      => '/bin:/usr/bin',
   }
-
 }

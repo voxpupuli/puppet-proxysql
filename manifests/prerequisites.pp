@@ -14,5 +14,4 @@ class proxysql::prerequisites inherits proxysql {
       groups => $proxysql::sys_group,
     }
   }
-
 }
