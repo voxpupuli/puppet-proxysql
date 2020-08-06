@@ -24,20 +24,6 @@ class proxysql::admin_credentials {
       before  => File['root-mycnf-file'],
     }
 
-    $stats_credentials = $proxysql::config_settings['admin_variables']['stats_credentials']
-    exec { 'proxysql-stats-credentials':
-      command => "/usr/bin/mysql --defaults-extra-file=${mycnf_file_name} --execute=\"
-        SET admin-stats_credentials = '${stats_credentials}'; \
-        LOAD ADMIN VARIABLES TO RUNTIME; \
-        SAVE ADMIN VARIABLES TO DISK;\"
-      ",
-      onlyif  => "/usr/bin/test \
-        `/usr/bin/mysql --defaults-extra-file=${mycnf_file_name} -BN \
-          --execute=\"SELECT variable_value FROM global_variables WHERE variable_name='admin-stats_credentials'\"` != '${stats_credentials}'
-      ",
-      before  => File['root-mycnf-file'],
-    }
-
     file { 'root-mycnf-file':
       ensure  => file,
       path    => $proxysql::mycnf_file_name,
