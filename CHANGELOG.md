@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.3](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.3) (2020-08-24)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.2...v5.0.3)
+
+**Merged pull requests:**
+
+- modulesync 3.0.0 & puppet-lint updates [\#150](https://github.com/voxpupuli/puppet-proxysql/pull/150) ([ghoneycutt](https://github.com/ghoneycutt))
+- Introduce `manage_mysql_client` boolean to toggle whether or not to include mysql::client [\#149](https://github.com/voxpupuli/puppet-proxysql/pull/149) ([walkleyn](https://github.com/walkleyn))
+- Add support for changing stat user's credentials [\#145](https://github.com/voxpupuli/puppet-proxysql/pull/145) ([Goorzhel](https://github.com/Goorzhel))
+
 ## [v5.0.2](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.2) (2020-05-23)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.1...v5.0.2)
