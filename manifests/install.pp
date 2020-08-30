@@ -44,6 +44,16 @@ class proxysql::install {
     mode   => $proxysql::datadir_mode,
   }
 
+  if $proxysql::errorlog_file {
+    file { $proxysql::errorlog_file:
+      ensure => file,
+      path   => $proxysql::errorlog_file,
+      owner  => $proxysql::errorlog_file_owner,
+      group  => $proxysql::errorlog_file_group,
+      mode   => $proxysql::errorlog_file_mode,
+    }
+  }
+
   if $proxysql::manage_mysql_client {
     class { 'mysql::client':
       package_name    => $proxysql::mysql_client_package_name,

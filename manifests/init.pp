@@ -24,6 +24,18 @@
 # * `datadir_mode`
 #   The filesystem mode for the `datadir`. Defaults to '0600'
 #
+# * `errorlog_file`
+#   The File where ProxySQL will store its error logs. Defaults to '/var/lib/proxysql/proxysql.log'. Available from ProxySQL v2.0.0
+#
+# * `errorlog_file_mode`
+#   The filesystem mode for the `errorlog_file_mode`. Defaults to '0600'. Available from ProxySQL v2.0.0
+#
+# * `errorlog_file_owner`
+#   Owner of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+#
+# * `errorlog_file_group`
+#   Group of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+#
 # * `manage_selinux`
 #   Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
 #   This parameter also requires the `puppet/selinux` module to be installed.
@@ -182,6 +194,11 @@ class proxysql (
   Boolean $manage_selinux = true,
   Boolean $manage_mysql_client = true,
 
+  Optional[Stdlib::Unixpath] $errorlog_file = undef,
+  Stdlib::Filemode $errorlog_file_mode = '0600',
+  String $errorlog_file_owner = 'proxysql',
+  String $errorlog_file_group = 'proxysql',
+
   String $listen_ip = $proxysql::params::listen_ip,
   Integer $listen_port = $proxysql::params::listen_port,
   String $listen_socket = $proxysql::params::listen_socket,
@@ -246,6 +263,7 @@ class proxysql (
 ) inherits proxysql::params {
   $default_settings = {
     datadir => $datadir,
+    errorlog => $errorlog_file,
     admin_variables => {
       admin_credentials => "${admin_username}:${admin_password.unwrap}",
       mysql_ifaces      => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
@@ -263,7 +281,7 @@ class proxysql (
     mysql_replication_hostgroups => {},
     mysql_group_replication_hostgroups => {},
     mysql_galera_hostgroups => {},
-  }
+  }.filter |$key, $val| { $val =~ NotUndef }
 
   $cluster_settings = $cluster_name ? {
     String  => {
