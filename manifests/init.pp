@@ -28,7 +28,7 @@
 #   The File where ProxySQL will store its error logs. Defaults to '/var/lib/proxysql/proxysql.log'. Available from ProxySQL v2.0.0
 #
 # * `errorlog_file_mode`
-#   The filesystem mode for the `errorlog_file_mode`. Defaults to '0600'. Available from ProxySQL v2.0.0
+#   The filesystem mode for the `errorlog_file`. Defaults to '0600'. Available from ProxySQL v2.0.0
 #
 # * `errorlog_file_owner`
 #   Owner of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
