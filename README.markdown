@@ -331,6 +331,18 @@ The ensure of the ProxySQL service resource. Defaults to 'running'
 ##### `datadir`
 The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
 
+##### `errorlog_file`
+The File where ProxySQL will store its error logs. Defaults to '/var/lib/proxysql/proxysql.log'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_mode`
+The filesystem mode for the `errorlog_file`. Defaults to '0600'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_owner`
+Owner of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_group`
+Group of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+
 ##### `manage_selinux`
 Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
 This parameter also requires the [puppet/selinux](https://forge.puppet.com/puppet/selinux) module to be installed.

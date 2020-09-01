@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.3) (2020-08-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.3...v5.1.0)
+
+**Merged pull requests:**
+
+- Add ability to configure errorlog file path and mode [\#153](https://github.com/voxpupuli/puppet-proxysql/pull/153) ([Anirudhra10](https://github.com/Anirudhra10))
+
 ## [v5.0.3](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.3) (2020-08-24)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.2...v5.0.3)

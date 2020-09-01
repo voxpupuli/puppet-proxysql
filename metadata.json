@@ -1,6 +1,6 @@
 {
   "name": "puppet-proxysql",
-  "version": "5.0.4-rc0",
+  "version": "5.1.0",
   "author": "Vox Pupuli",
   "summary": "Module to install and configure ProxySQL",
   "license": "Apache-2.0",
