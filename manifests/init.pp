@@ -181,16 +181,16 @@
 #   Determines whether this module will update the ProxySQL proxy configuration file. Defaults to 'true'
 #
 class proxysql (
-  Optional[String[1]] $cluster_name = $proxysql::params::cluster_name,
-  String $package_name = $proxysql::params::package_name,
-  Optional[String] $mysql_client_package_name = $proxysql::params::mysql_client_package_name,
-  String $package_ensure = $proxysql::params::package_ensure,
-  Array[String] $package_install_options = $proxysql::params::package_install_options,
-  String $service_name = $proxysql::params::service_name,
-  String $service_ensure = $proxysql::params::service_ensure,
+  Optional[String[1]] $cluster_name = undef,
+  String $package_name = 'proxysql',
+  Optional[String] $mysql_client_package_name = undef,
+  String $package_ensure = 'installed',
+  Array[String] $package_install_options = [],
+  String $service_name = 'proxysql',
+  String $service_ensure = 'running',
 
   String $datadir = $proxysql::params::datadir,
-  Stdlib::Filemode $datadir_mode = $proxysql::params::datadir_mode,
+  Stdlib::Filemode $datadir_mode = '0600',
   Boolean $manage_selinux = true,
   Boolean $manage_mysql_client = true,
 
@@ -199,37 +199,37 @@ class proxysql (
   String $errorlog_file_owner = 'proxysql',
   String $errorlog_file_group = 'proxysql',
 
-  String $listen_ip = $proxysql::params::listen_ip,
-  Integer $listen_port = $proxysql::params::listen_port,
+  String $listen_ip = '0.0.0.0',
+  Integer $listen_port = 6033,
   String $listen_socket = $proxysql::params::listen_socket,
 
-  String $admin_username = $proxysql::params::admin_username,
-  Sensitive[String] $admin_password = $proxysql::params::admin_password,
-  String $admin_listen_ip = $proxysql::params::admin_listen_ip,
-  Integer $admin_listen_port = $proxysql::params::admin_listen_port,
+  String $admin_username = 'admin',
+  Sensitive[String] $admin_password = Sensitive('admin'),
+  String $admin_listen_ip = '127.0.0.1',
+  Integer $admin_listen_port = 6032,
   String $admin_listen_socket = $proxysql::params::admin_listen_socket,
 
-  String $stats_username = $proxysql::params::stats_username,
-  Sensitive[String] $stats_password = $proxysql::params::stats_password,
+  String $stats_username = 'stats',
+  Sensitive[String] $stats_password = Sensitive('stats'),
 
-  String $monitor_username = $proxysql::params::monitor_username,
-  Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
+  String $monitor_username = 'monitor',
+  Sensitive[String] $monitor_password = Sensitive('monitor'),
 
-  Boolean $split_config = $proxysql::params::split_config,
+  Boolean $split_config = false,
 
-  String $proxy_config_file = $proxysql::params::proxy_config_file,
-  Boolean $manage_proxy_config_file = $proxysql::params::manage_proxy_config_file,
+  String $proxy_config_file = '/etc/proxysql_proxy.cnf',
+  Boolean $manage_proxy_config_file = true,
 
-  String $config_file = $proxysql::params::config_file,
-  Boolean $manage_config_file = $proxysql::params::manage_config_file,
+  String $config_file = '/etc/proxysql.cnf',
+  Boolean $manage_config_file = true,
 
-  String $mycnf_file_name = $proxysql::params::mycnf_file_name,
-  Boolean $manage_mycnf_file = $proxysql::params::manage_mycnf_file,
+  String $mycnf_file_name = '/root/.my.cnf',
+  Boolean $manage_mycnf_file = true,
 
-  Boolean $restart = $proxysql::params::restart,
+  Boolean $restart = false,
 
-  Boolean $load_to_runtime = $proxysql::params::load_to_runtime,
-  Boolean $save_to_disk = $proxysql::params::save_to_disk,
+  Boolean $load_to_runtime = true,
+  Boolean $save_to_disk = true,
 
   Boolean $manage_repo = true,
   Pattern[/^[1|2]\.\d+\.\d+/] $version = $proxysql::params::version,
@@ -246,13 +246,13 @@ class proxysql (
   },
   String $sys_group = $sys_owner,
 
-  String $cluster_username = $proxysql::params::cluster_username,
-  Sensitive[String] $cluster_password = $proxysql::params::cluster_password,
+  String $cluster_username = 'cluster',
+  Sensitive[String] $cluster_password = Sensitive('cluster'),
 
   Hash $override_config_settings = {},
 
   String $node_name = "${facts['networking']['fqdn']}:${admin_listen_port}",
-  Boolean $manage_hostgroup_for_servers = $proxysql::params::manage_hostgroup_for_servers,
+  Boolean $manage_hostgroup_for_servers = true,
   Optional[Proxysql::Server] $mysql_servers = undef,
   Optional[Proxysql::User] $mysql_users = undef,
   Optional[Proxysql::Hostgroup] $mysql_hostgroups = undef,
