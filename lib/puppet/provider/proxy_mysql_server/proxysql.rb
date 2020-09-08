@@ -14,12 +14,18 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     # one big swoop.
     servers.each do |line|
       hostname, port, hostgroup_id = line.split(%r{\t})
-      query = 'SELECT `hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, '
-      query << ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment` '
+      query = 'SELECT `hostname`, `port`, `hostgroup_id`, '
+      if has_gtid_tracking?
+        query << ' `gtid_port`, '
+      else
+        query << " NULL AS 'gtid_port', "
+      end
+      query << ' `status`, `weight`, `compression`, `max_connections`, '
+      query << ' `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment` '
       query << ' FROM `mysql_servers`'
       query << " WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
 
-      @hostname, @port, @hostgroup_id, @status, @weight, @compression,
+      @hostname, @port, @hostgroup_id, @gtid_port, @status, @weight, @compression,
       @max_connections, @max_replication_lag, @use_ssl, @max_latency_ms,
       @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
       name = "#{hostname}:#{port}-#{hostgroup_id}"
@@ -29,6 +35,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
         ensure: :present,
         hostname: @hostname,
         port: @port,
+        gtid_port: @gtid_port,
         hostgroup_id: @hostgroup_id,
         status: @status,
         weight: @weight,
@@ -57,6 +64,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     _name = @resource[:name]
     hostname = @resource.value(:hostname)
     port = @resource.value(:port) || 3306
+    gtid_port = @resource.value(:gtid_port)
     hostgroup_id = @resource.value(:hostgroup_id) || 0
     status = @resource.value(:status) || 'ONLINE'
     weight = @resource.value(:weight) || 1
@@ -67,10 +75,14 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
     max_latency_ms = @resource.value(:max_latency_ms) || 0
     comment = @resource.value(:comment) || ''
 
-    query = 'INSERT INTO mysql_servers (`hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, '
-    query << ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`)'
-    query << " VALUES ('#{hostname}', #{port}, #{hostgroup_id}, '#{status}', #{weight}, #{compression}, "
-    query << " #{max_connections}, #{max_replication_lag}, #{use_ssl}, #{max_latency_ms}, '#{comment}')"
+    query = 'INSERT INTO mysql_servers (`hostname`, `port`, `hostgroup_id`, '
+    query << ' `gtid_port`, ' if has_gtid_tracking?
+    query << ' `status`, `weight`, `compression`, `max_connections`, '
+    query << ' `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`)'
+    query << " VALUES ('#{hostname}', #{port}, #{hostgroup_id}, "
+    query << " #{gtid_port}, " if has_gtid_tracking?
+    query << " '#{status}', #{weight}, #{compression}, #{max_connections}, "
+    query << " #{max_replication_lag}, #{use_ssl}, #{max_latency_ms}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -163,5 +175,9 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
 
   def comment=(value)
     @property_flush[:comment] = value
+  end
+
+  def gtid_port=(value)
+    @property_flush[:gtid_port] = value
   end
 end
