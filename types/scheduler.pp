@@ -1,4 +1,4 @@
-# lint:ignore:2sp_soft_tabs
+# @summary Represents a ProxySQL scheduler
 type Proxysql::Scheduler = Array[Hash[String, Struct[{ scheduler_id          => Integer,
                                                        active                => Integer,
                                                        Optional[interval_ms] => Integer,
@@ -8,4 +8,3 @@ type Proxysql::Scheduler = Array[Hash[String, Struct[{ scheduler_id          => 
                                                        Optional[arg3]        => String[1],
                                                        Optional[arg4]        => String[1],
                                                        Optional[arg5]        => String[1] }],1,1]]
-# lint:endignore                                                       

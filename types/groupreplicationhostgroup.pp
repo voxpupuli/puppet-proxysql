@@ -1,4 +1,4 @@
-# lint:ignore:2sp_soft_tabs
+# @summary Represents a ProxySQL group replication hostgroup.
 type Proxysql::GroupReplicationHostgroup = Array[Hash[String, Struct[{ writer                     => Integer,
                                                                        backup                     => Integer,
                                                                        reader                     => Integer,
@@ -7,4 +7,3 @@ type Proxysql::GroupReplicationHostgroup = Array[Hash[String, Struct[{ writer   
                                                                        Optional[writers]          => Integer,
                                                                        Optional[writer_is_reader] => Integer[0,1],
                                                                        Optional[max_transactions] => Integer, }],1,1]]
-# lint:endignore

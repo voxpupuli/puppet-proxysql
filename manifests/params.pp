@@ -1,8 +1,6 @@
-# == Class proxysql::params
+# @summary It sets variables according to platform.
 #
-# This class is meant to be called from proxysql.
-# It sets variables according to platform.
-#
+# @api private
 class proxysql::params {
   $datadir = '/var/lib/proxysql'
 

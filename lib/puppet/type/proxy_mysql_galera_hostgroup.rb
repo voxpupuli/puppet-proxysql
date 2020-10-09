@@ -29,6 +29,7 @@ Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
   end
 
   ensurable do
+    desc 'Manage the state of this type.'
     defaultvalues
     defaultto :present
   end

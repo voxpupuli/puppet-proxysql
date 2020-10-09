@@ -1,7 +1,6 @@
-# == Class proxysql::reload_config
+# @summary This class is called from proxysql to update config if it changed.
 #
-# This class is called from proxysql to update config if it changed.
-#
+# @api private
 class proxysql::reload_config {
   $subscribe = $proxysql::split_config ? {
     true  => [File['proxysql-config-file'], File['proxysql-proxy-config-file']],

@@ -1,4 +1,4 @@
-# @summary Adds selinux configuration needed for logrotate to work
+# @summary Adds selinux configuration needed for logrotate to work.
 #
 # @api private
 class proxysql::selinux {
