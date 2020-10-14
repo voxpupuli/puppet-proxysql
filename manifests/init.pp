@@ -1,185 +1,132 @@
-# Class: proxysql
-# ===========================
+# @summary Install and configure ProxySQL.
 #
-# Full description of class proxysql here.
-#
-# Parameters
-# ----------
-#
-# * `package_name`
-#   The name of the ProxySQL package in your package manager. Defaults to 'proxysql'
-#
-# * `package_ensure`
-#   The ensure of the ProxySQL package resource. Defaults to 'installed'
-#
-# * `service_name`
-#   The name of the ProxySQL service resource. Defaults to 'proxysql'
-#
-# * `service_ensure`
-#   The ensure of the ProxySQL service resource. Defaults to 'running'
-#
-# * `datadir`
-#   The directory where ProxySQL will store its data. Defaults to '/var/lib/proxysql'
-#
-# * `datadir_mode`
-#   The filesystem mode for the `datadir`. Defaults to '0600'
-#
-# * `errorlog_file`
-#   The File where ProxySQL will store its error logs. Defaults to '/var/lib/proxysql/proxysql.log'. Available from ProxySQL v2.0.0
-#
-# * `errorlog_file_mode`
-#   The filesystem mode for the `errorlog_file`. Defaults to '0600'. Available from ProxySQL v2.0.0
-#
-# * `errorlog_file_owner`
-#   Owner of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
-#
-# * `errorlog_file_group`
-#   Group of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
-#
-# * `manage_selinux`
-#   Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
+# @param package_name
+#   The name of the ProxySQL package in your package manager.
+# @param package_ensure
+#   The ensure of the ProxySQL package resource.
+# @param package_install_options
+#   An array of additional options to pass when installing a package. 
+# @param service_name
+#   The name of the ProxySQL service resource.
+# @param service_ensure
+#   The ensure of the ProxySQL service resource.
+# @param datadir
+#   The directory where ProxySQL will store its data.
+# @param datadir_mode
+#   The filesystem mode for the `datadir`.
+# @param errorlog_file
+#   The File where ProxySQL will store its error logs. Available from ProxySQL v2.0.0
+# @param errorlog_file_mode
+#   The filesystem mode for the `errorlog_file`. Available from ProxySQL v2.0.0
+# @param errorlog_file_owner
+#   Owner of the `errorlog_file`. Available from ProxySQL v2.0.0
+# @param errorlog_file_group
+#   Group of the `errorlog_file`. Available from ProxySQL v2.0.0
+# @param manage_selinux
+#   Whether to create the required selinux rules for logrotate to work. 
 #   This parameter also requires the `puppet/selinux` module to be installed.
-#
-# * `manage_mysql_client`
-#   Whether to include the mysql::client class. Defaults to `true`
+# @param manage_mysql_client
+#   Whether to include the mysql::client class.
 #   You may have mysql::client included or managed with different parameters elsewhere in your catalogue.
-#
-# * `listen_ip`
-#   The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
-#
-# * `listen_port`
-#   The port where the ProxySQL service will listen on. Defaults to '6033'
-#
-# * `listen_socket`
-#   The socket where the ProxySQL service will listen on. Defaults to '/tmp/proxysql.sock'
-#
-# * `admin_username`
-#   The username to connect to the ProxySQL admin interface. Defaults to 'admin'
-#
-# * `admin_password`
-#   The password to connect to the ProxySQL admin interface. Defaults to 'admin'
-#
-# * `stats_username`
-#   The username to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
-#
-# * `stats_password`
-#   The password to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
-#
-# * `admin_listen_ip`
-#   The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'
-#
-# * `admin_listen_port`
-#   The port where the ProxySQL admin interface  will listen on. Defaults to '6032'
-#
-# * `admin_listen_socket`
+# @param listen_ip
+#   The ip where the ProxySQL service will listen on.
+# @param listen_port
+#   The port where the ProxySQL service will listen on.
+# @param listen_socket
+#   The socket where the ProxySQL service will listen on.
+# @param admin_username
+#   The username to connect to the ProxySQL admin interface.
+# @param admin_password
+#   The password to connect to the ProxySQL admin interface.
+# @param stats_username
+#   The username to connect with read-only permissions to the ProxySQL admin interface.
+# @param stats_password
+#   The password to connect with read-only permissions to the ProxySQL admin interface.
+# @param admin_listen_ip
+#   The ip where the ProxySQL admin interface will listen on.
+# @param admin_listen_port
+#   The port where the ProxySQL admin interface  will listen on.
+# @param admin_listen_socket
 #   The socket where the ProxySQL admin interface  will listen on. Changing this on a running system will result in failing runs.
-#   Defaults to '/tmp/proxysql_admin.sock'
-#
-# * `monitor_username`
-#   The username ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
-#
-# * `monitor_password`
-#   The password ProxySQL will use to connect to the configured mysql_servers. Defaults to 'monitor'
-#
-# * `config_file`
+# @param monitor_username
+#   The username ProxySQL will use to connect to the configured mysql_servers.
+# @param monitor_password
+#   The password ProxySQL will use to connect to the configured mysql_servers.
+# @param config_file
 #   The file where the ProxySQL configuration is saved. This will only be configured if `manage_config_file` is set to `true`.
-#   Defaults to '/etc/proxysql.cnf'
-#
-# * `manage_config_file`
-#   Determines whether this module will configure the ProxySQL configuration file. Defaults to 'true'
-#
-# * `mycnf_file_name`
+# @param manage_config_file
+#   Determines whether this module will configure the ProxySQL configuration file.
+# @param mycnf_file_name
 #   Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
-#   This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
-#
-# * `manage_mycnf_file`
+#   This will only be configured if `manage_mycnf_file` is set to `true`.
+# @param manage_mycnf_file
 #   Determines whether this module will configure the my.cnf file to connect to the admin interface.
-#   This is required for the providers to work. Defaults to 'true'
-#
-# * `restart`
-#   Determines whether this module will restart ProxySQL after reconfiguring the config file. Defaults to 'false'
-#
-# * `load_to_runtime`
-#   Specifies whether te managed ProxySQL resources should be immediately loaded to the active runtime. Boolean, defaults to 'true'.
-#
-# * `save_to_disk`
-#   Specifies whether te managed ProxySQL resources should be immediately save to disk. Boolean, defaults to 'true'.
-#
-# * `manage_repo`
-#   Determines whether this module will manage the repositories where ProxySQL might be. Defaults to 'true'
-#
-# * `version`
-#   The version of proxysql being managed.  This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
-#   It does not affect the package version being installed.  It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
-#   deployed, use `package_name` or `package_source`.  Defaults to the version currently installed, or `2.0.7` if the `proxysql_version` fact is not yet
-#   available.
-#
-# * `package_source`
+#   This is required for the providers to work.
+# @param restart
+#   Determines whether this module will restart ProxySQL after reconfiguring the config file.
+# @param load_to_runtime
+#   Specifies whether te managed ProxySQL resources should be immediately loaded to the active runtime.
+# @param save_to_disk
+#   Specifies whether te managed ProxySQL resources should be immediately save to disk.
+# @param manage_repo
+#   Determines whether this module will manage the repositories where ProxySQL might be.
+# @param version
+#   The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
+#   It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
+#   deployed, use `package_name` or `package_source`. Currently defaults to '2.0.7' or the value of the `proxysql_version` fact.
+# @param package_source
 #   location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
 #   Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
-#
-# * `package_provider`
-#   provider for `package_source`. defaults to `dpkg` for debian-based, and `rpm` for redhat systems.
-#
-# * `package_checksum_value`
+# @param package_provider
+#   provider for `package_source`.
+# @param package_checksum_value
 #   The checksum of the package. Optional and only applicable when `package_source` is provided.
-#
-# * `package_checksum_type`
+# @param package_checksum_type
 #   The 'type' of `package_checksum_value`. Optional and only applicable when `package_checksum_value` is provided.
-#
-# * `sys_owner`
-#   owner of the datadir and config_file, defaults to root or proxysql depending on `version`
-#
-# * `sys_group`
-#   group of the datadir and config_file, defaults to root or proxysql depending on `version`
-#
-# * `override_config_settings`
-#   Which configuration variables should be overriden. Hash, defaults to {} (empty hash).
-#
-# * `cluster_name`
+# @param package_dependencies
+#   A list of packages which should be additionally installed.
+# @param sys_owner
+#   Owner of the datadir and config_file.
+# @param sys_group
+#   Group of the datadir and config_file.
+# @param override_config_settings
+#   Which configuration variables should be overriden.
+# @param node_name
+#   The name of the node.
+# @param cluster_name
 #   If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will
-#   synchronize their configuration parameters. Defaults to undef
-#
-# * `cluster_username`
+#   synchronize their configuration parameters.
+# @param cluster_username
 #   The username ProxySQL will use to connect to the configured mysql_clusters
-#   Defaults to 'cluster'
-#
-# * `cluster_password`
-#   The password ProxySQL will use to connect to the configured mysql_clusters. Defaults to 'cluster'
-#
-# * `mysql_client_package_name`
-#   The name of the mysql client package in your package manager. Defaults to undef
-#
-# * `manage_hostgroup_for_servers`
+# @param cluster_password
+#   The password ProxySQL will use to connect to the configured mysql_clusters.
+# @param mysql_client_package_name
+#   The name of the mysql client package in your package manager.
+# @param manage_hostgroup_for_servers
 #   Determines whether this module will manage hostgroup_id for mysql_servers.
-#   If false - it will skip difference in this value between manifest and defined in ProxySQL. Defaults to 'true'
-#
-# * `mysql_servers`
-#   Array of mysql_servers, that will be created in ProxySQL. Defaults to undef
-#
-# * `mysql_users`
-#   Array of mysql_users, that will be created in ProxySQL. Defaults to undef
-#
-# * `mysql_hostgroups`
-#   Array of mysql_hostgroups, that will be created in ProxySQL. Defaults to undef
-#
-# * `mysql_rules`
-#   Array of mysql_rules, that will be created in ProxySQL. Defaults to undef
-#
-# * `schedulers`
-#   Array of schedulers, that will be created in ProxySQL. Defaults to undef
-#
-# * `split_config`
+#   If false - it will skip difference in this value between manifest and defined in ProxySQL.
+# @param mysql_servers
+#   Array of mysql_servers, that will be created in ProxySQL.
+# @param mysql_users
+#   Array of mysql_users, that will be created in ProxySQL.
+# @param mysql_hostgroups
+#   Array of mysql_hostgroups, that will be created in ProxySQL.
+# @param mysql_group_replication_hostgroups
+#   Hash of mysql_group_replication_hostgroups, that will be created in ProxySQL.
+# @param mysql_galera_hostgroups
+#   Hash of mysql_galera_hostgroups, that will be created in ProxySQL.
+# @param mysql_rules
+#   Array of mysql_rules, that will be created in ProxySQL.
+# @param schedulers
+#   Array of schedulers, that will be created in ProxySQL.
+# @param split_config
 #   If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
-#   and proxy config file with servers\users\hostgroups\scheduler params. Defaults to false
-#
-# * `proxy_config_file`
+#   and proxy config file with servers\users\hostgroups\scheduler params.
+# @param proxy_config_file
 #   The file where servers\users\hostgroups\scheduler\rules params of ProxySQL configuration are saved
-#   This will only be configured if `split_config` is set to `true`. Defaults to 'proxysql_proxy.cnf'
-#
-# * `manage_proxy_config_file`
-#   Determines whether this module will update the ProxySQL proxy configuration file. Defaults to 'true'
-#
+#   This will only be configured if `split_config` is set to `true`.
+# @param manage_proxy_config_file
+#   Determines whether this module will update the ProxySQL proxy configuration file.
 class proxysql (
   Optional[String[1]] $cluster_name = undef,
   String $package_name = 'proxysql',

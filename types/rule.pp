@@ -1,4 +1,4 @@
-# lint:ignore:2sp_soft_tabs
+# @summary Represents a ProxySQL query rule.
 type Proxysql::Rule = Array[Hash[String, Struct[{ rule_id                         => Integer,
                                                   active                          => Integer,
                                                   Optional[username]              => String[1],
@@ -24,4 +24,3 @@ type Proxysql::Rule = Array[Hash[String, Struct[{ rule_id                       
                                                   Optional[log]                   => Integer[0,1],
                                                   Optional[mirror_hostgroup]      => Integer,
                                                   Optional[mirror_flag_out]       => Integer, }],1,1]]
-# lint:endignore

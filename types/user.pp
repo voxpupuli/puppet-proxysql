@@ -1,4 +1,4 @@
-# lint:ignore:2sp_soft_tabs
+# @summary Represents a ProxySQL user.
 type Proxysql::User = Array[Hash[String, Struct[{ password                         => String[1],
                                                   default_hostgroup                => Integer,
                                                   Optional[active]                 => Integer[0,1],
@@ -10,4 +10,3 @@ type Proxysql::User = Array[Hash[String, Struct[{ password                      
                                                   Optional[backend]                => Integer[0,1],
                                                   Optional[frontend]               => Integer[0,1],
                                                   Optional[max_connections]        => Integer, }],1,1]]
-# lint:endignore

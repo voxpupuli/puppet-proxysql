@@ -1,8 +1,6 @@
-# Class: proxysql::repo
-# ===========================
+# @summary Manage the repos where the ProxySQL package might be.
 #
-# Manage the repos where the ProxySQL package might be
-#
+# @api private
 class proxysql::repo {
   assert_private()
 

@@ -1,3 +1,4 @@
+# @summary Represents an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
 type Proxysql::GaleraHostgroup = Array[Hash[String, Struct[{ writer                     => Integer[0],
                                                              backup                     => Integer[0],
                                                              reader                     => Integer[0],

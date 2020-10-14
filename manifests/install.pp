@@ -1,7 +1,6 @@
-# == Class proxysql::install
+# @summary This class is called from proxysql for install.
 #
-# This class is called from proxysql for install.
-#
+# @api private
 class proxysql::install {
   if $proxysql::package_source {
     case $facts['os']['family'] {

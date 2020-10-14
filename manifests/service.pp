@@ -1,8 +1,6 @@
-# == Class proxysql::service
+# @summary This class ensures that the service is running.
 #
-# This class is meant to be called from proxysql.
-# It ensure the service is running.
-#
+# @api private
 class proxysql::service {
   assert_private()
 

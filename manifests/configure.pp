@@ -1,7 +1,6 @@
-# == Class proxysql::configure
+# @summary This class is called from proxysql for all proxy configuration.
 #
-# This class is called from proxysql for all proxy configuration.
-#
+# @api private
 class proxysql::configure {
   if $proxysql::mysql_servers {
     $proxysql::mysql_servers.each |$server| {

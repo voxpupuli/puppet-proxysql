@@ -1,7 +1,6 @@
-# == Class proxysql::admin_credentials
+# @summary This class is called from proxysql for service config.
 #
-# This class is called from proxysql for service config.
-#
+# @api private
 class proxysql::admin_credentials {
   if $proxysql::manage_mycnf_file {
     $mycnf_file_name = $proxysql::mycnf_file_name
