@@ -4,7 +4,7 @@ Puppet::Type.newtype(:proxy_mysql_server) do
 
   ensurable
 
-  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:file) { "#{Facter.value(:proxysql_mycnf_file_name)}" }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 

@@ -3,7 +3,7 @@ Puppet::Type.newtype(:proxy_scheduler) do
 
   ensurable
 
-  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:file) { "#{Facter.value(:proxysql_mycnf_file_name)}" }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 

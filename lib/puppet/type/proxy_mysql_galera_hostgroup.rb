@@ -3,7 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
   @doc = 'Manage a ProxySQL mysql_galera_hostgroup.'
 
-  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:file) { "#{Facter.value(:proxysql_mycnf_file_name)}" }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 

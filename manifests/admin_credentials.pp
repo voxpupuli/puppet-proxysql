@@ -30,5 +30,12 @@ class proxysql::admin_credentials {
       group   => $proxysql::sys_group,
       mode    => '0400',
     }
+
+    # This is to keep track of my cnf file.
+    # This is used by custom proxy_* resources
+    file { '/root/.proxysql_mycnf_file_name':
+      ensure  => file,
+      content => $proxysql::mycnf_file_name
+    }
   }
 }
