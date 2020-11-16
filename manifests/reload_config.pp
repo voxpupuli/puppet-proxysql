@@ -18,7 +18,7 @@ class proxysql::reload_config {
           SAVE MYSQL VARIABLES TO DISK; \"
         ",
     subscribe   => $subscribe,
-    require     => [Service[$proxysql::service_name], File['root-mycnf-file']],
+    require     => [Service[$proxysql::service_name], File['root-mycnf-file'], File['/root/.proxysql_mycnf_file_name']],
     refreshonly => true,
   }
 }
