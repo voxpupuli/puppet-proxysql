@@ -4,7 +4,7 @@ Puppet::Type.newtype(:proxy_cluster) do
 
   ensurable
 
-  autorequire(:file) { "#{Facter.value(:proxysql_mycnf_file_name)}" }
+  autorequire(:class) { 'proxysql::admin_credentials' }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 
