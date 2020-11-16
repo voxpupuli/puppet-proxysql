@@ -35,7 +35,7 @@ class proxysql::admin_credentials {
     # This is used by custom proxy_* resources
     file { '/root/.proxysql_mycnf_file_name':
       ensure  => file,
-      content => $proxysql::mycnf_file_name
+      content => $proxysql::mycnf_file_name,
     }
   }
 }
