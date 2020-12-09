@@ -3,6 +3,15 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
   desc 'Manage query rule for a ProxySQL instance.'
   commands mysql: 'mysql'
 
+  def self.normalise_pattern(pattern)
+    if pattern.nil?
+      return nil
+    end
+    retval = pattern.gsub('\\\\', '\\')
+    retval.gsub!("'", "''")
+    return retval
+  end
+
   # Build a property_hash containing all the discovered information about query rules.
   def self.instances
     instances = []
@@ -25,6 +34,10 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
       @cache_ttl, @reconnect, @timeout, @retries, @delay, @error_msg, @log, @comment,
       @mirror_flag_out, @mirror_hostgroup = mysql([defaults_file, '-NBe', query].compact).to_s.chomp.split(%r{\t})
       name = "mysql_query_rule-#{rule_id}"
+
+      @match_pattern = normalise_pattern(@match_pattern)
+      @negate_match_pattern = normalise_pattern(@negate_match_pattern)
+      @replace_pattern = normalise_pattern(@replace_pattern)
 
       instances << new(
         name: name,
