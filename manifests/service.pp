@@ -16,7 +16,7 @@ class proxysql::service {
       ensure   => $drop_in_ensure,
       filename => 'puppet.conf',
       unit     => "${proxysql::service_name}.service",
-      content  => "[Service]\nExecStart=\nExecStart=/usr/bin/proxysql --reload -c /etc/proxysql.cnf\n",
+      content  => "[Service]\nExecStart=\nExecStart=/usr/bin/proxysql --reload --idle-threads -c /etc/proxysql.cnf \$PROXYSQL_OPTS\n",
       notify   => Service[$proxysql::service_name],
     }
     service { $proxysql::service_name:
