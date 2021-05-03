@@ -19,7 +19,10 @@ class proxysql::admin_credentials {
         -o `/usr/bin/mysql --defaults-extra-file=${mycnf_file_name} -BN \
           --execute=\"SELECT variable_value FROM global_variables WHERE variable_name='admin-mysql_ifaces'\"` != '${admin_interfaces}'
       ",
-      before  => File['root-mycnf-file'],
+      before  => [
+        File['root-mycnf-file'],
+        File['/root/.proxysql_mycnf_file_name']
+        ],
     }
 
     file { 'root-mycnf-file':
