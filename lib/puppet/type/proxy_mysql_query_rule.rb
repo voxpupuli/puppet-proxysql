@@ -118,6 +118,11 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
     newvalue(%r{[01]})
   end
 
+  newproperty(:multiplex) do
+    desc 'Enable / Disable multiplexing on rule'
+    newvalue(%r{[01]})
+  end
+
   newproperty(:timeout) do
     desc 'The maximum amount of miliseconds in which the matched or rewritten query should be executed.'
     newvalue(%r{\d+})
