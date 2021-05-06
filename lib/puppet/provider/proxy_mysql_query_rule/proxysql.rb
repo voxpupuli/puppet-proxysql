@@ -235,7 +235,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     @property_flush[:reconnect] = value
   end
 
-  def multiplex(value)
+  def multiplex=(value)
     @property_flush[:multiplex] = value
   end
 
