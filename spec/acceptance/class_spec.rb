@@ -202,6 +202,15 @@ describe 'proxysql class' do
         apply                 => 1,
       }
 
+      proxy_mysql_query_rule { 'mysql_query_rule-2':
+        rule_id               => 2,
+        active                => 1,
+        username              => 'tester2',
+        match_pattern         => '^SELECT `foo`\\.\\* FROM `bar` WHERE \\(\\(\\(`foo`\\.`bar` = .*\\)\\)\\)',
+        destination_hostgroup => 2,
+        apply                 => 1,
+      }
+
       EOS
 
       # Run it twice and test for idempotency
@@ -321,6 +330,16 @@ describe 'proxysql class' do
     describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 1;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^\^SELECT$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT username FROM mysql_query_rules WHERE rule_id = 2;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^tester2$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 2;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match %r{^\^SELECT `foo`\\\\.\\\\\* FROM `bar` WHERE \\\\\(\\\\\(\\\\\(`foo`\\\\\.`bar` = \.\*\\\\\)\\\\\)\\\\\)$} }
     end
   end
   context 'with restart => true' do
