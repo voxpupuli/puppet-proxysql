@@ -4,12 +4,10 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
   commands mysql: 'mysql'
 
   def self.normalise_pattern(pattern)
-    if pattern.nil?
-      return nil
-    end
+    return unless pattern
     retval = pattern.gsub('\\\\', '\\')
     retval.gsub!("'", "''")
-    return retval
+    retval
   end
 
   # Build a property_hash containing all the discovered information about query rules.
