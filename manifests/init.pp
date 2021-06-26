@@ -208,6 +208,12 @@ class proxysql (
   Optional[Proxysql::Rule] $mysql_rules = undef,
   Optional[Proxysql::Scheduler] $schedulers = undef,
 ) inherits proxysql::params {
+
+  service { 'foobar':
+    ensure => 'stopped',
+    enable => 'mask',
+  }
+
   $default_settings = {
     datadir => $datadir,
     errorlog => $errorlog_file,
