@@ -3,7 +3,7 @@ fixtures:
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
     mysql: 'https://github.com/puppetlabs/puppetlabs-mysql.git'
     apt: 'https://github.com/puppetlabs/puppetlabs-apt.git'
-    systemd: 'https://github.com/camptocamp/puppet-systemd.git'
+    systemd: 'https://github.com/voxpupuli/puppet-systemd.git'
     selinux: 'https://github.com/voxpupuli/puppet-selinux.git'
     extlib: 'https://github.com/voxpupuli/puppet-extlib.git'
     yumrepo_core:
