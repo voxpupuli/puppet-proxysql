@@ -32,12 +32,18 @@ describe 'proxysql' do
 
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystem] == 'Amazon' && facts[:operatingsystemmajrelease] == '2016'
-              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/6') }
+              it { is_expected.to contain_yumrepo('proxysql_2_3').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/6') }
+              it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+              it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
+            elsif facts[:operatingsystemmajrelease] =~ %r{^(5)$}
+              it { is_expected.to contain_yumrepo('proxysql_2_2').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/centos/#{facts[:operatingsystemmajrelease]}") }
+              it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+              it { is_expected.to contain_yumrepo('proxysql_2_1').with_ensure('absent') }
             else
-              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
+              it { is_expected.to contain_yumrepo('proxysql_2_3').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/#{facts[:operatingsystemmajrelease]}") }
+              it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+              it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
             end
-            it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
-            it { is_expected.to contain_yumrepo('proxysql_1_4').with_ensure('absent') }
           end
 
           it do
@@ -98,9 +104,9 @@ describe 'proxysql' do
             end
           end
 
-          unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
+          unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] =~ %r{^(7|8)$}) ||
                  (facts[:operatingsystem] == 'Ubuntu' && ['18.04', '20.04'].include?(facts[:operatingsystemmajrelease])) ||
-                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10)$})
+                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10|11)$})
             it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
             it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
           end

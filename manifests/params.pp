@@ -125,7 +125,7 @@ class proxysql::params {
   } else {
     $short_proxysql_version_fact = undef
   }
-  $version = pick($short_proxysql_version_fact,'2.0.7')
+  $version = pick($short_proxysql_version_fact,'2.3.2')
 
   $listen_socket = pick(getvar('_listen_socket'),'/tmp/proxysql.sock')
   $admin_listen_socket = pick(getvar('_admin_listen_socket'),'/tmp/proxysql_admin.sock')

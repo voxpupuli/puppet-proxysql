@@ -32,12 +32,12 @@ describe 'proxysql class' do
     end
   end
 
-  context 'Upgrading to version 2.0' do
+  context 'Upgrading to version 2.3' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
         package_ensure => latest,
-        version        => '2.0.7',
+        version        => '2.3.2',
       }
       EOS
 
@@ -60,7 +60,7 @@ describe 'proxysql class' do
 
     describe command('proxysql --version') do
       its(:exit_status) { is_expected.to eq 0 }
-      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.0\.} }
+      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.3\.} }
     end
   end
 
