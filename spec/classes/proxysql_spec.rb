@@ -100,18 +100,6 @@ describe 'proxysql' do
                 let(:params) { { 'restart' => true, 'version' => '2.0.6' } }
                 it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
               end
-              #context 'and proxysql 2.1.1' do
-              #  let(:params) { { 'restart' => true, 'version' => '2.1.1' } }
-              #  it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
-              #end
-              #context 'and proxysql 2.2.2' do
-              #  let(:params) { { 'restart' => true, 'version' => '2.2.2' } }
-              #  it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
-              #end
-              #context 'and proxysql 2.3.2' do
-              #  let(:params) { { 'restart' => true, 'version' => '2.3.2' } }
-              #  it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
-              #end
             end
           end
 
