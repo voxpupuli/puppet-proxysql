@@ -39,7 +39,6 @@ describe 'proxysql' do
               it { is_expected.to contain_yumrepo('proxysql_2_3').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/#{facts[:operatingsystemmajrelease]}") }
             end
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
-            it { is_expected.to contain_yumrepo('proxysql_2_1').with_ensure('absent') }
           end
 
           it do
