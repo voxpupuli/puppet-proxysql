@@ -28,29 +28,14 @@ class proxysql::repo {
         $purge_repo = $proxysql::version ? {
           # 2.3
           /^2\.3\./ => $proxysql::params::repo22['name'],
-          /^2\.3\./ => $proxysql::params::repo21['name'],
-          /^2\.3\./ => $proxysql::params::repo20['name'],
-          /^2\.3\./ => $proxysql::params::repo14['name'],
           # 2.2
-          /^2\.2\./ => $proxysql::params::repo23['name'],
           /^2\.2\./ => $proxysql::params::repo21['name'],
-          /^2\.2\./ => $proxysql::params::repo20['name'],
-          /^2\.2\./ => $proxysql::params::repo14['name'],
           # 2.1
-          /^2\.1\./ => $proxysql::params::repo23['name'],
-          /^2\.1\./ => $proxysql::params::repo22['name'],
           /^2\.1\./ => $proxysql::params::repo20['name'],
-          /^2\.1\./ => $proxysql::params::repo14['name'],
           # 2.0
-          /^2\.0\./ => $proxysql::params::repo23['name'],
-          /^2\.0\./ => $proxysql::params::repo22['name'],
-          /^2\.0\./ => $proxysql::params::repo21['name'],
           /^2\.0\./ => $proxysql::params::repo14['name'],
           # 1.4
-          /^1\.4\./ => $proxysql::params::repo23['name'],
-          /^1\.4\./ => $proxysql::params::repo22['name'],
-          /^1\.4\./ => $proxysql::params::repo21['name'],
-          /^1\.4\./ => $proxysql::params::repo20['name'],
+          #/^1\.4\./ => $proxysql::params::repo20['name'],
         }
         yumrepo { ['proxysql_repo', $purge_repo]:
           ensure => absent,
