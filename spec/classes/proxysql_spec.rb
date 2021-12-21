@@ -33,14 +33,13 @@ describe 'proxysql' do
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystem] == 'Amazon' && facts[:operatingsystemmajrelease] == '2016'
               it { is_expected.to contain_yumrepo('proxysql_2_3').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/6') }
-              it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
             elsif facts[:operatingsystemmajrelease] =~ %r{^(5)$}
               it { is_expected.to contain_yumrepo('proxysql_2_2').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/centos/#{facts[:operatingsystemmajrelease]}") }
             else
               it { is_expected.to contain_yumrepo('proxysql_2_3').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/#{facts[:operatingsystemmajrelease]}") }
-              it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
             end
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_1').with_ensure('absent') }
           end
 
           it do
