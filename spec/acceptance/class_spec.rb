@@ -32,6 +32,102 @@ describe 'proxysql class' do
     end
   end
 
+  context 'Upgrading to version 2.0' do
+    it 'works idempotently with no errors' do
+      pp = <<-EOS
+      class { 'proxysql':
+        package_ensure => latest,
+        version        => '2.0.6',
+      }
+      EOS
+
+      # Run it twice and test for idempotency
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+
+      # Run it again, this time relying on proxysql_version fact
+      apply_manifest('class { \'proxysql\':}', catch_changes: true)
+    end
+
+    describe package('proxysql') do
+      it { is_expected.to be_installed }
+    end
+
+    describe service('proxysql') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe command('proxysql --version') do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.0\.} }
+    end
+  end
+
+  context 'Upgrading to version 2.1' do
+    it 'works idempotently with no errors' do
+      pp = <<-EOS
+      class { 'proxysql':
+        package_ensure => latest,
+        version        => '2.1.1',
+      }
+      EOS
+
+      # Run it twice and test for idempotency
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+
+      # Run it again, this time relying on proxysql_version fact
+      apply_manifest('class { \'proxysql\':}', catch_changes: true)
+    end
+
+    describe package('proxysql') do
+      it { is_expected.to be_installed }
+    end
+
+    describe service('proxysql') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe command('proxysql --version') do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.1\.} }
+    end
+  end
+
+  context 'Upgrading to version 2.2' do
+    it 'works idempotently with no errors' do
+      pp = <<-EOS
+      class { 'proxysql':
+        package_ensure => latest,
+        version        => '2.2.2',
+      }
+      EOS
+
+      # Run it twice and test for idempotency
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+
+      # Run it again, this time relying on proxysql_version fact
+      apply_manifest('class { \'proxysql\':}', catch_changes: true)
+    end
+
+    describe package('proxysql') do
+      it { is_expected.to be_installed }
+    end
+
+    describe service('proxysql') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe command('proxysql --version') do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.2\.} }
+    end
+  end
+
   context 'Upgrading to version 2.3' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
