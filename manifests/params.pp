@@ -48,7 +48,7 @@ class proxysql::params {
       }
       $repo22             = {
         comment  => 'ProxySQL 2.2.x APT repository',
-        locat2ion => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => '',
         key      => {
