@@ -35,7 +35,7 @@ class proxysql::repo {
           # 2.0
           /^2\.0\./ => $proxysql::params::repo14['name'],
           # 1.4
-          #/^1\.4\./ => $proxysql::params::repo20['name'],
+          /^1\.4\./ => $proxysql::params::repo20['name'],
         }
         yumrepo { ['proxysql_repo', $purge_repo]:
           ensure => absent,
