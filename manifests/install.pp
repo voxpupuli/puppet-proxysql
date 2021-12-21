@@ -4,7 +4,7 @@
 class proxysql::install {
   if $proxysql::package_source {
     case $facts['os']['family'] {
-      'Debian': {
+      /^(Debian|Ubuntu)$/: {
         $real_package_source = '/root/proxysql-package.deb'
 
         archive { $real_package_source:

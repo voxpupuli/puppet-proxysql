@@ -5,7 +5,7 @@ class proxysql::params {
   $datadir = '/var/lib/proxysql'
 
   case $facts['os']['family'] {
-    'Debian': {
+    /^(Debian|Ubuntu)$/: {
       $package_provider = 'dpkg'
       $package_dependencies = []
 
@@ -36,6 +36,36 @@ class proxysql::params {
           'server' => 'keyserver.ubuntu.com',
         },
       }
+      $repo21             = {
+        comment  => 'ProxySQL 2.1.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.1.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        },
+      }
+      $repo22             = {
+        comment  => 'ProxySQL 2.2.x APT repository',
+        locat2ion => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        },
+      }
+      $repo23             = {
+        comment  => 'ProxySQL 2.3.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        },
+      }
     }
     'RedHat': {
       $package_provider = 'rpm'
@@ -56,6 +86,30 @@ class proxysql::params {
         name     => 'proxysql_2_0',
         descr    => 'ProxySQL 2.0.x YUM repository',
         baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo21             = {
+        name     => 'proxysql_2_1',
+        descr    => 'ProxySQL 2.1.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.1.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo22             = {
+        name     => 'proxysql_2_2',
+        descr    => 'ProxySQL 2.2.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo23             = {
+        name     => 'proxysql_2_3',
+        descr    => 'ProxySQL 2.3.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/centos/${repo_os_major_version}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
