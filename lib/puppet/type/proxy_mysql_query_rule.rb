@@ -90,12 +90,12 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:match_pattern) do
     desc 'regular expression that matches the query text'
-    newvalue(%r{\w+})
+    newvalue(%r{.*})
   end
 
   newproperty(:replace_pattern) do
     desc 'this is the pattern with which to replace the matched pattern.'
-    newvalue(%r{\w+})
+    newvalue(%r{.*})
   end
 
   newproperty(:negate_match_pattern) do
