@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Puppet::Provider::Proxysql < Puppet::Provider
   # Without initvars commands won't work.
   initvars
 
   # Make sure we find mysql commands on CentOS and FreeBSD
-  ENV['PATH'] = ENV['PATH'] + ':/usr/libexec:/usr/local/libexec:/usr/local/bin'
+  ENV['PATH'] = "#{ENV['PATH']}:/usr/libexec:/usr/local/libexec:/usr/local/bin"
 
   commands mysql: 'mysql'
 

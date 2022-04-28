@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'proxysql class' do
@@ -286,6 +288,7 @@ describe 'proxysql class' do
 
     describe command("mysql -NB -e 'SELECT username FROM mysql_users;'") do
       its(:exit_status) { is_expected.to eq 0 }
+
       its(:stdout) do
         is_expected.to match 'tester1'
         is_expected.to match 'tester2'
@@ -342,6 +345,7 @@ describe 'proxysql class' do
       its(:stdout) { is_expected.to match %r{^\^SELECT `foo`\\\\.\\\\\* FROM `bar` WHERE \\\\\(\\\\\(\\\\\(`foo`\\\\\.`bar` = \.\*\\\\\)\\\\\)\\\\\)$} }
     end
   end
+
   context 'with restart => true' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
@@ -364,6 +368,7 @@ describe 'proxysql class' do
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
+
     describe service('proxysql') do
       it { is_expected.to be_running }
     end

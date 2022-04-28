@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:proxysql_version) do
   confine kernel: 'Linux'
   setcode do

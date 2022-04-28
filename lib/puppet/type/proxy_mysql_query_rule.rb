@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:proxy_mysql_query_rule) do
   @doc = 'Manage a ProxySQL mysql_query_rules entry.'
 

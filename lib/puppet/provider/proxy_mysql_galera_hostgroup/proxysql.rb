@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
 Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Puppet::Provider::Proxysql) do
   desc 'Manage galera hostgroup for a ProxySQL instance.'
@@ -52,7 +54,7 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
   end
 
   def create
-    query_parameters = Hash[self.class.db_fields.map { |param| [param, resource[param]] }].reject { |_k, v| v.nil? }
+    query_parameters = self.class.db_fields.map { |param| [param, resource[param]] }.to_h.compact
 
     columns = query_parameters.keys.map { |k| "`#{k}`" }.join(',')
     values = query_parameters.values.map { |value| make_sql_value(value) }.join(',')
@@ -92,7 +94,7 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
     property = property.intern
     next if property == :ensure
 
-    define_method(property.to_s + '=') do |value|
+    define_method("#{property}=") do |value|
       @property_flush[property] = value
       @property_hash[property] = value
     end
@@ -118,20 +120,20 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
   end
 
   def self.namevar_db_fields
-    [
-      :writer_hostgroup,
-      :backup_writer_hostgroup,
-      :reader_hostgroup,
-      :offline_hostgroup
+    %i[
+      writer_hostgroup
+      backup_writer_hostgroup
+      reader_hostgroup
+      offline_hostgroup
     ]
   end
 
   def self.integer_db_fields
-    namevar_db_fields + [
-      :active,
-      :max_writers,
-      :writer_is_also_reader,
-      :max_transactions_behind
+    namevar_db_fields + %i[
+      active
+      max_writers
+      writer_is_also_reader
+      max_transactions_behind
     ]
   end
 

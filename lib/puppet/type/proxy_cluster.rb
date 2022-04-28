@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This has to be a separate type to enable collecting
 Puppet::Type.newtype(:proxy_cluster) do
   @doc = 'Manage a ProxySQL cluster.'

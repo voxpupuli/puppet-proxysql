@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 provider_class = Puppet::Type.type(:proxy_mysql_galera_hostgroup).provider(:proxysql)
@@ -6,6 +8,7 @@ describe provider_class do
   it 'has an `instances` method' do
     expect(described_class).to respond_to :instances
   end
+
   it 'has an `prefetch` method' do
     expect(described_class).to respond_to :prefetch
   end
@@ -20,10 +23,12 @@ describe provider_class do
           ]
         ).and_return('')
       end
+
       it 'returns no resources' do
         expect(described_class.instances.size).to eq(0)
       end
     end
+
     context 'when there is 1 hostgroup' do
       before do
         allow(described_class).to receive(:mysql).with(
@@ -33,13 +38,15 @@ describe provider_class do
           ]
         ).and_return('1	2	3	4	1	1	0	0	Galera Replication Group 1')
       end
+
       it 'returns 1 resource' do
         expect(described_class.instances.size).to eq(1)
       end
+
       it 'returns the resource 1-2-3-4' do
         expect(described_class.instances[0].instance_variable_get('@property_hash')).to eq(provider: :proxysql,
-                                                                                           ensure:    :present,
-                                                                                           name:      '1-2-3-4',
+                                                                                           ensure: :present,
+                                                                                           name: '1-2-3-4',
                                                                                            writer_hostgroup: 1,
                                                                                            backup_writer_hostgroup: 2,
                                                                                            reader_hostgroup: 3,
@@ -51,6 +58,7 @@ describe provider_class do
                                                                                            max_transactions_behind: 0)
       end
     end
+
     context 'when there are 2 hostgroups' do
       before do
         allow(described_class).to receive(:mysql).with(
@@ -60,6 +68,7 @@ describe provider_class do
           ]
         ).and_return("1	2	3	4	1	1	0	0	Galera Replication Group 1\n5	6	7	8	1	2	0	0	another group")
       end
+
       it 'returns 2 resources' do
         expect(described_class.instances.size).to eq(2)
       end
