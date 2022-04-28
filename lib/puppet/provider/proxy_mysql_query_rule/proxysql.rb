@@ -19,12 +19,12 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
     rules.map do |rule_id|
-      query = 'SELECT `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, '
-      query << ' `client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, '
-      query << ' `digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, '
-      query << ' `cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, '
-      query << ' `mirror_flagOUT`, `mirror_hostgroup`'
-      query << " FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
+      query = 'SELECT `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, ' + \
+              ' `client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, ' + \
+              ' `digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, ' + \
+              ' `cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, ' + \
+              ' `mirror_flagOUT`, `mirror_hostgroup`' + \
+              " FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
 
       @active, @username, @schemaname, @flag_in, @flag_out, @apply,
       @client_addr, @proxy_addr, @proxy_port, @destination_hostgroup,
@@ -110,18 +110,18 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     mirror_flag_out = make_sql_value(@resource.value(:mirror_flag_out) || nil)
     mirror_hostgroup = make_sql_value(@resource.value(:mirror_hostgroup) || nil)
 
-    query = 'INSERT INTO `mysql_query_rules` ('
-    query << '`rule_id`, `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, '
-    query << '`client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, '
-    query << '`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, '
-    query << '`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, '
-    query << '`mirror_flagOUT`, `mirror_hostgroup`) VALUES ('
-    query << "#{rule_id}, #{active}, #{username}, #{schemaname}, #{flag_in}, #{flag_out}, #{apply}, "
-    query << "#{client_addr}, #{proxy_addr}, #{proxy_port}, #{destination_hostgroup}, "
-    query << "#{digest}, #{match_digest}, #{match_pattern}, #{negate_match_pattern}, #{replace_pattern}, "
-    query << "#{cache_ttl}, #{reconnect}, #{timeout}, #{retries}, #{delay}, #{error_msg}, #{log}, #{comment}, "
-    query << "#{mirror_flag_out}, #{mirror_hostgroup})"
-    mysql([defaults_file, '-e', query].compact)
+    query = 'INSERT INTO `mysql_query_rules` (' + \
+            '`rule_id`, `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, ' + \
+            '`client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, ' + \
+            '`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, ' + \
+            '`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, ' + \
+            '`mirror_flagOUT`, `mirror_hostgroup`) VALUES (' + \
+            "#{rule_id}, #{active}, #{username}, #{schemaname}, #{flag_in}, #{flag_out}, #{apply}, " + \
+            "#{client_addr}, #{proxy_addr}, #{proxy_port}, #{destination_hostgroup}, " + \
+            "#{digest}, #{match_digest}, #{match_pattern}, #{negate_match_pattern}, #{replace_pattern}, " + \
+            "#{cache_ttl}, #{reconnect}, #{timeout}, #{retries}, #{delay}, #{error_msg}, #{log}, #{comment}, " + \
+            "#{mirror_flag_out}, #{mirror_hostgroup})" + \
+            mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
     exists? ? (return true) : (return false)
@@ -166,9 +166,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
       values.push("`#{field}` = #{sql_value}")
     end
 
-    query = 'UPDATE `mysql_query_rules` SET '
-    query << values.join(', ')
-    query << " WHERE `rule_id` = '#{rule_id}'"
+    query = "UPDATE `mysql_query_rules` SET #{values.join(', ')} WHERE `rule_id` = '#{rule_id}'"
 
     mysql([defaults_file, '-e', query].compact)
   end

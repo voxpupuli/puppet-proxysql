@@ -10,9 +10,9 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
                         'SELECT `id` FROM `scheduler`'].compact).split(%r{\n})
 
     schedulers.map do |scheduler_id|
-      query = 'SELECT `active`, `interval_ms`, `filename`, '
-      query << '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` '
-      query << "FROM `scheduler` WHERE `id` = #{scheduler_id}"
+      query = 'SELECT `active`, `interval_ms`, `filename`, ' + \
+              '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` ' + \
+              "FROM `scheduler` WHERE `id` = #{scheduler_id}"
 
       @active, @interval_ms, @filename, @arg1, @arg2, @arg3, @arg4, @arg5,
       @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
@@ -59,10 +59,10 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
     arg5 = make_sql_value(@resource.value(:arg5) || nil)
     comment = make_sql_value(@resource.value(:comment) || '')
 
-    query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, '
-    query << '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES ('
-    query << "#{scheduler_id}, #{active}, #{interval_ms}, #{filename}, "
-    query << "#{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{comment})"
+    query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, ' + \
+            '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES (' + \
+            "#{scheduler_id}, #{active}, #{interval_ms}, #{filename}, " + \
+            "#{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{comment})"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -109,9 +109,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
       values.push("`#{field}` = #{sql_value}")
     end
 
-    query = 'UPDATE `scheduler` SET '
-    query << values.join(', ')
-    query << " WHERE `id` = '#{scheduler_id}'"
+    query = "UPDATE `scheduler` SET #{values.join(', ')} WHERE `id` = '#{scheduler_id}'"
 
     mysql([defaults_file, '-e', query].compact)
   end

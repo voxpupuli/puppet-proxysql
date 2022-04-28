@@ -43,8 +43,8 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
     reader_hostgroup = @resource.value(:reader_hostgroup)
     comment = @resource.value(:comment) || ''
 
-    query = 'INSERT INTO `mysql_replication_hostgroups` (`writer_hostgroup`, `reader_hostgroup`, `comment`)'
-    query << " VALUES (#{writer_hostgroup}, #{reader_hostgroup}, '#{comment}')"
+    query = 'INSERT INTO `mysql_replication_hostgroups` (`writer_hostgroup`, `reader_hostgroup`, `comment`)' + \
+            " VALUES (#{writer_hostgroup}, #{reader_hostgroup}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -54,8 +54,8 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
   def destroy
     writer_hostgroup = @resource.value(:writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
-    query = 'DELETE FROM `mysql_replication_hostgroups`'
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup}"
+    query = 'DELETE FROM `mysql_replication_hostgroups`' + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -81,8 +81,8 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
   def comment=(value)
     writer_hostgroup = @resource.value(:writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
-    query = "UPDATE mysql_replication_hostgroups SET `comment` = '#{value}'"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup}"
+    query = "UPDATE mysql_replication_hostgroups SET `comment` = '#{value}'" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear

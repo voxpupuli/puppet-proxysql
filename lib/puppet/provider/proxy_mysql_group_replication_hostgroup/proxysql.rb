@@ -55,8 +55,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     max_transactions_behind = @resource.value(:max_transactions_behind) || 0
     comment = @resource.value(:comment) || ''
 
-    query = 'INSERT INTO `mysql_group_replication_hostgroups` (`writer_hostgroup`, `backup_writer_hostgroup`, `reader_hostgroup`, `offline_hostgroup`, `active`, `max_writers`, `writer_is_also_reader`, `max_transactions_behind`, `comment`)'
-    query << " VALUES (#{writer_hostgroup}, #{backup_writer_hostgroup}, #{reader_hostgroup}, #{offline_hostgroup}, #{active}, #{max_writers}, #{writer_is_also_reader}, #{max_transactions_behind}, '#{comment}')"
+    query = 'INSERT INTO `mysql_group_replication_hostgroups` (`writer_hostgroup`, `backup_writer_hostgroup`, `reader_hostgroup`, `offline_hostgroup`, `active`, `max_writers`, `writer_is_also_reader`, `max_transactions_behind`, `comment`)' + \
+            " VALUES (#{writer_hostgroup}, #{backup_writer_hostgroup}, #{reader_hostgroup}, #{offline_hostgroup}, #{active}, #{max_writers}, #{writer_is_also_reader}, #{max_transactions_behind}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -68,8 +68,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = 'DELETE FROM `mysql_group_replication_hostgroups`'
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = 'DELETE FROM `mysql_group_replication_hostgroups`' + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -97,8 +97,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = "UPDATE mysql_group_replication_hostgroups SET `active` = #{value}"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = "UPDATE mysql_group_replication_hostgroups SET `active` = #{value}" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -110,8 +110,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = "UPDATE mysql_group_replication_hostgroups SET `max_writers=` = #{value}"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = "UPDATE mysql_group_replication_hostgroups SET `max_writers=` = #{value}" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -123,8 +123,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = "UPDATE mysql_group_replication_hostgroups SET `writer_is_also_reader` = #{value}"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = "UPDATE mysql_group_replication_hostgroups SET `writer_is_also_reader` = #{value}" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -136,8 +136,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = "UPDATE mysql_group_replication_hostgroups SET `max_transactions_behind=` = #{value}"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = "UPDATE mysql_group_replication_hostgroups SET `max_transactions_behind=` = #{value}" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
@@ -149,8 +149,8 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
     reader_hostgroup = @resource.value(:reader_hostgroup)
     offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = "UPDATE mysql_group_replication_hostgroups SET `comment` = '#{value}'"
-    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    query = "UPDATE mysql_group_replication_hostgroups SET `comment` = '#{value}'" + \
+            " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
