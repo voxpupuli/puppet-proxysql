@@ -62,7 +62,7 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
-    exists? ? (return true) : (return false)
+    exists?
   end
 
   def destroy
@@ -75,7 +75,7 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
+    !exists?
   end
 
   def exists?
@@ -104,7 +104,6 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 
   def max_writers=(value)
@@ -117,7 +116,6 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 
   def writer_is_also_reader=(value)
@@ -130,7 +128,6 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 
   def max_transactions_behind=(value)
@@ -143,7 +140,6 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 
   def comment=(value)
@@ -156,6 +152,5 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 end

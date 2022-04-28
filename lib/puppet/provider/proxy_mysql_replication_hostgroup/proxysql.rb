@@ -50,7 +50,7 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
-    exists? ? (return true) : (return false)
+    exists?
   end
 
   def destroy
@@ -61,7 +61,7 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
+    exists?
   end
 
   def exists?
@@ -88,6 +88,5 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
-    exists? ? (return false) : (return true)
   end
 end

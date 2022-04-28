@@ -57,7 +57,7 @@ describe Puppet::Type.type(:proxy_mysql_galera_hostgroup) do
       expect(req.find { |relationship| relationship.source == proxysql_service && relationship.target == resource }).not_to be_nil
     end
 
-    xit 'should autorequire the class mysql::client' do
-    end
+    # xit 'should autorequire the class mysql::client' do
+    # end
   end
 end

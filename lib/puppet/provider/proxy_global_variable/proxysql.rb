@@ -52,6 +52,5 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
     mysql([defaults_file, '-e', "SET #{name} = '#{val}'"].compact)
 
     @property_hash.clear
-    true
   end
 end

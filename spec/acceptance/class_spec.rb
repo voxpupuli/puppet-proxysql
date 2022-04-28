@@ -244,6 +244,7 @@ describe 'proxysql class' do
       its(:stdout) { is_expected.to match '^Test MySQL Cluster 10-20$' }
     end
 
+    # rubocop:todo RSpec/RepeatedExampleGroupBody
     describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
@@ -329,6 +330,7 @@ describe 'proxysql class' do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^tester1$' }
     end
+    # rubocop:enable RSpec/RepeatedExampleGroupBody
 
     describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 1;'") do
       its(:exit_status) { is_expected.to eq 0 }
