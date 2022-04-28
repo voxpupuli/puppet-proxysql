@@ -19,7 +19,10 @@ class proxysql::admin_credentials {
         -o `/usr/bin/mysql --defaults-extra-file=${mycnf_file_name} -BN \
           --execute=\"SELECT variable_value FROM global_variables WHERE variable_name='admin-mysql_ifaces'\"` != '${admin_interfaces}'
       ",
-      before  => File['root-mycnf-file'],
+      before  => [
+        File['root-mycnf-file'],
+        File['/root/.proxysql_mycnf_file_name']
+        ],
     }
 
     file { 'root-mycnf-file':
@@ -29,6 +32,13 @@ class proxysql::admin_credentials {
       owner   => $proxysql::sys_owner,
       group   => $proxysql::sys_group,
       mode    => '0400',
+    }
+
+    # This is to keep track of my cnf file.
+    # This is used by custom proxy_* resources
+    file { '/root/.proxysql_mycnf_file_name':
+      ensure  => file,
+      content => $proxysql::mycnf_file_name,
     }
   }
 }
