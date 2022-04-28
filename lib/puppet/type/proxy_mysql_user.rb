@@ -80,13 +80,11 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   newproperty(:backend) do
     desc 'Backend or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
   newproperty(:frontend) do
     desc 'Frontend or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
