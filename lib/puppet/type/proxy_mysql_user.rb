@@ -12,7 +12,7 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   def initialize(*args)
     super
-
+    return if self[:ensure] != :present
     self[:password] = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase unless self[:password].start_with?('*') || self[:encrypt_password] != :true
   end
 
@@ -80,13 +80,11 @@ Puppet::Type.newtype(:proxy_mysql_user) do
 
   newproperty(:backend) do
     desc 'Backend or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
   newproperty(:frontend) do
     desc 'Frontend or not.'
-    defaultto 1
     newvalue(%r{[01]})
   end
 
