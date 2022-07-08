@@ -21,8 +21,8 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
       # one big swoop.
       servers.each do |line|
         hostname, port = line.split(%r{\t})
-        query = 'SELECT `hostname`, `port`, `weight`, `comment`' + \
-                ' FROM `proxysql_servers`' + \
+        query = 'SELECT `hostname`, `port`, `weight`, `comment`' \
+                ' FROM `proxysql_servers`' \
                 " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
 
         @hostname, @port, @weight, @comment = mysql([defaults_file, '-NBe', query].compact).chomp.split(%r{\t})
@@ -58,7 +58,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
     weight = @resource.value(:weight) || 0
     comment = @resource.value(:comment) || ''
 
-    query = 'INSERT INTO proxysql_servers (`hostname`, `port`, `weight`, `comment`)' + \
+    query = 'INSERT INTO proxysql_servers (`hostname`, `port`, `weight`, `comment`)' \
             " VALUES ('#{hostname}', #{port}, #{weight}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
@@ -69,7 +69,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
   def destroy
     hostname = @property_hash[:hostname]
     port = @property_hash[:port]
-    query = 'DELETE FROM `proxysql_servers`' + \
+    query = 'DELETE FROM `proxysql_servers`' \
             " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
 
@@ -108,7 +108,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
       values.push("`#{field}` = '#{value}'")
     end
 
-    query = "UPDATE proxysql_servers SET #{values.join(', ')}" + \
+    query = "UPDATE proxysql_servers SET #{values.join(', ')}" \
             " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
 

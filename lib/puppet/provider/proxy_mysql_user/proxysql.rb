@@ -61,11 +61,11 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
     frontend = @resource.value(:frontend) || 1
     max_connections = @resource.value(:max_connections) || 10_000
 
-    query = 'INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, ' + \
-            ' `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) ' + \
-            " VALUES ('#{name}', '#{password}', #{active}, #{use_ssl}, #{default_hostgroup}, '#{default_schema}', " + \
-            " #{schema_locked}, #{transaction_persistent}, #{fast_forward}, #{backend}, #{frontend}, #{max_connections})" + \
-            mysql([defaults_file, '-e', query].compact)
+    query = 'INSERT INTO mysql_users (`username`, `password`, `active`, `use_ssl`, `default_hostgroup`, `default_schema`, ' \
+            ' `schema_locked`, `transaction_persistent`, `fast_forward`, `backend`, `frontend`, `max_connections`) ' \
+            " VALUES ('#{name}', '#{password}', #{active}, #{use_ssl}, #{default_hostgroup}, '#{default_schema}', " \
+            " #{schema_locked}, #{transaction_persistent}, #{fast_forward}, #{backend}, #{frontend}, #{max_connections})"
+    mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
     exists? ? (return true) : (return false)

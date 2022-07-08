@@ -12,8 +12,8 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
                         'SELECT `id` FROM `scheduler`'].compact).split(%r{\n})
 
     schedulers.map do |scheduler_id|
-      query = 'SELECT `active`, `interval_ms`, `filename`, ' + \
-              '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` ' + \
+      query = 'SELECT `active`, `interval_ms`, `filename`, ' \
+              '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment` ' \
               "FROM `scheduler` WHERE `id` = #{scheduler_id}"
 
       @active, @interval_ms, @filename, @arg1, @arg2, @arg3, @arg4, @arg5,
@@ -61,9 +61,9 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
     arg5 = make_sql_value(@resource.value(:arg5) || nil)
     comment = make_sql_value(@resource.value(:comment) || '')
 
-    query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, ' + \
-            '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES (' + \
-            "#{scheduler_id}, #{active}, #{interval_ms}, #{filename}, " + \
+    query = 'INSERT INTO `scheduler` (`id`, `active`, `interval_ms`, `filename`, ' \
+            '`arg1`, `arg2`, `arg3`, `arg4`, `arg5`, `comment`) VALUES (' \
+            "#{scheduler_id}, #{active}, #{interval_ms}, #{filename}, " \
             "#{arg1}, #{arg2}, #{arg3}, #{arg4}, #{arg5}, #{comment})"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
