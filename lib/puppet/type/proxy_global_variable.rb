@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This has to be a separate type to enable collecting
 Puppet::Type.newtype(:proxy_global_variable) do
   @doc = 'Manage a ProxySQL global variable.'
@@ -27,9 +29,10 @@ Puppet::Type.newtype(:proxy_global_variable) do
     newvalue(%r{.+})
 
     munge do |value|
-      if value.is_a?(TrueClass)
+      case value
+      when TrueClass
         :true
-      elsif value.is_a?(FalseClass)
+      when FalseClass
         :false
       else
         value

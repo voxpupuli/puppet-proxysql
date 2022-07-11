@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This has to be a separate type to enable collecting
 require 'digest/sha1'
 
@@ -13,7 +15,7 @@ Puppet::Type.newtype(:proxy_mysql_user) do
   def initialize(*args)
     super
 
-    self[:password] = '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase unless self[:password].start_with?('*') || self[:encrypt_password] != :true
+    self[:password] = "*#{Digest::SHA1.hexdigest(Digest::SHA1.digest(self[:password])).upcase}" unless self[:password].start_with?('*') || self[:encrypt_password] != :true
   end
 
   newparam(:name, namevar: true) do

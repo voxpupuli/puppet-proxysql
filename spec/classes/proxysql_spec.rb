@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'deep_merge'
 
@@ -90,6 +92,7 @@ describe 'proxysql' do
 
                 it { is_expected.to contain_service('proxysql').with_start('/usr/bin/proxysql --reload') }
               end
+
               context 'and proxysql 2.0.6' do
                 let(:params) { { 'restart' => true, 'version' => '2.0.6' } }
 
@@ -107,12 +110,12 @@ describe 'proxysql' do
 
           it do
             is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
-              command:   "test -S #{admin_socket}",
-              unless:    "test -S #{admin_socket}",
-              tries:     3,
+              command: "test -S #{admin_socket}",
+              unless: "test -S #{admin_socket}",
+              tries: 3,
               try_sleep: 10,
-              require:   'Service[proxysql]',
-              path:      '/bin:/usr/bin'
+              require: 'Service[proxysql]',
+              path: '/bin:/usr/bin'
             )
           end
         end
@@ -135,6 +138,7 @@ describe 'proxysql' do
               context 'by default' do
                 it { is_expected.to contain_class('proxysql::selinux') }
               end
+
               context 'when manage_selinux is `false`' do
                 let(:params) { { 'manage_selinux' => false } }
 

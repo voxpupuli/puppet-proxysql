@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'proxysql'))
 Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Provider::Proxysql) do
   desc 'Manage global variables for a ProxySQL instance.'
@@ -20,7 +22,7 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
 
   def self.prefetch(resources)
     variables = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = variables.find { |var| var.name == name }
       resources[name].provider = provider if provider
     end
@@ -50,6 +52,5 @@ Puppet::Type.type(:proxy_global_variable).provide(:proxysql, parent: Puppet::Pro
     mysql([defaults_file, '-e', "SET #{name} = '#{val}'"].compact)
 
     @property_hash.clear
-    true
   end
 end
