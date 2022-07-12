@@ -5,7 +5,7 @@ class proxysql::params {
   $datadir = '/var/lib/proxysql'
 
   case $facts['os']['family'] {
-    /^(Debian|Ubuntu)$/: {
+    'Debian': {
       $package_provider = 'dpkg'
       $package_dependencies = []
 
