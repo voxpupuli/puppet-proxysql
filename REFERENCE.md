@@ -38,24 +38,83 @@
 
 ### Data types
 
-* [`Proxysql::GaleraHostgroup`](#proxysqlgalerahostgroup): Represents an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
-* [`Proxysql::GroupReplicationHostgroup`](#proxysqlgroupreplicationhostgroup): Represents a ProxySQL group replication hostgroup.
-* [`Proxysql::Hostgroup`](#proxysqlhostgroup): Represents a ProxySQL replication hostgroup.
-* [`Proxysql::Scheduler`](#proxysqlscheduler): Represents a ProxySQL scheduler
-* [`Proxysql::Server`](#proxysqlserver): Represents a ProxySQL server.
-* [`Proxysql::User`](#proxysqluser): Represents a ProxySQL user.
+* [`Proxysql::GaleraHostgroup`](#Proxysql--GaleraHostgroup): Represents an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
+* [`Proxysql::GroupReplicationHostgroup`](#Proxysql--GroupReplicationHostgroup): Represents a ProxySQL group replication hostgroup.
+* [`Proxysql::Hostgroup`](#Proxysql--Hostgroup): Represents a ProxySQL replication hostgroup.
+* [`Proxysql::Scheduler`](#Proxysql--Scheduler): Represents a ProxySQL scheduler
+* [`Proxysql::Server`](#Proxysql--Server): Represents a ProxySQL server.
+* [`Proxysql::User`](#Proxysql--User): Represents a ProxySQL user.
 
 ## Classes
 
-### `proxysql`
+### <a name="proxysql"></a>`proxysql`
 
 Install and configure ProxySQL.
 
 #### Parameters
 
-The following parameters are available in the `proxysql` class.
+The following parameters are available in the `proxysql` class:
 
-##### `package_name`
+* [`package_name`](#-proxysql--package_name)
+* [`package_ensure`](#-proxysql--package_ensure)
+* [`package_install_options`](#-proxysql--package_install_options)
+* [`service_name`](#-proxysql--service_name)
+* [`service_ensure`](#-proxysql--service_ensure)
+* [`datadir`](#-proxysql--datadir)
+* [`datadir_mode`](#-proxysql--datadir_mode)
+* [`errorlog_file`](#-proxysql--errorlog_file)
+* [`errorlog_file_mode`](#-proxysql--errorlog_file_mode)
+* [`errorlog_file_owner`](#-proxysql--errorlog_file_owner)
+* [`errorlog_file_group`](#-proxysql--errorlog_file_group)
+* [`manage_selinux`](#-proxysql--manage_selinux)
+* [`manage_mysql_client`](#-proxysql--manage_mysql_client)
+* [`listen_ip`](#-proxysql--listen_ip)
+* [`listen_port`](#-proxysql--listen_port)
+* [`listen_socket`](#-proxysql--listen_socket)
+* [`admin_username`](#-proxysql--admin_username)
+* [`admin_password`](#-proxysql--admin_password)
+* [`stats_username`](#-proxysql--stats_username)
+* [`stats_password`](#-proxysql--stats_password)
+* [`admin_listen_ip`](#-proxysql--admin_listen_ip)
+* [`admin_listen_port`](#-proxysql--admin_listen_port)
+* [`admin_listen_socket`](#-proxysql--admin_listen_socket)
+* [`monitor_username`](#-proxysql--monitor_username)
+* [`monitor_password`](#-proxysql--monitor_password)
+* [`config_file`](#-proxysql--config_file)
+* [`manage_config_file`](#-proxysql--manage_config_file)
+* [`mycnf_file_name`](#-proxysql--mycnf_file_name)
+* [`manage_mycnf_file`](#-proxysql--manage_mycnf_file)
+* [`restart`](#-proxysql--restart)
+* [`load_to_runtime`](#-proxysql--load_to_runtime)
+* [`save_to_disk`](#-proxysql--save_to_disk)
+* [`manage_repo`](#-proxysql--manage_repo)
+* [`version`](#-proxysql--version)
+* [`package_source`](#-proxysql--package_source)
+* [`package_provider`](#-proxysql--package_provider)
+* [`package_checksum_value`](#-proxysql--package_checksum_value)
+* [`package_checksum_type`](#-proxysql--package_checksum_type)
+* [`package_dependencies`](#-proxysql--package_dependencies)
+* [`sys_owner`](#-proxysql--sys_owner)
+* [`sys_group`](#-proxysql--sys_group)
+* [`override_config_settings`](#-proxysql--override_config_settings)
+* [`node_name`](#-proxysql--node_name)
+* [`cluster_name`](#-proxysql--cluster_name)
+* [`cluster_username`](#-proxysql--cluster_username)
+* [`cluster_password`](#-proxysql--cluster_password)
+* [`mysql_client_package_name`](#-proxysql--mysql_client_package_name)
+* [`manage_hostgroup_for_servers`](#-proxysql--manage_hostgroup_for_servers)
+* [`mysql_servers`](#-proxysql--mysql_servers)
+* [`mysql_users`](#-proxysql--mysql_users)
+* [`mysql_hostgroups`](#-proxysql--mysql_hostgroups)
+* [`mysql_group_replication_hostgroups`](#-proxysql--mysql_group_replication_hostgroups)
+* [`mysql_galera_hostgroups`](#-proxysql--mysql_galera_hostgroups)
+* [`mysql_rules`](#-proxysql--mysql_rules)
+* [`schedulers`](#-proxysql--schedulers)
+* [`split_config`](#-proxysql--split_config)
+* [`proxy_config_file`](#-proxysql--proxy_config_file)
+* [`manage_proxy_config_file`](#-proxysql--manage_proxy_config_file)
+
+##### <a name="-proxysql--package_name"></a>`package_name`
 
 Data type: `String`
 
@@ -63,7 +122,7 @@ The name of the ProxySQL package in your package manager.
 
 Default value: `'proxysql'`
 
-##### `package_ensure`
+##### <a name="-proxysql--package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -71,7 +130,7 @@ The ensure of the ProxySQL package resource.
 
 Default value: `'installed'`
 
-##### `package_install_options`
+##### <a name="-proxysql--package_install_options"></a>`package_install_options`
 
 Data type: `Array[String]`
 
@@ -79,7 +138,7 @@ An array of additional options to pass when installing a package.
 
 Default value: `[]`
 
-##### `service_name`
+##### <a name="-proxysql--service_name"></a>`service_name`
 
 Data type: `String`
 
@@ -87,7 +146,7 @@ The name of the ProxySQL service resource.
 
 Default value: `'proxysql'`
 
-##### `service_ensure`
+##### <a name="-proxysql--service_ensure"></a>`service_ensure`
 
 Data type: `String`
 
@@ -95,7 +154,7 @@ The ensure of the ProxySQL service resource.
 
 Default value: `'running'`
 
-##### `datadir`
+##### <a name="-proxysql--datadir"></a>`datadir`
 
 Data type: `String`
 
@@ -103,7 +162,7 @@ The directory where ProxySQL will store its data.
 
 Default value: `$proxysql::params::datadir`
 
-##### `datadir_mode`
+##### <a name="-proxysql--datadir_mode"></a>`datadir_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -111,15 +170,15 @@ The filesystem mode for the `datadir`.
 
 Default value: `'0600'`
 
-##### `errorlog_file`
+##### <a name="-proxysql--errorlog_file"></a>`errorlog_file`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
 The File where ProxySQL will store its error logs. Available from ProxySQL v2.0.0
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `errorlog_file_mode`
+##### <a name="-proxysql--errorlog_file_mode"></a>`errorlog_file_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -127,7 +186,7 @@ The filesystem mode for the `errorlog_file`. Available from ProxySQL v2.0.0
 
 Default value: `'0600'`
 
-##### `errorlog_file_owner`
+##### <a name="-proxysql--errorlog_file_owner"></a>`errorlog_file_owner`
 
 Data type: `String`
 
@@ -135,7 +194,7 @@ Owner of the `errorlog_file`. Available from ProxySQL v2.0.0
 
 Default value: `'proxysql'`
 
-##### `errorlog_file_group`
+##### <a name="-proxysql--errorlog_file_group"></a>`errorlog_file_group`
 
 Data type: `String`
 
@@ -143,25 +202,25 @@ Group of the `errorlog_file`. Available from ProxySQL v2.0.0
 
 Default value: `'proxysql'`
 
-##### `manage_selinux`
+##### <a name="-proxysql--manage_selinux"></a>`manage_selinux`
 
 Data type: `Boolean`
 
 Whether to create the required selinux rules for logrotate to work.
 This parameter also requires the `puppet/selinux` module to be installed.
 
-Default value: ``true``
+Default value: `true`
 
-##### `manage_mysql_client`
+##### <a name="-proxysql--manage_mysql_client"></a>`manage_mysql_client`
 
 Data type: `Boolean`
 
 Whether to include the mysql::client class.
 You may have mysql::client included or managed with different parameters elsewhere in your catalogue.
 
-Default value: ``true``
+Default value: `true`
 
-##### `listen_ip`
+##### <a name="-proxysql--listen_ip"></a>`listen_ip`
 
 Data type: `String`
 
@@ -169,7 +228,7 @@ The ip where the ProxySQL service will listen on.
 
 Default value: `'0.0.0.0'`
 
-##### `listen_port`
+##### <a name="-proxysql--listen_port"></a>`listen_port`
 
 Data type: `Integer`
 
@@ -177,7 +236,7 @@ The port where the ProxySQL service will listen on.
 
 Default value: `6033`
 
-##### `listen_socket`
+##### <a name="-proxysql--listen_socket"></a>`listen_socket`
 
 Data type: `String`
 
@@ -185,7 +244,7 @@ The socket where the ProxySQL service will listen on.
 
 Default value: `$proxysql::params::listen_socket`
 
-##### `admin_username`
+##### <a name="-proxysql--admin_username"></a>`admin_username`
 
 Data type: `String`
 
@@ -193,7 +252,7 @@ The username to connect to the ProxySQL admin interface.
 
 Default value: `'admin'`
 
-##### `admin_password`
+##### <a name="-proxysql--admin_password"></a>`admin_password`
 
 Data type: `Sensitive[String]`
 
@@ -201,7 +260,7 @@ The password to connect to the ProxySQL admin interface.
 
 Default value: `Sensitive('admin')`
 
-##### `stats_username`
+##### <a name="-proxysql--stats_username"></a>`stats_username`
 
 Data type: `String`
 
@@ -209,7 +268,7 @@ The username to connect with read-only permissions to the ProxySQL admin interfa
 
 Default value: `'stats'`
 
-##### `stats_password`
+##### <a name="-proxysql--stats_password"></a>`stats_password`
 
 Data type: `Sensitive[String]`
 
@@ -217,7 +276,7 @@ The password to connect with read-only permissions to the ProxySQL admin interfa
 
 Default value: `Sensitive('stats')`
 
-##### `admin_listen_ip`
+##### <a name="-proxysql--admin_listen_ip"></a>`admin_listen_ip`
 
 Data type: `String`
 
@@ -225,7 +284,7 @@ The ip where the ProxySQL admin interface will listen on.
 
 Default value: `'127.0.0.1'`
 
-##### `admin_listen_port`
+##### <a name="-proxysql--admin_listen_port"></a>`admin_listen_port`
 
 Data type: `Integer`
 
@@ -233,7 +292,7 @@ The port where the ProxySQL admin interface  will listen on.
 
 Default value: `6032`
 
-##### `admin_listen_socket`
+##### <a name="-proxysql--admin_listen_socket"></a>`admin_listen_socket`
 
 Data type: `String`
 
@@ -241,7 +300,7 @@ The socket where the ProxySQL admin interface  will listen on. Changing this on 
 
 Default value: `$proxysql::params::admin_listen_socket`
 
-##### `monitor_username`
+##### <a name="-proxysql--monitor_username"></a>`monitor_username`
 
 Data type: `String`
 
@@ -249,7 +308,7 @@ The username ProxySQL will use to connect to the configured mysql_servers.
 
 Default value: `'monitor'`
 
-##### `monitor_password`
+##### <a name="-proxysql--monitor_password"></a>`monitor_password`
 
 Data type: `Sensitive[String]`
 
@@ -257,7 +316,7 @@ The password ProxySQL will use to connect to the configured mysql_servers.
 
 Default value: `Sensitive('monitor')`
 
-##### `config_file`
+##### <a name="-proxysql--config_file"></a>`config_file`
 
 Data type: `String`
 
@@ -265,15 +324,15 @@ The file where the ProxySQL configuration is saved. This will only be configured
 
 Default value: `'/etc/proxysql.cnf'`
 
-##### `manage_config_file`
+##### <a name="-proxysql--manage_config_file"></a>`manage_config_file`
 
 Data type: `Boolean`
 
 Determines whether this module will configure the ProxySQL configuration file.
 
-Default value: ``true``
+Default value: `true`
 
-##### `mycnf_file_name`
+##### <a name="-proxysql--mycnf_file_name"></a>`mycnf_file_name`
 
 Data type: `String`
 
@@ -282,48 +341,48 @@ This will only be configured if `manage_mycnf_file` is set to `true`.
 
 Default value: `'/root/.my.cnf'`
 
-##### `manage_mycnf_file`
+##### <a name="-proxysql--manage_mycnf_file"></a>`manage_mycnf_file`
 
 Data type: `Boolean`
 
 Determines whether this module will configure the my.cnf file to connect to the admin interface.
 This is required for the providers to work.
 
-Default value: ``true``
+Default value: `true`
 
-##### `restart`
+##### <a name="-proxysql--restart"></a>`restart`
 
 Data type: `Boolean`
 
 Determines whether this module will restart ProxySQL after reconfiguring the config file.
 
-Default value: ``false``
+Default value: `false`
 
-##### `load_to_runtime`
+##### <a name="-proxysql--load_to_runtime"></a>`load_to_runtime`
 
 Data type: `Boolean`
 
 Specifies whether te managed ProxySQL resources should be immediately loaded to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `save_to_disk`
+##### <a name="-proxysql--save_to_disk"></a>`save_to_disk`
 
 Data type: `Boolean`
 
 Specifies whether te managed ProxySQL resources should be immediately save to disk.
 
-Default value: ``true``
+Default value: `true`
 
-##### `manage_repo`
+##### <a name="-proxysql--manage_repo"></a>`manage_repo`
 
 Data type: `Boolean`
 
 Determines whether this module will manage the repositories where ProxySQL might be.
 
-Default value: ``true``
+Default value: `true`
 
-##### `version`
+##### <a name="-proxysql--version"></a>`version`
 
 Data type: `Pattern[/^[1|2]\.\d+\.\d+/]`
 
@@ -333,16 +392,16 @@ deployed, use `package_name` or `package_source`. Currently defaults to '2.0.7' 
 
 Default value: `$proxysql::params::version`
 
-##### `package_source`
+##### <a name="-proxysql--package_source"></a>`package_source`
 
 Data type: `Optional[String[1]]`
 
 location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
 Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `package_provider`
+##### <a name="-proxysql--package_provider"></a>`package_provider`
 
 Data type: `Enum['dpkg','rpm']`
 
@@ -350,23 +409,23 @@ provider for `package_source`.
 
 Default value: `$proxysql::params::package_provider`
 
-##### `package_checksum_value`
+##### <a name="-proxysql--package_checksum_value"></a>`package_checksum_value`
 
 Data type: `Optional[String[1]]`
 
 The checksum of the package. Optional and only applicable when `package_source` is provided.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `package_checksum_type`
+##### <a name="-proxysql--package_checksum_type"></a>`package_checksum_type`
 
 Data type: `Optional[String[1]]`
 
 The 'type' of `package_checksum_value`. Optional and only applicable when `package_checksum_value` is provided.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `package_dependencies`
+##### <a name="-proxysql--package_dependencies"></a>`package_dependencies`
 
 Data type: `Array[String[1]]`
 
@@ -374,15 +433,21 @@ A list of packages which should be additionally installed.
 
 Default value: `$proxysql::params::package_dependencies`
 
-##### `sys_owner`
+##### <a name="-proxysql--sys_owner"></a>`sys_owner`
 
 Data type: `String`
 
 Owner of the datadir and config_file.
 
-Default value: `$version`
+Default value:
 
-##### `sys_group`
+```puppet
+$version ? {
+    /^1/ => 'root',
+    /^2/ => 'proxysql'
+```
+
+##### <a name="-proxysql--sys_group"></a>`sys_group`
 
 Data type: `String`
 
@@ -390,7 +455,7 @@ Group of the datadir and config_file.
 
 Default value: `$sys_owner`
 
-##### `override_config_settings`
+##### <a name="-proxysql--override_config_settings"></a>`override_config_settings`
 
 Data type: `Hash`
 
@@ -398,7 +463,7 @@ Which configuration variables should be overriden.
 
 Default value: `{}`
 
-##### `node_name`
+##### <a name="-proxysql--node_name"></a>`node_name`
 
 Data type: `String`
 
@@ -406,16 +471,16 @@ The name of the node.
 
 Default value: `"${facts['networking']['fqdn']}:${admin_listen_port}"`
 
-##### `cluster_name`
+##### <a name="-proxysql--cluster_name"></a>`cluster_name`
 
 Data type: `Optional[String[1]]`
 
 If set, proxysql_servers with the same cluster_name will be automatically added to the same cluster and will
 synchronize their configuration parameters.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `cluster_username`
+##### <a name="-proxysql--cluster_username"></a>`cluster_username`
 
 Data type: `String`
 
@@ -423,7 +488,7 @@ The username ProxySQL will use to connect to the configured mysql_clusters
 
 Default value: `'cluster'`
 
-##### `cluster_password`
+##### <a name="-proxysql--cluster_password"></a>`cluster_password`
 
 Data type: `Sensitive[String]`
 
@@ -431,89 +496,89 @@ The password ProxySQL will use to connect to the configured mysql_clusters.
 
 Default value: `Sensitive('cluster')`
 
-##### `mysql_client_package_name`
+##### <a name="-proxysql--mysql_client_package_name"></a>`mysql_client_package_name`
 
 Data type: `Optional[String]`
 
 The name of the mysql client package in your package manager.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `manage_hostgroup_for_servers`
+##### <a name="-proxysql--manage_hostgroup_for_servers"></a>`manage_hostgroup_for_servers`
 
 Data type: `Boolean`
 
 Determines whether this module will manage hostgroup_id for mysql_servers.
 If false - it will skip difference in this value between manifest and defined in ProxySQL.
 
-Default value: ``true``
+Default value: `true`
 
-##### `mysql_servers`
+##### <a name="-proxysql--mysql_servers"></a>`mysql_servers`
 
 Data type: `Optional[Proxysql::Server]`
 
 Array of mysql_servers, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `mysql_users`
+##### <a name="-proxysql--mysql_users"></a>`mysql_users`
 
 Data type: `Optional[Proxysql::User]`
 
 Array of mysql_users, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `mysql_hostgroups`
+##### <a name="-proxysql--mysql_hostgroups"></a>`mysql_hostgroups`
 
 Data type: `Optional[Proxysql::Hostgroup]`
 
 Array of mysql_hostgroups, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `mysql_group_replication_hostgroups`
+##### <a name="-proxysql--mysql_group_replication_hostgroups"></a>`mysql_group_replication_hostgroups`
 
 Data type: `Optional[Proxysql::GroupReplicationHostgroup]`
 
 Hash of mysql_group_replication_hostgroups, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `mysql_galera_hostgroups`
+##### <a name="-proxysql--mysql_galera_hostgroups"></a>`mysql_galera_hostgroups`
 
 Data type: `Optional[Proxysql::GaleraHostgroup]`
 
 Hash of mysql_galera_hostgroups, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `mysql_rules`
+##### <a name="-proxysql--mysql_rules"></a>`mysql_rules`
 
 Data type: `Optional[Proxysql::Rule]`
 
 Array of mysql_rules, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `schedulers`
+##### <a name="-proxysql--schedulers"></a>`schedulers`
 
 Data type: `Optional[Proxysql::Scheduler]`
 
 Array of schedulers, that will be created in ProxySQL.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `split_config`
+##### <a name="-proxysql--split_config"></a>`split_config`
 
 Data type: `Boolean`
 
 If set, ProxySQL config file will be split in 2: main config file with admin and mysql variables
 and proxy config file with servers\users\hostgroups\scheduler params.
 
-Default value: ``false``
+Default value: `false`
 
-##### `proxy_config_file`
+##### <a name="-proxysql--proxy_config_file"></a>`proxy_config_file`
 
 Data type: `String`
 
@@ -522,17 +587,17 @@ This will only be configured if `split_config` is set to `true`.
 
 Default value: `'/etc/proxysql_proxy.cnf'`
 
-##### `manage_proxy_config_file`
+##### <a name="-proxysql--manage_proxy_config_file"></a>`manage_proxy_config_file`
 
 Data type: `Boolean`
 
 Determines whether this module will update the ProxySQL proxy configuration file.
 
-Default value: ``true``
+Default value: `true`
 
 ## Resource types
 
-### `proxy_cluster`
+### <a name="proxy_cluster"></a>`proxy_cluster`
 
 Manage a ProxySQL cluster.
 
@@ -576,34 +641,39 @@ Currently unused, but in the roadmap for future enhancements.
 
 The following parameters are available in the `proxy_cluster` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_cluster--load_to_runtime)
+* [`name`](#-proxy_cluster--name)
+* [`provider`](#-proxy_cluster--provider)
+* [`save_to_disk`](#-proxy_cluster--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_cluster--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_cluster--name"></a>`name`
 
 namevar
 
 name for cluster to manage.
 
-##### `provider`
+##### <a name="-proxy_cluster--provider"></a>`provider`
 
 The specific backend to use for this `proxy_cluster` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_cluster--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_global_variable`
+### <a name="proxy_global_variable"></a>`proxy_global_variable`
 
 Manage a ProxySQL global variable.
 
@@ -621,34 +691,39 @@ variable value
 
 The following parameters are available in the `proxy_global_variable` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_global_variable--load_to_runtime)
+* [`name`](#-proxy_global_variable--name)
+* [`provider`](#-proxy_global_variable--provider)
+* [`save_to_disk`](#-proxy_global_variable--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_global_variable--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_global_variable--name"></a>`name`
 
 namevar
 
 variable name
 
-##### `provider`
+##### <a name="-proxy_global_variable--provider"></a>`provider`
 
 The specific backend to use for this `proxy_global_variable` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_global_variable--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_galera_hostgroup`
+### <a name="proxy_mysql_galera_hostgroup"></a>`proxy_mysql_galera_hostgroup`
 
 Manage a ProxySQL mysql_galera_hostgroup.
 
@@ -690,50 +765,59 @@ A writer is also used for reading
 
 The following parameters are available in the `proxy_mysql_galera_hostgroup` type.
 
-##### `backup_writer_hostgroup`
+* [`backup_writer_hostgroup`](#-proxy_mysql_galera_hostgroup--backup_writer_hostgroup)
+* [`load_to_runtime`](#-proxy_mysql_galera_hostgroup--load_to_runtime)
+* [`name`](#-proxy_mysql_galera_hostgroup--name)
+* [`offline_hostgroup`](#-proxy_mysql_galera_hostgroup--offline_hostgroup)
+* [`provider`](#-proxy_mysql_galera_hostgroup--provider)
+* [`reader_hostgroup`](#-proxy_mysql_galera_hostgroup--reader_hostgroup)
+* [`save_to_disk`](#-proxy_mysql_galera_hostgroup--save_to_disk)
+* [`writer_hostgroup`](#-proxy_mysql_galera_hostgroup--writer_hostgroup)
+
+##### <a name="-proxy_mysql_galera_hostgroup--backup_writer_hostgroup"></a>`backup_writer_hostgroup`
 
 Backup Writer hostgroup.
 
-##### `load_to_runtime`
+##### <a name="-proxy_mysql_galera_hostgroup--load_to_runtime"></a>`load_to_runtime`
 
-Valid values: ``true``, ``false``, `yes`, `no`
+Valid values: `true`, `false`, `yes`, `no`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_galera_hostgroup--name"></a>`name`
 
 namevar
 
 name to describe the hostgroup config
 
-##### `offline_hostgroup`
+##### <a name="-proxy_mysql_galera_hostgroup--offline_hostgroup"></a>`offline_hostgroup`
 
 Offline hostgroup.
 
-##### `provider`
+##### <a name="-proxy_mysql_galera_hostgroup--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_galera_hostgroup` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `reader_hostgroup`
+##### <a name="-proxy_mysql_galera_hostgroup--reader_hostgroup"></a>`reader_hostgroup`
 
 Reader hostgroup.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_galera_hostgroup--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``, `yes`, `no`
+Valid values: `true`, `false`, `yes`, `no`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-##### `writer_hostgroup`
+##### <a name="-proxy_mysql_galera_hostgroup--writer_hostgroup"></a>`writer_hostgroup`
 
 Writer hostgroup.
 
-### `proxy_mysql_group_replication_hostgroup`
+### <a name="proxy_mysql_group_replication_hostgroup"></a>`proxy_mysql_group_replication_hostgroup`
 
 Manage a ProxySQL mysql_group_replication_hostgroup.
 
@@ -807,34 +891,39 @@ Writer is also a reader.
 
 The following parameters are available in the `proxy_mysql_group_replication_hostgroup` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_mysql_group_replication_hostgroup--load_to_runtime)
+* [`name`](#-proxy_mysql_group_replication_hostgroup--name)
+* [`provider`](#-proxy_mysql_group_replication_hostgroup--provider)
+* [`save_to_disk`](#-proxy_mysql_group_replication_hostgroup--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_mysql_group_replication_hostgroup--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_group_replication_hostgroup--name"></a>`name`
 
 namevar
 
 name to describe the hostgroup config
 
-##### `provider`
+##### <a name="-proxy_mysql_group_replication_hostgroup--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_group_replication_hostgroup` resource. You will seldom need to specify
 this --- Puppet will usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_group_replication_hostgroup--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_query_rule`
+### <a name="proxy_mysql_query_rule"></a>`proxy_mysql_query_rule`
 
 Manage a ProxySQL mysql_query_rules entry.
 
@@ -930,7 +1019,7 @@ regular expression that matches the query digest
 
 ##### `match_pattern`
 
-Valid values: `%r{\w+}`
+Valid values: `%r{.*}`
 
 regular expression that matches the query text
 
@@ -972,7 +1061,7 @@ feature currently not in use.
 
 ##### `replace_pattern`
 
-Valid values: `%r{\w+}`
+Valid values: `%r{.*}`
 
 this is the pattern with which to replace the matched pattern.
 
@@ -1010,34 +1099,39 @@ Username to apply this rule to.
 
 The following parameters are available in the `proxy_mysql_query_rule` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_mysql_query_rule--load_to_runtime)
+* [`name`](#-proxy_mysql_query_rule--name)
+* [`provider`](#-proxy_mysql_query_rule--provider)
+* [`save_to_disk`](#-proxy_mysql_query_rule--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_mysql_query_rule--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_query_rule--name"></a>`name`
 
 namevar
 
 query rule name
 
-##### `provider`
+##### <a name="-proxy_mysql_query_rule--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_query_rule` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_query_rule--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_replication_hostgroup`
+### <a name="proxy_mysql_replication_hostgroup"></a>`proxy_mysql_replication_hostgroup`
 
 Manage a ProxySQL mysql_replication_hostgroup.
 
@@ -1075,34 +1169,39 @@ Writer hostgroup.
 
 The following parameters are available in the `proxy_mysql_replication_hostgroup` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_mysql_replication_hostgroup--load_to_runtime)
+* [`name`](#-proxy_mysql_replication_hostgroup--name)
+* [`provider`](#-proxy_mysql_replication_hostgroup--provider)
+* [`save_to_disk`](#-proxy_mysql_replication_hostgroup--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_mysql_replication_hostgroup--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_replication_hostgroup--name"></a>`name`
 
 namevar
 
 name to describe the hostgroup config
 
-##### `provider`
+##### <a name="-proxy_mysql_replication_hostgroup--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_replication_hostgroup` resource. You will seldom need to specify this
 --- Puppet will usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_replication_hostgroup--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_server`
+### <a name="proxy_mysql_server"></a>`proxy_mysql_server`
 
 Manage a ProxySQL mysql_server.
 
@@ -1194,34 +1293,39 @@ the bigger the weight of a server relative to other weights, the higher the prob
 
 The following parameters are available in the `proxy_mysql_server` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_mysql_server--load_to_runtime)
+* [`name`](#-proxy_mysql_server--name)
+* [`provider`](#-proxy_mysql_server--provider)
+* [`save_to_disk`](#-proxy_mysql_server--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_mysql_server--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_server--name"></a>`name`
 
 namevar
 
 name for server to manage.
 
-##### `provider`
+##### <a name="-proxy_mysql_server--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_server` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_server--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_server_no_hostgroup`
+### <a name="proxy_mysql_server_no_hostgroup"></a>`proxy_mysql_server_no_hostgroup`
 
 Manage a ProxySQL mysql_server.
 
@@ -1305,7 +1409,13 @@ the bigger the weight of a server relative to other weights, the higher the prob
 
 The following parameters are available in the `proxy_mysql_server_no_hostgroup` type.
 
-##### `hostgroup_id`
+* [`hostgroup_id`](#-proxy_mysql_server_no_hostgroup--hostgroup_id)
+* [`load_to_runtime`](#-proxy_mysql_server_no_hostgroup--load_to_runtime)
+* [`name`](#-proxy_mysql_server_no_hostgroup--name)
+* [`provider`](#-proxy_mysql_server_no_hostgroup--provider)
+* [`save_to_disk`](#-proxy_mysql_server_no_hostgroup--save_to_disk)
+
+##### <a name="-proxy_mysql_server_no_hostgroup--hostgroup_id"></a>`hostgroup_id`
 
 Valid values: `%r{\d+}`
 
@@ -1313,34 +1423,34 @@ The hostgroup of the server.
 
 Default value: `0`
 
-##### `load_to_runtime`
+##### <a name="-proxy_mysql_server_no_hostgroup--load_to_runtime"></a>`load_to_runtime`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_server_no_hostgroup--name"></a>`name`
 
 namevar
 
 name for server to manage.
 
-##### `provider`
+##### <a name="-proxy_mysql_server_no_hostgroup--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_server_no_hostgroup` resource. You will seldom need to specify this
 --- Puppet will usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_server_no_hostgroup--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_mysql_user`
+### <a name="proxy_mysql_user"></a>`proxy_mysql_user`
 
 Manage a ProxySQL mysql_user. This includes management of users password as well as privileges.
 
@@ -1430,42 +1540,48 @@ Use ssl or not.
 
 The following parameters are available in the `proxy_mysql_user` type.
 
-##### `encrypt_password`
+* [`encrypt_password`](#-proxy_mysql_user--encrypt_password)
+* [`load_to_runtime`](#-proxy_mysql_user--load_to_runtime)
+* [`name`](#-proxy_mysql_user--name)
+* [`provider`](#-proxy_mysql_user--provider)
+* [`save_to_disk`](#-proxy_mysql_user--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_mysql_user--encrypt_password"></a>`encrypt_password`
+
+Valid values: `true`, `false`
 
 Encrypt the users password (requires ProxySQL setting `admin-hash_password` = `true`)
 
-Default value: ``true``
+Default value: `true`
 
-##### `load_to_runtime`
+##### <a name="-proxy_mysql_user--load_to_runtime"></a>`load_to_runtime`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_mysql_user--name"></a>`name`
 
 namevar
 
 The name of the user to manage.
 
-##### `provider`
+##### <a name="-proxy_mysql_user--provider"></a>`provider`
 
 The specific backend to use for this `proxy_mysql_user` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_mysql_user--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
-### `proxy_scheduler`
+### <a name="proxy_scheduler"></a>`proxy_scheduler`
 
 Manage a ProxySQL scheduler entry.
 
@@ -1545,73 +1661,93 @@ The id of the scheduler entry.
 
 The following parameters are available in the `proxy_scheduler` type.
 
-##### `load_to_runtime`
+* [`load_to_runtime`](#-proxy_scheduler--load_to_runtime)
+* [`name`](#-proxy_scheduler--name)
+* [`provider`](#-proxy_scheduler--provider)
+* [`save_to_disk`](#-proxy_scheduler--save_to_disk)
 
-Valid values: ``true``, ``false``
+##### <a name="-proxy_scheduler--load_to_runtime"></a>`load_to_runtime`
+
+Valid values: `true`, `false`
 
 Load this entry to the active runtime.
 
-Default value: ``true``
+Default value: `true`
 
-##### `name`
+##### <a name="-proxy_scheduler--name"></a>`name`
 
 namevar
 
 scheduler name
 
-##### `provider`
+##### <a name="-proxy_scheduler--provider"></a>`provider`
 
 The specific backend to use for this `proxy_scheduler` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `save_to_disk`
+##### <a name="-proxy_scheduler--save_to_disk"></a>`save_to_disk`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Perist this entry to the disk.
 
-Default value: ``true``
+Default value: `true`
 
 ## Data types
 
-### `Proxysql::GaleraHostgroup`
+### <a name="Proxysql--GaleraHostgroup"></a>`Proxysql::GaleraHostgroup`
 
 Represents an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
 
-Alias of `Array[Hash[String, Struct[{ writer                     => Integer[0],
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ writer                     => Integer[0],
                                                              backup                     => Integer[0],
                                                              reader                     => Integer[0],
                                                              offline                    => Integer[0],
                                                              Optional[active]           => Integer[0,1],
                                                              Optional[writers]          => Integer[0],
                                                              Optional[writer_is_reader] => Integer[0,2],
-                                                             Optional[max_transactions] => Integer[0], }],1,1]]`
+                                                             Optional[max_transactions] => Integer[0], }],1,1]]
+```
 
-### `Proxysql::GroupReplicationHostgroup`
+### <a name="Proxysql--GroupReplicationHostgroup"></a>`Proxysql::GroupReplicationHostgroup`
 
 Represents a ProxySQL group replication hostgroup.
 
-Alias of `Array[Hash[String, Struct[{ writer                     => Integer,
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ writer                     => Integer,
                                                                        backup                     => Integer,
                                                                        reader                     => Integer,
                                                                        offline                    => Integer,
                                                                        Optional[active]           => Integer[0,1],
                                                                        Optional[writers]          => Integer,
                                                                        Optional[writer_is_reader] => Integer[0,1],
-                                                                       Optional[max_transactions] => Integer, }],1,1]]`
+                                                                       Optional[max_transactions] => Integer, }],1,1]]
+```
 
-### `Proxysql::Hostgroup`
+### <a name="Proxysql--Hostgroup"></a>`Proxysql::Hostgroup`
 
 Represents a ProxySQL replication hostgroup.
 
-Alias of `Array[Hash[String, Struct[{ writer => Integer,
-                                                       reader => Integer, }],1,1]]`
+Alias of
 
-### `Proxysql::Scheduler`
+```puppet
+Array[Hash[String, Struct[{ writer => Integer,
+                                                       reader => Integer, }],1,1]]
+```
+
+### <a name="Proxysql--Scheduler"></a>`Proxysql::Scheduler`
 
 Represents a ProxySQL scheduler
 
-Alias of `Array[Hash[String, Struct[{ scheduler_id          => Integer,
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ scheduler_id          => Integer,
                                                        active                => Integer,
                                                        Optional[interval_ms] => Integer,
                                                        filename              => String[1],
@@ -1619,13 +1755,17 @@ Alias of `Array[Hash[String, Struct[{ scheduler_id          => Integer,
                                                        Optional[arg2]        => String[1],
                                                        Optional[arg3]        => String[1],
                                                        Optional[arg4]        => String[1],
-                                                       Optional[arg5]        => String[1] }],1,1]]`
+                                                       Optional[arg5]        => String[1] }],1,1]]
+```
 
-### `Proxysql::Server`
+### <a name="Proxysql--Server"></a>`Proxysql::Server`
 
 Represents a ProxySQL server.
 
-Alias of `Array[Hash[String, Struct[{ Optional[port]                => Integer,
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ Optional[port]                => Integer,
                                                     hostgroup_id                  => Integer,
                                                     Optional[status]              => String[1],
                                                     Optional[weight]              => Integer,
@@ -1634,13 +1774,17 @@ Alias of `Array[Hash[String, Struct[{ Optional[port]                => Integer,
                                                     Optional[max_replication_lag] => Integer,
                                                     Optional[use_ssl]             => Integer[0,1],
                                                     Optional[max_latency_ms]      => Integer,
-                                                    Optional[comment]             => String[1], }],1,1]]`
+                                                    Optional[comment]             => String[1], }],1,1]]
+```
 
-### `Proxysql::User`
+### <a name="Proxysql--User"></a>`Proxysql::User`
 
 Represents a ProxySQL user.
 
-Alias of `Array[Hash[String, Struct[{ password                         => String[1],
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ password                         => String[1],
                                                   default_hostgroup                => Integer,
                                                   Optional[active]                 => Integer[0,1],
                                                   Optional[use_ssl]                => Integer[0,1],
@@ -1650,5 +1794,6 @@ Alias of `Array[Hash[String, Struct[{ password                         => String
                                                   Optional[fast_forward]           => Integer[0,1],
                                                   Optional[backend]                => Integer[0,1],
                                                   Optional[frontend]               => Integer[0,1],
-                                                  Optional[max_connections]        => Integer, }],1,1]]`
+                                                  Optional[max_connections]        => Integer, }],1,1]]
+```
 
