@@ -14,7 +14,7 @@ class proxysql::repo {
       default   => fail("Unsupported `proxysql::version` ${proxysql::version}")
     }
     case $facts['os']['family'] {
-      'Debian': {
+      /^(Debian|Ubuntu)$/: {
         apt::source { 'proxysql_repo':
           * => $repo,
         }
