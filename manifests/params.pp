@@ -76,6 +76,16 @@ class proxysql::params {
           'server' => 'keyserver.ubuntu.com',
         },
       }
+      $repo25             = {
+        comment  => 'ProxySQL 2.5.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.5.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => '',
+        key      => {
+          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'server' => 'keyserver.ubuntu.com',
+        },
+      }
     }
     'RedHat': {
       $package_provider = 'rpm'
@@ -128,6 +138,14 @@ class proxysql::params {
         name     => 'proxysql_2_4',
         descr    => 'ProxySQL 2.4.x YUM repository',
         baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.4.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo25             = {
+        name     => 'proxysql_2_5',
+        descr    => 'ProxySQL 2.5.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.5.x/centos/${repo_os_major_version}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
