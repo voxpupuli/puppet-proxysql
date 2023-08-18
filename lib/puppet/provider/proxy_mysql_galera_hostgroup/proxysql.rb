@@ -54,7 +54,7 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
   end
 
   def create
-    query_parameters = self.class.db_fields.map { |param| [param, resource[param]] }.to_h.compact
+    query_parameters = self.class.db_fields.to_h { |param| [param, resource[param]] }.compact
 
     columns = query_parameters.keys.map { |k| "`#{k}`" }.join(',')
     values = query_parameters.values.map { |value| make_sql_value(value) }.join(',')
