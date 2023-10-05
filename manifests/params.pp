@@ -72,7 +72,7 @@ class proxysql::params {
         release  => './',
         repos    => '',
         key      => {
-          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
+          'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
           'server' => 'keyserver.ubuntu.com',
         },
       }
