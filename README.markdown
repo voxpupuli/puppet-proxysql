@@ -33,7 +33,7 @@ The module requires Puppet 5.5.8 and above. It also depends on:
 * [puppetlabs/mysql](https://forge.puppet.com/puppetlabs/mysql)
 * [puppetlabs/apt](https://forge.puppet.com/puppetlabs/apt) - (Not strictly required on non Debian based systems)
 * [puppetlabs/stdlib](https://forge.puppet.com/puppetlabs/stdlib)
-* [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd) - (Not strictly required if installing ProxySQL 1.4)
+* [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
 
 For up to date details on external dependencies, please see the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json) or for released versions, the [puppet forge page](https://forge.puppet.com/puppet/proxysql/dependencies).
 
@@ -48,17 +48,8 @@ include proxysql
 ```
 
 By default, packages come from the official upstream package repositories which the module will configure.
-On new installations, (by default), the 2.0.x repository will be configured. If ProxySQL is already installed, then the repository matching the currently installed version
+On new installations, (by default), the 2.7.x repository will be configured. If ProxySQL is already installed, then the repository matching the currently installed version
 will be used.
-
-To force the use of 1.4.x packages, use the `version` parameter.  (Note, the example below does not force the installation of `1.4.16`, it only ensures the correct repository
-is configured and that ProxySQL will be configured as if the version installed is `1.4.16`)
-
-```puppet
-class { 'proxysql':
-  version => '1.4.16',
-}
-```
 
 To use your Operating System's own packages set `manage_repo => false`.
 
