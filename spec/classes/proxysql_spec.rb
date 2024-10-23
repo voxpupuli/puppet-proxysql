@@ -33,13 +33,13 @@ describe 'proxysql' do
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           if facts[:osfamily] == 'RedHat'
-            if facts[:operatingsystem] == 'Amazon' && facts[:operatingsystemmajrelease] == '2016'
-              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/6') }
-            else
-              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
-            end
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/#{facts[:operatingsystemmajrelease]}") }
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
-            it { is_expected.to contain_yumrepo('proxysql_1_4').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_6').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_5').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_4').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_3').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
           end
 
           it do
@@ -87,14 +87,8 @@ describe 'proxysql' do
 
           if facts[:osfamily] == 'RedHat'
             context 'with restart = true' do
-              context 'and proxysql 1.4.16' do
-                let(:params) { { 'restart' => true, 'version' => '1.4.16' } }
-
-                it { is_expected.to contain_service('proxysql').with_start('/usr/bin/proxysql --reload') }
-              end
-
-              context 'and proxysql 2.0.6' do
-                let(:params) { { 'restart' => true, 'version' => '2.0.6' } }
+              context 'and proxysql 2.7.1' do
+                let(:params) { { 'restart' => true, 'version' => '2.7.1' } }
 
                 it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
               end
