@@ -9,7 +9,7 @@ class proxysql::params {
       $package_provider = 'dpkg'
       $package_dependencies = []
 
-      if versioncmp(fact('os.release.major'), '18.04') >= 0 {
+      if versioncmp(fact('os.release.major'), '18.04') == 0 {
         # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
         # This limits where we can write sockets.
         $_listen_socket = "${datadir}/proxysql.sock"
@@ -20,7 +20,7 @@ class proxysql::params {
         comment  => 'ProxySQL 1.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
@@ -30,7 +30,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.0.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
@@ -40,7 +40,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.1.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.1.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
@@ -50,7 +50,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.2.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
@@ -60,7 +60,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.3.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
           'server' => 'keyserver.ubuntu.com',
@@ -70,7 +70,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.4.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => '',
+        repos    => ' ',
         key      => {
           'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
           'server' => 'keyserver.ubuntu.com',

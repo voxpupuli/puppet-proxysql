@@ -19,8 +19,10 @@ class proxysql::service {
       notify   => Service[$proxysql::service_name],
     }
     service { $proxysql::service_name:
-      ensure => $proxysql::service_ensure,
-      enable => true,
+      ensure     => $proxysql::service_ensure,
+      enable     => true,
+      hasrestart => true,
+      hasstatus  => true,
     }
   } else {
     if $proxysql::restart {
