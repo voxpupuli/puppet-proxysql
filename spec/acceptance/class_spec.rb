@@ -40,18 +40,6 @@ describe 'proxysql class' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
-        listen_port              => 3306,
-        admin_username           => 'admin',
-        admin_password           => Sensitive('654321'),
-        stats_username           => 'stats',
-        stats_password           => Sensitive('567890'),
-        monitor_username         => 'monitor',
-        monitor_password         => Sensitive('123456'),
-        override_config_settings => {
-          mysql_variables => {
-            'monitor_writer_is_also_reader' => false,
-          }
-        },
       }
 
       proxy_mysql_replication_hostgroup { '10-20':
@@ -322,18 +310,6 @@ describe 'proxysql class' do
       pp = <<-EOS
       class { 'proxysql':
         restart                  => true,
-        listen_port              => 3306,
-        admin_username           => 'admin',
-        admin_password           => Sensitive('654321'),
-        stats_username           => 'stats',
-        stats_password           => Sensitive('567890'),
-        monitor_username         => 'monitor',
-        monitor_password         => Sensitive('123456'),
-        override_config_settings => {
-          mysql_variables => {
-            'monitor_writer_is_also_reader' => true,
-          }
-        },
       }
       EOS
       apply_manifest(pp, catch_failures: true)
