@@ -22,12 +22,12 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
     rules.map do |rule_id|
-      query = 'SELECT `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, ' \
-              ' `client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, ' \
-              ' `digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, ' \
-              ' `cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, ' \
-              ' `mirror_flagOUT`, `mirror_hostgroup`' \
-              " FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
+      query = 'SELECT `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`,  ' \
+              '`client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`,  ' \
+              '`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`,  ' \
+              '`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`,  ' \
+              '`mirror_flagOUT`, `mirror_hostgroup` ' \
+              "FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
 
       @active, @username, @schemaname, @flag_in, @flag_out, @apply,
       @client_addr, @proxy_addr, @proxy_port, @destination_hostgroup,
