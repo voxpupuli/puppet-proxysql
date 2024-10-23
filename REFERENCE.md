@@ -388,7 +388,7 @@ Data type: `Pattern[/^[1|2]\.\d+\.\d+/]`
 
 The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
 It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
-deployed, use `package_name` or `package_source`. Currently defaults to '2.0.7' or the value of the `proxysql_version` fact.
+deployed, use `package_name` or `package_source`. Currently defaults to '2.7.1' or the value of the `proxysql_version` fact.
 
 Default value: `$proxysql::params::version`
 
