@@ -5,7 +5,7 @@ class Puppet::Provider::Proxysql < Puppet::Provider
   initvars
 
   # Make sure we find mysql commands on CentOS and FreeBSD
-  ENV['PATH'] = "#{ENV['PATH']}:/usr/libexec:/usr/local/libexec:/usr/local/bin"
+  ENV['PATH'] = "#{ENV.fetch('PATH', nil)}:/usr/libexec:/usr/local/libexec:/usr/local/bin"
 
   commands mysql: 'mysql'
 

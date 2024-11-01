@@ -16,10 +16,10 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
     # one big swoop.
     servers.each do |line|
       hostname, port = line.split(%r{\t})
-      query = 'SELECT `hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, ' \
-              ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment` ' \
-              ' FROM `mysql_servers`' \
-              " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
+      query = 'SELECT `hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`,  ' \
+              '`max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`  ' \
+              'FROM `mysql_servers` ' \
+              "WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
 
       @hostname, @port, @hostgroup_id, @status, @weight, @compression,
       @max_connections, @max_replication_lag, @use_ssl, @max_latency_ms,
@@ -69,10 +69,10 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
     max_latency_ms = @resource.value(:max_latency_ms) || 0
     comment = @resource.value(:comment) || ''
 
-    query = 'INSERT INTO mysql_servers (`hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`, ' \
-            ' `max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`)' \
-            " VALUES ('#{hostname}', #{port}, #{hostgroup_id}, '#{status}', #{weight}, #{compression}, " \
-            " #{max_connections}, #{max_replication_lag}, #{use_ssl}, #{max_latency_ms}, '#{comment}')"
+    query = 'INSERT INTO mysql_servers (`hostname`, `port`, `hostgroup_id`, `status`, `weight`, `compression`,  ' \
+            '`max_connections`, `max_replication_lag`, `use_ssl`, `max_latency_ms`, `comment`) ' \
+            "VALUES ('#{hostname}', #{port}, #{hostgroup_id}, '#{status}', #{weight}, #{compression},  " \
+            "#{max_connections}, #{max_replication_lag}, #{use_ssl}, #{max_latency_ms}, '#{comment}')"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -121,8 +121,8 @@ Puppet::Type.type(:proxy_mysql_server_no_hostgroup).provide(:proxysql, parent: P
       values.push("`#{field}` = '#{value}'")
     end
 
-    query = "UPDATE mysql_servers SET #{values.join(', ')}" \
-            " WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
+    query = "UPDATE mysql_servers SET #{values.join(', ')} " \
+            "WHERE `hostname` =  '#{hostname}' AND `port` = #{port}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear
