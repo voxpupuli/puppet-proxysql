@@ -113,21 +113,21 @@ describe 'proxysql class' do
 
       proxy_mysql_user { 'tester':
         ensure            => 'absent',
-        password          => mysql_password('tester'),
+        password          => mysql::password('tester'),
         default_hostgroup => 1,
         default_schema    => 'test',
       }
 
       proxy_mysql_user { 'tester1':
         ensure            => 'present',
-        password          => mysql_password('tester123'),
+        password          => mysql::password('tester123'),
         default_hostgroup => 1,
         default_schema    => 'test1',
       }
 
       proxy_mysql_user { 'tester2':
         ensure            => 'present',
-        password          => mysql_password('tester2'),
+        password          => mysql::password('tester2'),
         default_hostgroup => 2,
         default_schema    => 'test2',
         load_to_runtime   => false,
