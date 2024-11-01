@@ -3,43 +3,12 @@
 require 'spec_helper_acceptance'
 
 describe 'proxysql class' do
-  unless ['18.04', '20.04'].include?(fact('os.release.major')) ||
-         (fact('os.name') == 'Debian' && fact('os.release.major') == '10') # There are no proxysql 1.4 packages for these OSes
-    context 'version 1.4' do
-      it 'works idempotently with no errors' do
-        pp = <<-EOS
-      class { 'proxysql':
-        version => '1.4.16',
-      }
-        EOS
-
-        # Run it twice and test for idempotency
-        apply_manifest(pp, catch_failures: true)
-        apply_manifest(pp, catch_changes: true)
-      end
-
-      describe package('proxysql') do
-        it { is_expected.to be_installed }
-      end
-
-      describe service('proxysql') do
-        it { is_expected.to be_enabled }
-        it { is_expected.to be_running }
-      end
-
-      describe command('proxysql --version') do
-        its(:exit_status) { is_expected.to eq 0 }
-        its(:stderr) { is_expected.to match %r{^ProxySQL version 1\.4\.} }
-      end
-    end
-  end
-
-  context 'Upgrading to version 2.0' do
+  context 'Upgrading to version 2.7' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
         package_ensure => latest,
-        version        => '2.0.7',
+        version        => '2.7.1',
       }
       EOS
 
@@ -48,7 +17,7 @@ describe 'proxysql class' do
       apply_manifest(pp, catch_changes: true)
 
       # Run it again, this time relying on proxysql_version fact
-      apply_manifest('class { \'proxysql\':}', catch_changes: true)
+      apply_manifest("class { 'proxysql':}", catch_changes: true)
     end
 
     describe package('proxysql') do
@@ -62,7 +31,7 @@ describe 'proxysql class' do
 
     describe command('proxysql --version') do
       its(:exit_status) { is_expected.to eq 0 }
-      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.0\.} }
+      its(:stdout) { is_expected.to match %r{^ProxySQL version 2\.7\.} }
     end
   end
 
@@ -71,18 +40,6 @@ describe 'proxysql class' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
-        listen_port              => 3306,
-        admin_username           => 'admin',
-        admin_password           => Sensitive('654321'),
-        stats_username           => 'stats',
-        stats_password           => Sensitive('567890'),
-        monitor_username         => 'monitor',
-        monitor_password         => Sensitive('123456'),
-        override_config_settings => {
-          mysql_variables => {
-            'monitor_writer_is_also_reader' => false,
-          }
-        },
       }
 
       proxy_mysql_replication_hostgroup { '10-20':
@@ -353,18 +310,6 @@ describe 'proxysql class' do
       pp = <<-EOS
       class { 'proxysql':
         restart                  => true,
-        listen_port              => 3306,
-        admin_username           => 'admin',
-        admin_password           => Sensitive('654321'),
-        stats_username           => 'stats',
-        stats_password           => Sensitive('567890'),
-        monitor_username         => 'monitor',
-        monitor_password         => Sensitive('123456'),
-        override_config_settings => {
-          mysql_variables => {
-            'monitor_writer_is_also_reader' => true,
-          }
-        },
       }
       EOS
       apply_manifest(pp, catch_failures: true)
