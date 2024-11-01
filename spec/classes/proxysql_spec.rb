@@ -32,8 +32,8 @@ describe 'proxysql' do
 
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
-          if facts[:osfamily] == 'RedHat'
-            it { is_expected.to contain_yumrepo('proxysql_2_7').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/#{facts[:operatingsystemmajrelease]}") }
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/#{facts[:os]['release']['major']}") }
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_6').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_5').with_ensure('absent') }
@@ -50,11 +50,7 @@ describe 'proxysql' do
           sys_user = 'proxysql'
           sys_group = 'proxysql'
 
-          admin_socket = if ['18.04', '20.04'].include?(facts[:operatingsystemrelease])
-                           '/var/lib/proxysql/proxysql_admin.sock'
-                         else
-                           '/tmp/proxysql_admin.sock'
-                         end
+          admin_socket = '/tmp/proxysql_admin.sock'
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
@@ -85,22 +81,8 @@ describe 'proxysql' do
                                                             enable: true)
           end
 
-          if facts[:osfamily] == 'RedHat'
-            context 'with restart = true' do
-              context 'and proxysql 2.7.1' do
-                let(:params) { { 'restart' => true, 'version' => '2.7.1' } }
-
-                it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
-              end
-            end
-          end
-
-          unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
-                 (facts[:operatingsystem] == 'Ubuntu' && ['18.04', '20.04'].include?(facts[:operatingsystemmajrelease])) ||
-                 (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10)$})
-            it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
-            it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
-          end
+          it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
+          it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
 
           it do
             is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
@@ -120,7 +102,7 @@ describe 'proxysql' do
           it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
         end
 
-        if facts[:osfamily] == 'RedHat'
+        if facts[:os]['family'] == 'RedHat'
           describe 'manage_selinux' do
             context 'on systems with selinux enabled' do
               let(:facts) do
