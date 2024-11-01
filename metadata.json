@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs-mysql",
-      "version_requirement": ">= 2.5.0 < 17.0.0"
+      "version_requirement": ">= 6.0.0 < 17.0.0"
     },
     {
       "name": "puppetlabs-apt",
