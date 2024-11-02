@@ -131,7 +131,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
   end
 
   def destroy
-    rule_id = @resource.value(:rule_id)
+    rule_id = @property_hash[:rule_id]
     mysql([defaults_file, '-e', "DELETE FROM `mysql_query_rules` WHERE `rule_id` = '#{rule_id}'"].compact)
 
     @property_hash.clear

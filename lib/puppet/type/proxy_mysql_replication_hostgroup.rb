@@ -13,7 +13,7 @@ Puppet::Type.newtype(:proxy_mysql_replication_hostgroup) do
   validate do
     raise('writer_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:writer_hostgroup].nil?
     raise('reader_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:reader_hostgroup].nil?
-    raise('name must match writer_hostgroup-reader_hostgroup parameters') if self[:name] != "#{self[:writer_hostgroup]}-#{self[:reader_hostgroup]}"
+    raise('name must match writer_hostgroup-reader_hostgroup parameters') if (self[:ensure] == :present) && self[:name] != "#{self[:writer_hostgroup]}-#{self[:reader_hostgroup]}"
   end
 
   newparam(:name, namevar: true) do
