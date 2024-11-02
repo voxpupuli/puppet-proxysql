@@ -72,7 +72,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
   end
 
   def destroy
-    scheduler_id = @resource.value(:scheduler_id)
+    scheduler_id = @property_hash[:scheduler_id]
 
     mysql([defaults_file, '-e', "DELETE FROM `scheduler` WHERE `id` = #{scheduler_id}"].compact)
 

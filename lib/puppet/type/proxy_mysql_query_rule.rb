@@ -10,8 +10,8 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
   autorequire(:service) { 'proxysql' }
 
   validate do
-    raise('rule_id parameter is required.') if self[:rule_id].nil?
-    raise('name must match \'mysql_query_rule-\'<rule_id> format') if self[:name] != "mysql_query_rule-#{self[:rule_id]}"
+    raise('rule_id parameter is required.') if (self[:ensure] == :present) && self[:rule_id].nil?
+    raise('name must match \'mysql_query_rule-\'<rule_id> format') if (self[:ensure] == :present) && self[:name] != "mysql_query_rule-#{self[:rule_id]}"
   end
 
   newparam(:name, namevar: true) do

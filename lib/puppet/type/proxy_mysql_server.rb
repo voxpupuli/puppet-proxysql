@@ -14,7 +14,7 @@ Puppet::Type.newtype(:proxy_mysql_server) do
     raise('hostname parameter is required.') if (self[:ensure] == :present) && self[:hostname].nil?
     raise('port parameter is required.') if (self[:ensure] == :present) && self[:port].nil?
     raise('hostgroup_id parameter is required.') if (self[:ensure] == :present) && self[:hostgroup_id].nil?
-    raise('name must match hostname, port and hostgroup_id parameters') if self[:name] != "#{self[:hostname]}:#{self[:port]}-#{self[:hostgroup_id]}"
+    raise('name must match hostname, port and hostgroup_id parameters') if (self[:ensure] == :present) && self[:name] != "#{self[:hostname]}:#{self[:port]}-#{self[:hostgroup_id]}"
   end
 
   newparam(:name, namevar: true) do
