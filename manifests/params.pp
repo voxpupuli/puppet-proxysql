@@ -16,64 +16,64 @@ class proxysql::params {
         $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
       }
 
-      $repo22             = {
+      $repo22 = {
         comment  => 'ProxySQL 2.2.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.2.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.2.x/repo_pub_key',
         },
       }
-      $repo23             = {
+      $repo23 = {
         comment  => 'ProxySQL 2.3.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '1448BF693CA600C799EB935804A562FB79953B49',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.3.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.3.x/repo_pub_key',
         },
       }
-      $repo24             = {
+      $repo24 = {
         comment  => 'ProxySQL 2.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.4.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.4.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.4.x/repo_pub_key',
         },
       }
-      $repo25             = {
+      $repo25 = {
         comment  => 'ProxySQL 2.5.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.5.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.5.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.5.x/repo_pub_key',
         },
       }
-      $repo26             = {
+      $repo26 = {
         comment  => 'ProxySQL 2.6.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.6.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.6.x/repo_pub_key',
         },
       }
-      $repo27             = {
+      $repo27 = {
         comment  => 'ProxySQL 2.7.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/${facts['os']['distro']['codename']}/",
         release  => './',
         repos    => ' ',
         key      => {
-          'id'     => '653F85BB38256DF8A96206C3E8CA2E8D8217C97E',
-          'server' => 'keyserver.ubuntu.com',
+          'name'   => 'proxysql-2.7.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.7.x/repo_pub_key',
         },
       }
     }
