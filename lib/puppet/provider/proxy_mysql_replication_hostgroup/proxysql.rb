@@ -54,8 +54,8 @@ Puppet::Type.type(:proxy_mysql_replication_hostgroup).provide(:proxysql, parent:
   end
 
   def destroy
-    writer_hostgroup = @resource.value(:writer_hostgroup)
-    reader_hostgroup = @resource.value(:reader_hostgroup)
+    writer_hostgroup = @property_hash[:writer_hostgroup]
+    reader_hostgroup = @property_hash[:reader_hostgroup]
     query = 'DELETE FROM `mysql_replication_hostgroups` ' \
             "WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
