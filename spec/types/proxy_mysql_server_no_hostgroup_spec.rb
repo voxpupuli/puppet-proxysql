@@ -2,26 +2,25 @@
 
 require 'spec_helper'
 
-describe 'proxy_mysql_galera_hostgroup' do
+describe 'proxy_mysql_server_no_hostgroup' do
   let :title do
-    '1-2-3-4'
+    'some-title'
   end
 
   let(:params) do
     {
       ensure: 'present',
-      name: '10-20-30-40',
-      writer_hostgroup: 10,
-      backup_writer_hostgroup: 20,
-      reader_hostgroup: 30,
-      offline_hostgroup: 40
+      name: 'localhost:3306',
+      hostgroup_id: 10,
+      hostname: 'localhost',
+      port: 3306,
     }
   end
 
   context 'with ensure => present' do
     it { is_expected.to be_valid_type }
     it { is_expected.to be_valid_type.with_provider(:proxysql) }
-    it { is_expected.to be_valid_type.with_parameters(%w[writer_hostgroup backup_writer_hostgroup reader_hostgroup offline_hostgroup load_to_runtime save_to_disk]) }
+    it { is_expected.to be_valid_type.with_parameters(%w[name load_to_runtime save_to_disk]) }
   end
 
   context 'with ensure => absent' do
