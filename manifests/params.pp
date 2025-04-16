@@ -20,7 +20,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.2.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.2.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.2.x/repo_pub_key',
@@ -30,7 +30,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.3.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.3.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.3.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.3.x/repo_pub_key',
@@ -40,7 +40,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.4.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.4.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.4.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.4.x/repo_pub_key',
@@ -50,7 +50,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.5.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.5.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.5.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.5.x/repo_pub_key',
@@ -60,7 +60,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.6.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.6.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.6.x/repo_pub_key',
@@ -70,7 +70,7 @@ class proxysql::params {
         comment  => 'ProxySQL 2.7.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/${facts['os']['distro']['codename']}/",
         release  => './',
-        repos    => ' ',
+        repos    => 'main',
         key      => {
           'name'   => 'proxysql-2.7.x.asc',
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.7.x/repo_pub_key',
