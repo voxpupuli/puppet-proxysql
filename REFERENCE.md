@@ -41,6 +41,7 @@
 * [`Proxysql::GaleraHostgroup`](#Proxysql--GaleraHostgroup): Represents an entry in the ProxySQL `mysql_galera_hostgroups` admin table.
 * [`Proxysql::GroupReplicationHostgroup`](#Proxysql--GroupReplicationHostgroup): Represents a ProxySQL group replication hostgroup.
 * [`Proxysql::Hostgroup`](#Proxysql--Hostgroup): Represents a ProxySQL replication hostgroup.
+* [`Proxysql::Rule`](#Proxysql--Rule): Represents a ProxySQL query rule.
 * [`Proxysql::Scheduler`](#Proxysql--Scheduler): Represents a ProxySQL scheduler
 * [`Proxysql::Server`](#Proxysql--Server): Represents a ProxySQL server.
 * [`Proxysql::User`](#Proxysql--User): Represents a ProxySQL user.
@@ -1703,13 +1704,13 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ writer                     => Integer[0],
-                                                             backup                     => Integer[0],
-                                                             reader                     => Integer[0],
-                                                             offline                    => Integer[0],
-                                                             Optional[active]           => Integer[0,1],
-                                                             Optional[writers]          => Integer[0],
-                                                             Optional[writer_is_reader] => Integer[0,2],
-                                                             Optional[max_transactions] => Integer[0], }],1,1]]
+        backup                     => Integer[0],
+        reader                     => Integer[0],
+        offline                    => Integer[0],
+        Optional[active]           => Integer[0,1],
+        Optional[writers]          => Integer[0],
+        Optional[writer_is_reader] => Integer[0,2],
+Optional[max_transactions] => Integer[0], }],1,1]]
 ```
 
 ### <a name="Proxysql--GroupReplicationHostgroup"></a>`Proxysql::GroupReplicationHostgroup`
@@ -1720,13 +1721,13 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ writer                     => Integer,
-                                                                       backup                     => Integer,
-                                                                       reader                     => Integer,
-                                                                       offline                    => Integer,
-                                                                       Optional[active]           => Integer[0,1],
-                                                                       Optional[writers]          => Integer,
-                                                                       Optional[writer_is_reader] => Integer[0,1],
-                                                                       Optional[max_transactions] => Integer, }],1,1]]
+        backup                     => Integer,
+        reader                     => Integer,
+        offline                    => Integer,
+        Optional[active]           => Integer[0,1],
+        Optional[writers]          => Integer,
+        Optional[writer_is_reader] => Integer[0,1],
+Optional[max_transactions] => Integer, }],1,1]]
 ```
 
 ### <a name="Proxysql--Hostgroup"></a>`Proxysql::Hostgroup`
@@ -1737,7 +1738,41 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ writer => Integer,
-                                                       reader => Integer, }],1,1]]
+reader => Integer, }],1,1]]
+```
+
+### <a name="Proxysql--Rule"></a>`Proxysql::Rule`
+
+Represents a ProxySQL query rule.
+
+Alias of
+
+```puppet
+Array[Hash[String, Struct[{ rule_id                         => Integer,
+        active                          => Integer,
+        Optional[username]              => String[1],
+        Optional[schemaname]            => String[1],
+        Optional[flag_in]               => Integer,
+        Optional[flag_out]              => Integer,
+        Optional['apply']               => Integer,
+        Optional[client_addr]           => String[1],
+        Optional[proxy_addr]            => String[1],
+        Optional[proxy_port]            => Integer,
+        Optional[digest]                => String[1],
+        Optional[match_digest]          => String[1],
+        Optional[match_pattern]         => String[1],
+        Optional[replace_pattern]       => String[1],
+        Optional[negate_match_pattern]  => Integer[0,1],
+        Optional[destination_hostgroup] => Integer,
+        Optional[cache_ttl]             => Integer,
+        Optional[reconnect]             => Integer[0,1],
+        Optional[timeout]               => Integer,
+        Optional[retries]               => Integer,
+        Optional[delay]                 => Integer,
+        Optional[error_msg]             => String[1],
+        Optional[log]                   => Integer[0,1],
+        Optional[mirror_hostgroup]      => Integer,
+Optional[mirror_flag_out]       => Integer, }],1,1]]
 ```
 
 ### <a name="Proxysql--Scheduler"></a>`Proxysql::Scheduler`
@@ -1748,14 +1783,14 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ scheduler_id          => Integer,
-                                                       active                => Integer,
-                                                       Optional[interval_ms] => Integer,
-                                                       filename              => String[1],
-                                                       Optional[arg1]        => String[1],
-                                                       Optional[arg2]        => String[1],
-                                                       Optional[arg3]        => String[1],
-                                                       Optional[arg4]        => String[1],
-                                                       Optional[arg5]        => String[1] }],1,1]]
+        active                => Integer,
+        Optional[interval_ms] => Integer,
+        filename              => String[1],
+        Optional[arg1]        => String[1],
+        Optional[arg2]        => String[1],
+        Optional[arg3]        => String[1],
+        Optional[arg4]        => String[1],
+Optional[arg5]        => String[1] }],1,1]]
 ```
 
 ### <a name="Proxysql--Server"></a>`Proxysql::Server`
@@ -1766,15 +1801,15 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ Optional[port]                => Integer,
-                                                    hostgroup_id                  => Integer,
-                                                    Optional[status]              => String[1],
-                                                    Optional[weight]              => Integer,
-                                                    Optional[compression]         => Integer,
-                                                    Optional[max_connections]     => Integer,
-                                                    Optional[max_replication_lag] => Integer,
-                                                    Optional[use_ssl]             => Integer[0,1],
-                                                    Optional[max_latency_ms]      => Integer,
-                                                    Optional[comment]             => String[1], }],1,1]]
+        hostgroup_id                  => Integer,
+        Optional[status]              => String[1],
+        Optional[weight]              => Integer,
+        Optional[compression]         => Integer,
+        Optional[max_connections]     => Integer,
+        Optional[max_replication_lag] => Integer,
+        Optional[use_ssl]             => Integer[0,1],
+        Optional[max_latency_ms]      => Integer,
+Optional[comment]             => String[1], }],1,1]]
 ```
 
 ### <a name="Proxysql--User"></a>`Proxysql::User`
@@ -1785,15 +1820,15 @@ Alias of
 
 ```puppet
 Array[Hash[String, Struct[{ password                         => String[1],
-                                                  default_hostgroup                => Integer,
-                                                  Optional[active]                 => Integer[0,1],
-                                                  Optional[use_ssl]                => Integer[0,1],
-                                                  Optional[default_schema]         => String[1],
-                                                  Optional[schema_locked]          => Integer[0,1],
-                                                  Optional[transaction_persistent] => Integer[0,1],
-                                                  Optional[fast_forward]           => Integer[0,1],
-                                                  Optional[backend]                => Integer[0,1],
-                                                  Optional[frontend]               => Integer[0,1],
-                                                  Optional[max_connections]        => Integer, }],1,1]]
+        default_hostgroup                => Integer,
+        Optional[active]                 => Integer[0,1],
+        Optional[use_ssl]                => Integer[0,1],
+        Optional[default_schema]         => String[1],
+        Optional[schema_locked]          => Integer[0,1],
+        Optional[transaction_persistent] => Integer[0,1],
+        Optional[fast_forward]           => Integer[0,1],
+        Optional[backend]                => Integer[0,1],
+        Optional[frontend]               => Integer[0,1],
+Optional[max_connections]        => Integer, }],1,1]]
 ```
 
