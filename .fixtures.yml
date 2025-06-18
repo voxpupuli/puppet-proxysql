@@ -1,14 +1,11 @@
+---
 fixtures:
   repositories:
-    stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
-    mysql: 'https://github.com/puppetlabs/puppetlabs-mysql.git'
-    apt: 'https://github.com/puppetlabs/puppetlabs-apt.git'
-    systemd: 'https://github.com/voxpupuli/puppet-systemd.git'
-    selinux: 'https://github.com/voxpupuli/puppet-selinux.git'
-    extlib: 'https://github.com/voxpupuli/puppet-extlib.git'
-    yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      puppet_version: ">= 6.0.0"
-    selinux_core:
-      repo: https://github.com/puppetlabs/puppetlabs-selinux_core.git
-      puppet_version: ">= 6.0.0"
+    apt: https://github.com/puppetlabs/puppetlabs-apt.git
+    extlib: https://github.com/voxpupuli/puppet-extlib.git
+    mysql: https://github.com/puppetlabs/puppetlabs-mysql.git
+    selinux: https://github.com/voxpupuli/puppet-selinux.git
+    selinux_core: https://github.com/puppetlabs/puppetlabs-selinux_core.git
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
+    systemd: https://github.com/voxpupuli/puppet-systemd.git
+    yumrepo_core: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
