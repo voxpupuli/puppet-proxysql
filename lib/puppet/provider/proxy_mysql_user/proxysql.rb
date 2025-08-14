@@ -72,7 +72,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
   end
 
   def destroy
-    name = @resource[:name]
+    name = @property_hash[:name]
     mysql([defaults_file, '-e', "DELETE FROM mysql_users WHERE username = '#{name}'"].compact)
 
     @property_hash.clear

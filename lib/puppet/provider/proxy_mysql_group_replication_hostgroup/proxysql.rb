@@ -66,12 +66,12 @@ Puppet::Type.type(:proxy_mysql_group_replication_hostgroup).provide(:proxysql, p
   end
 
   def destroy
-    writer_hostgroup = @resource.value(:writer_hostgroup)
-    backup_writer_hostgroup = @resource.value(:backup_writer_hostgroup)
-    reader_hostgroup = @resource.value(:reader_hostgroup)
-    offline_hostgroup = @resource.value(:offline_hostgroup)
-    query = 'DELETE FROM `mysql_group_replication_hostgroups` ' \
-            "WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
+    writer_hostgroup = @property_hash[:writer_hostgroup]
+    backup_writer_hostgroup = @property_hash[:backup_writer_hostgroup]
+    reader_hostgroup = @property_hash[:reader_hostgroup]
+    offline_hostgroup = @property_hash[:offline_hostgroup]
+    query = 'DELETE FROM `mysql_group_replication_hostgroups`'
+    query << " WHERE `writer_hostgroup` =  #{writer_hostgroup} AND `backup_writer_hostgroup` = #{backup_writer_hostgroup} AND `reader_hostgroup` = #{reader_hostgroup} AND `offline_hostgroup` = #{offline_hostgroup}"
     mysql([defaults_file, '-e', query].compact)
 
     @property_hash.clear

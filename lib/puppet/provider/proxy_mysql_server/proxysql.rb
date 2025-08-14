@@ -80,9 +80,9 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   end
 
   def destroy
-    hostname = @resource.value(:hostname)
-    port = @resource.value(:port)
-    hostgroup_id = @resource.value(:hostgroup_id)
+    hostname = @property_hash[:hostname]
+    port = @property_hash[:port]
+    hostgroup_id = @property_hash[:hostgroup_id]
     query = 'DELETE FROM `mysql_servers` ' \
             "WHERE `hostname` =  '#{hostname}' AND `port` = #{port} AND `hostgroup_id` = '#{hostgroup_id}'"
     mysql([defaults_file, '-e', query].compact)

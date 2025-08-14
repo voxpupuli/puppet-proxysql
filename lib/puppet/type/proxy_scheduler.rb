@@ -10,9 +10,9 @@ Puppet::Type.newtype(:proxy_scheduler) do
   autorequire(:service) { 'proxysql' }
 
   validate do
-    raise('scheduler_id parameter is required.') if self[:scheduler_id].nil?
+    raise('scheduler_id parameter is required.') if (self[:ensure] == :present) && self[:scheduler_id].nil?
     raise('filename parameter is required.') if (self[:ensure] == :present) && self[:filename].nil?
-    raise('name must match \'scheduler-\'<scheduler_id> format') if self[:name] != "scheduler-#{self[:scheduler_id]}"
+    raise('name must match \'scheduler-\'<scheduler_id> format') if (self[:ensure] == :present) && self[:name] != "scheduler-#{self[:scheduler_id]}"
   end
 
   newparam(:name, namevar: true) do

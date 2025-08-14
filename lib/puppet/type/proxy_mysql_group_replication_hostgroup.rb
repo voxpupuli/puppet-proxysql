@@ -15,7 +15,7 @@ Puppet::Type.newtype(:proxy_mysql_group_replication_hostgroup) do
     raise('backup_writer_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:backup_writer_hostgroup].nil?
     raise('reader_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:reader_hostgroup].nil?
     raise('offline_hostgroup parameter is required.') if (self[:ensure] == :present) && self[:offline_hostgroup].nil?
-    raise('name must match writer_hostgroup-backup_writer_hostgroup-reader_hostgroup-offline_hostgroup parameters') if self[:name] != "#{self[:writer_hostgroup]}-#{self[:backup_writer_hostgroup]}-#{self[:reader_hostgroup]}-#{self[:offline_hostgroup]}"
+    raise('name must match writer_hostgroup-backup_writer_hostgroup-reader_hostgroup-offline_hostgroup parameters') if (self[:ensure] == :present) && self[:name] != "#{self[:writer_hostgroup]}-#{self[:backup_writer_hostgroup]}-#{self[:reader_hostgroup]}-#{self[:offline_hostgroup]}"
   end
 
   newparam(:name, namevar: true) do

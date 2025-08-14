@@ -1471,8 +1471,6 @@ Valid values: `%r{[01]}`
 
 Backend or not.
 
-Default value: `1`
-
 ##### `default_hostgroup`
 
 Valid values: `%r{\d+}`
@@ -1504,8 +1502,6 @@ Use fast forwrd or not.
 Valid values: `%r{[01]}`
 
 Frontend or not.
-
-Default value: `1`
 
 ##### `max_connections`
 
