@@ -76,6 +76,16 @@ class proxysql::params {
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.7.x/repo_pub_key',
         },
       }
+      $repo30 = {
+        comment  => 'ProxySQL 3.0.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => ' ',
+        key      => {
+          'name'   => 'proxysql-3.0.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key',
+        },
+      }
     }
     'RedHat': {
       $package_provider = 'rpm'
@@ -128,6 +138,14 @@ class proxysql::params {
         name     => 'proxysql_2_7',
         descr    => 'ProxySQL 2.7.x YUM repository',
         baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo30             = {
+        name     => 'proxysql_3_0',
+        descr    => 'ProxySQL 3.0.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/centos/${repo_os_major_version}",
         enabled  => true,
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
