@@ -6,6 +6,7 @@ class proxysql::repo {
 
   if $proxysql::manage_repo and !$proxysql::package_source {
     $repo = $proxysql::version ? {
+      /^3\.0\./ => $proxysql::params::repo30,
       /^2\.7\./ => $proxysql::params::repo27,
       /^2\.6\./ => $proxysql::params::repo26,
       /^2\.5\./ => $proxysql::params::repo25,
