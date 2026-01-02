@@ -6,7 +6,7 @@ class proxysql::service {
 
   # systemd unit files replaced use of `init.d` in version 2.0.0 for some operating systems but only in 2.0.7 for CentOS/Redhat
   if (versioncmp($proxysql::version, '2.0.7') >= 0 and fact('os.family') == 'RedHat' and fact('os.name') != 'Amazon')
-  or (versioncmp($proxysql::version, '2')     >= 0 and fact('os.family') == 'Debian') {
+  or (versioncmp($proxysql::version, '2') >= 0 and fact('os.family') == 'Debian') {
     $drop_in_ensure = $proxysql::restart ? {
       true  => 'present',
       false => 'absent',
@@ -53,12 +53,32 @@ class proxysql::service {
     }
   }
 
-  exec { 'wait_for_admin_socket_to_open':
-    command   => "test -S ${proxysql::admin_listen_socket}",
-    unless    => "test -S ${proxysql::admin_listen_socket}",
-    tries     => '3',
-    try_sleep => '10',
-    require   => Service[$proxysql::service_name],
-    path      => '/bin:/usr/bin',
+  $socket_wait_connection_method = $proxysql::admin_listen_socket ? {
+    ''      => "-h ${proxysql::admin_listen_ip} -P ${proxysql::admin_listen_port}",
+    default => "-S ${proxysql::admin_listen_socket}"
+  }
+
+  $wait_exec_params = {
+    tries       => '10',
+    try_sleep   => '2',
+    subscribe   => Service[$proxysql::service_name],
+    refreshonly => true,
+    path        => '/bin:/usr/bin',
+  }
+
+  # It happens that the admin socket is created but not ready (at least during acceptance tests)
+  # This first exec is used for the first run when no .my.cnf file is created yet
+  exec { 'wait_for_admin_socket_availability_no_my_cnf':
+    command     => "mysql -u ${proxysql::admin_username} ${socket_wait_connection_method} -e 'SELECT 1'",
+    environment => ["MYSQL_PWD=${proxysql::admin_password.unwrap}"],
+    unless      => "test -f ${proxysql::mycnf_file_name}",
+    *           => $wait_exec_params,
+  }
+
+  # We prefer to use .my.cnf if available. In case of password change, we need the old credentials.
+  exec { 'wait_for_admin_socket_availability_with_my_cnf':
+    command => "mysql --defaults-extra-file=${proxysql::mycnf_file_name} -e 'SELECT 1'",
+    onlyif  => "test -f ${proxysql::mycnf_file_name}",
+    *       => $wait_exec_params,
   }
 }
