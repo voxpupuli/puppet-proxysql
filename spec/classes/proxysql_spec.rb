@@ -51,6 +51,7 @@ describe 'proxysql' do
           sys_group = 'proxysql'
 
           admin_socket = '/tmp/proxysql_admin.sock'
+          my_cnf_path = '/root/.my.cnf'
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
@@ -73,7 +74,7 @@ describe 'proxysql' do
                                                                 owner: sys_user,
                                                                 group: sys_group,
                                                                 mode: '0400',
-                                                                path: '/root/.my.cnf')
+                                                                path: my_cnf_path)
           end
 
           it do
@@ -85,12 +86,26 @@ describe 'proxysql' do
           it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
 
           it do
-            is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
-              command: "test -S #{admin_socket}",
-              unless: "test -S #{admin_socket}",
-              tries: 3,
-              try_sleep: 10,
-              require: 'Service[proxysql]',
+            is_expected.to contain_exec('wait_for_admin_socket_availability_no_my_cnf').with(
+              command: "mysql -u admin -S #{admin_socket} -e 'SELECT 1'",
+              unless: "test -f #{my_cnf_path}",
+              environment: ['MYSQL_PWD=admin'],
+              tries: '10',
+              try_sleep: '2',
+              subscribe: 'Service[proxysql]',
+              refreshonly: true,
+              path: '/bin:/usr/bin'
+            )
+          end
+
+          it do
+            is_expected.to contain_exec('wait_for_admin_socket_availability_with_my_cnf').with(
+              command: "mysql --defaults-extra-file=#{my_cnf_path} -e 'SELECT 1'",
+              onlyif: "test -f #{my_cnf_path}",
+              tries: '10',
+              try_sleep: '2',
+              subscribe: 'Service[proxysql]',
+              refreshonly: true,
               path: '/bin:/usr/bin'
             )
           end
