@@ -4,6 +4,70 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v7.0.0) (2026-02-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v6.0.0...v7.0.0)
+
+**Breaking changes:**
+
+- Drop puppet, update openvox minimum version to 8.19 [\#242](https://github.com/voxpupuli/puppet-proxysql/pull/242) ([TheMeier](https://github.com/TheMeier))
+- require puppetlabs/mysql \>= 6.0.0 [\#229](https://github.com/voxpupuli/puppet-proxysql/pull/229) ([saz](https://github.com/saz))
+- drop Debian 10 as supported OS [\#225](https://github.com/voxpupuli/puppet-proxysql/pull/225) ([saz](https://github.com/saz))
+- drop OracleLinux 7 as supported OS [\#224](https://github.com/voxpupuli/puppet-proxysql/pull/224) ([saz](https://github.com/saz))
+- drop CentOS 7 as supported OS [\#223](https://github.com/voxpupuli/puppet-proxysql/pull/223) ([saz](https://github.com/saz))
+- drop RedHat 7 as supported OS [\#222](https://github.com/voxpupuli/puppet-proxysql/pull/222) ([saz](https://github.com/saz))
+- Fix tests, drop support for proxysql versions \< 2.2 [\#216](https://github.com/voxpupuli/puppet-proxysql/pull/216) ([saz](https://github.com/saz))
+- Drop Ubuntu 18.04 support [\#209](https://github.com/voxpupuli/puppet-proxysql/pull/209) ([zilchms](https://github.com/zilchms))
+- Drop Debian 9 \(EOL\) [\#198](https://github.com/voxpupuli/puppet-proxysql/pull/198) ([smortex](https://github.com/smortex))
+- Drop Puppet 6 support [\#194](https://github.com/voxpupuli/puppet-proxysql/pull/194) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Allow puppetlabs/apt 10.x [\#238](https://github.com/voxpupuli/puppet-proxysql/pull/238) ([smortex](https://github.com/smortex))
+- metadata.json: Add OpenVox [\#237](https://github.com/voxpupuli/puppet-proxysql/pull/237) ([jstraw](https://github.com/jstraw))
+- allow puppet/extlib \<= 8.0.0 [\#230](https://github.com/voxpupuli/puppet-proxysql/pull/230) ([saz](https://github.com/saz))
+- allow puppetlabs/apt \<= 10.0.0 [\#228](https://github.com/voxpupuli/puppet-proxysql/pull/228) ([saz](https://github.com/saz))
+- allow puppetlabs/mysql \< 17.0.0 [\#227](https://github.com/voxpupuli/puppet-proxysql/pull/227) ([saz](https://github.com/saz))
+- add Ubuntu 22.04/24.04 as supported OS [\#221](https://github.com/voxpupuli/puppet-proxysql/pull/221) ([saz](https://github.com/saz))
+- add Debian 11/12 as supported OS [\#220](https://github.com/voxpupuli/puppet-proxysql/pull/220) ([saz](https://github.com/saz))
+- add OracleLinux 8/9 as supported OS [\#219](https://github.com/voxpupuli/puppet-proxysql/pull/219) ([saz](https://github.com/saz))
+- add CentOS 9 as supported OS [\#218](https://github.com/voxpupuli/puppet-proxysql/pull/218) ([saz](https://github.com/saz))
+- add RedHat 8/9 as supported OS [\#217](https://github.com/voxpupuli/puppet-proxysql/pull/217) ([saz](https://github.com/saz))
+- update puppet-systemd upper bound to 8.0.0 [\#211](https://github.com/voxpupuli/puppet-proxysql/pull/211) ([TheMeier](https://github.com/TheMeier))
+- Add Puppet 8 support [\#202](https://github.com/voxpupuli/puppet-proxysql/pull/202) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 9.x [\#201](https://github.com/voxpupuli/puppet-proxysql/pull/201) ([bastelfreak](https://github.com/bastelfreak))
+- bump puppet/systemd to \< 5.0.0 [\#192](https://github.com/voxpupuli/puppet-proxysql/pull/192) ([jhoblitt](https://github.com/jhoblitt))
+- add support for 2.4.x [\#191](https://github.com/voxpupuli/puppet-proxysql/pull/191) ([jackdpeterson](https://github.com/jackdpeterson))
+- proxysql 2.1 and 2.3 support [\#181](https://github.com/voxpupuli/puppet-proxysql/pull/181) ([jadestorm](https://github.com/jadestorm))
+- Add support for Ubuntu 20.04 [\#176](https://github.com/voxpupuli/puppet-proxysql/pull/176) ([rsynnest](https://github.com/rsynnest))
+
+**Fixed bugs:**
+
+- support purging for all types of resources [\#83](https://github.com/voxpupuli/puppet-proxysql/pull/83) ([MaxFedotov](https://github.com/MaxFedotov))
+
+**Closed issues:**
+
+- Drop support for multiple proxysql versions? [\#231](https://github.com/voxpupuli/puppet-proxysql/issues/231)
+- Deprecation request. [\#213](https://github.com/voxpupuli/puppet-proxysql/issues/213)
+- ProxySQL 2.4.x not supported [\#190](https://github.com/voxpupuli/puppet-proxysql/issues/190)
+- Update dependency from camptocamp-systemd to puppet-systemd [\#182](https://github.com/voxpupuli/puppet-proxysql/issues/182)
+- Escape issue in .my.cnf on machine with specific characters inside password template\(my.cnf.erb\) [\#180](https://github.com/voxpupuli/puppet-proxysql/issues/180)
+- proxy\_mysql\_user + ensure absent [\#161](https://github.com/voxpupuli/puppet-proxysql/issues/161)
+- Problem with escaped Strings on query rules [\#90](https://github.com/voxpupuli/puppet-proxysql/issues/90)
+
+**Merged pull requests:**
+
+- puppet/systemd: allow 8.x [\#233](https://github.com/voxpupuli/puppet-proxysql/pull/233) ([jay7x](https://github.com/jay7x))
+- use new apt per-source key [\#232](https://github.com/voxpupuli/puppet-proxysql/pull/232) ([saz](https://github.com/saz))
+- Update Readme - drop reference, update links, fix formatting [\#210](https://github.com/voxpupuli/puppet-proxysql/pull/210) ([rwaffen](https://github.com/rwaffen))
+- Remove legacy top-scope syntax [\#208](https://github.com/voxpupuli/puppet-proxysql/pull/208) ([smortex](https://github.com/smortex))
+- Remove outdated acceptance nodesets [\#187](https://github.com/voxpupuli/puppet-proxysql/pull/187) ([ekohl](https://github.com/ekohl))
+- puppet/extlib: Allow 6.x [\#186](https://github.com/voxpupuli/puppet-proxysql/pull/186) ([bastelfreak](https://github.com/bastelfreak))
+- Allow up-to-date dependencies [\#178](https://github.com/voxpupuli/puppet-proxysql/pull/178) ([smortex](https://github.com/smortex))
+- switch from camptocamp/systemd to voxpupuli/systemd [\#177](https://github.com/voxpupuli/puppet-proxysql/pull/177) ([bastelfreak](https://github.com/bastelfreak))
+- Add pattern normalization test [\#174](https://github.com/voxpupuli/puppet-proxysql/pull/174) ([mat1010](https://github.com/mat1010))
+- Normalise pattern values \(match, negate\_match, replace\) [\#160](https://github.com/voxpupuli/puppet-proxysql/pull/160) ([bbetter173](https://github.com/bbetter173))
+
 ## [v6.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v6.0.0) (2021-06-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.1.0...v6.0.0)
@@ -56,7 +120,7 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - Fixup Amazon 2016 issues [\#148](https://github.com/voxpupuli/puppet-proxysql/pull/148) ([alexjfisher](https://github.com/alexjfisher))
-- provider: explicitly stringify output of mysql query [\#142](https://github.com/voxpupuli/puppet-proxysql/pull/142) ([SimonPe](https://github.com/SimonPe))
+- provider: explicitly stringify output of mysql query [\#142](https://github.com/voxpupuli/puppet-proxysql/pull/142) ([LadyNamedLaura](https://github.com/LadyNamedLaura))
 - Stop creating spurious files [\#141](https://github.com/voxpupuli/puppet-proxysql/pull/141) ([saz](https://github.com/saz))
 
 **Merged pull requests:**
