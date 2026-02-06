@@ -5,7 +5,7 @@
 # @param package_ensure
 #   The ensure of the ProxySQL package resource.
 # @param package_install_options
-#   An array of additional options to pass when installing a package. 
+#   An array of additional options to pass when installing a package.
 # @param service_name
 #   The name of the ProxySQL service resource.
 # @param service_ensure
@@ -23,7 +23,7 @@
 # @param errorlog_file_group
 #   Group of the `errorlog_file`. Available from ProxySQL v2.0.0
 # @param manage_selinux
-#   Whether to create the required selinux rules for logrotate to work. 
+#   Whether to create the required selinux rules for logrotate to work.
 #   This parameter also requires the `puppet/selinux` module to be installed.
 # @param manage_mysql_client
 #   Whether to include the mysql::client class.
@@ -179,7 +179,7 @@ class proxysql (
   Boolean $save_to_disk = true,
 
   Boolean $manage_repo = true,
-  Pattern[/^[1|2]\.\d+\.\d+/] $version = $proxysql::params::version,
+  Pattern[/^[1|2|3]\.\d+\.\d+/] $version = $proxysql::params::version,
 
   Optional[String[1]] $package_source         = undef,
   Optional[String[1]] $package_checksum_value = undef,
@@ -189,7 +189,7 @@ class proxysql (
 
   String $sys_owner = $version ? {
     /^1/ => 'root',
-    /^2/ => 'proxysql',
+    /^2|3/ => 'proxysql',
   },
   String $sys_group = $sys_owner,
 
