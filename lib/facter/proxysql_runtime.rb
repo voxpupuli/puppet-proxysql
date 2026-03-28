@@ -33,7 +33,7 @@ Facter.add(:proxysql_runtime) do
       'runtime_mysql_query_rules',
       'runtime_mysql_query_rules_fast_routing',
       'runtime_mysql_replication_hostgroups',
-      'runtime_proxysql_servers'
+      'runtime_proxysql_servers',
     ].each do |table|
       results = client.query("SELECT * FROM #{table}")
       fact[table] = results.map { |row| row }

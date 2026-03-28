@@ -12,7 +12,7 @@ describe 'proxy_mysql_replication_hostgroup' do
       ensure: 'present',
       name: '10-30',
       writer_hostgroup: 10,
-      reader_hostgroup: 30
+      reader_hostgroup: 30,
     }
   end
 

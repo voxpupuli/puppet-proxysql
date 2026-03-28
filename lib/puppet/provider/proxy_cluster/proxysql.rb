@@ -15,7 +15,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
     instances = []
     if mysql_running
       servers = mysql([defaults_file, '-NBe',
-                       'SELECT `hostname`, `port` FROM `proxysql_servers`'].compact).split(%r{\n})
+                       'SELECT `hostname`, `port` FROM `proxysql_servers`',].compact).split(%r{\n})
 
       # To reduce the number of calls to MySQL we collect all the properties in
       # one big swoop.
@@ -34,7 +34,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
           hostname: @hostname,
           port: @port,
           weight: @weight,
-          comment: @comment
+          comment: @comment,
         )
       end
     end
@@ -82,7 +82,7 @@ Puppet::Type.type(:proxy_cluster).provide(:proxysql, parent: Puppet::Provider::P
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

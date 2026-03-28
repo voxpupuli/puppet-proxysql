@@ -19,8 +19,8 @@ describe provider_class do
         allow(described_class).to receive(:mysql).with(
           [
             '-NBe',
-            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`'
-          ]
+            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`',
+          ],
         ).and_return('')
       end
 
@@ -34,8 +34,8 @@ describe provider_class do
         allow(described_class).to receive(:mysql).with(
           [
             '-NBe',
-            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`'
-          ]
+            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`',
+          ],
         ).and_return('1	2	3	4	1	1	0	0	Galera Replication Group 1')
       end
 
@@ -64,8 +64,8 @@ describe provider_class do
         allow(described_class).to receive(:mysql).with(
           [
             '-NBe',
-            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`'
-          ]
+            'SELECT `writer_hostgroup`,`backup_writer_hostgroup`,`reader_hostgroup`,`offline_hostgroup`,`active`,`max_writers`,`writer_is_also_reader`,`max_transactions_behind`,`comment` FROM `mysql_galera_hostgroups`',
+          ],
         ).and_return("1	2	3	4	1	1	0	0	Galera Replication Group 1\n5	6	7	8	1	2	0	0	another group")
       end
 

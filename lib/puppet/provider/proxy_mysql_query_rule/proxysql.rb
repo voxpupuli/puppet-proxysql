@@ -17,7 +17,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
   def self.instances
     instances = []
     rules = mysql([defaults_file, '-NBe',
-                   'SELECT `rule_id` FROM `mysql_query_rules`'].compact).split(%r{\n})
+                   'SELECT `rule_id` FROM `mysql_query_rules`',].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -68,7 +68,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
         log: @log,
         comment: @comment,
         mirror_flag_out: @mirror_flag_out,
-        mirror_hostgroup: @mirror_hostgroup
+        mirror_hostgroup: @mirror_hostgroup,
       )
     end
     instances
@@ -143,7 +143,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

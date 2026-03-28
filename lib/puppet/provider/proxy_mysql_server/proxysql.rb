@@ -10,7 +10,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   def self.instances
     instances = []
     servers = mysql([defaults_file, '-NBe',
-                     'SELECT `hostname`, `port`, `hostgroup_id` FROM `mysql_servers`'].compact).split(%r{\n})
+                     'SELECT `hostname`, `port`, `hostgroup_id` FROM `mysql_servers`',].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -39,7 +39,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
         max_replication_lag: @max_replication_lag,
         use_ssl: @use_ssl,
         max_latency_ms: @max_latency_ms,
-        comment: @comment
+        comment: @comment,
       )
     end
     instances
@@ -96,7 +96,7 @@ Puppet::Type.type(:proxy_mysql_server).provide(:proxysql, parent: Puppet::Provid
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

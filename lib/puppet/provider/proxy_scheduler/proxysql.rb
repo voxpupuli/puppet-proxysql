@@ -9,7 +9,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
   def self.instances
     instances = []
     schedulers = mysql([defaults_file, '-NBe',
-                        'SELECT `id` FROM `scheduler`'].compact).split(%r{\n})
+                        'SELECT `id` FROM `scheduler`',].compact).split(%r{\n})
 
     schedulers.map do |scheduler_id|
       query = 'SELECT `active`, `interval_ms`, `filename`, ' \
@@ -32,7 +32,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
         arg3: @arg3,
         arg4: @arg4,
         arg5: @arg5,
-        comment: @comment
+        comment: @comment,
       )
     end
     instances
@@ -85,7 +85,7 @@ Puppet::Type.type(:proxy_scheduler).provide(:proxysql, parent: Puppet::Provider:
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

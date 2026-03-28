@@ -91,7 +91,7 @@ describe 'proxysql' do
               tries: 3,
               try_sleep: 10,
               require: 'Service[proxysql]',
-              path: '/bin:/usr/bin'
+              path: '/bin:/usr/bin',
             )
           end
         end
@@ -107,7 +107,7 @@ describe 'proxysql' do
             context 'on systems with selinux enabled' do
               let(:facts) do
                 facts.deep_merge(
-                  os: { selinux: { current_mode: 'enforcing' } }
+                  os: { selinux: { current_mode: 'enforcing' } },
                 )
               end
 
