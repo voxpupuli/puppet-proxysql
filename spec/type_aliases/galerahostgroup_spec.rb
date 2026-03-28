@@ -12,8 +12,8 @@ valid_mysql_galera_hostgroups = [
       'active' => 1,
       'writers' => 10,
       'writer_is_reader' => 2,
-      'max_transactions' => 1000
-    }
+      'max_transactions' => 1000,
+    },
   },
   {
     'galera hostgroup 2' => {
@@ -23,9 +23,9 @@ valid_mysql_galera_hostgroups = [
       'offline' => 40,
       'active' => 1,
       'writers' => 1,
-      'writer_is_reader' => 0
-    }
-  }
+      'writer_is_reader' => 0,
+    },
+  },
 ]
 describe 'Proxysql::GaleraHostgroup' do
   it { is_expected.to allow_value(valid_mysql_galera_hostgroups) }

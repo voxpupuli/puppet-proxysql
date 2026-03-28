@@ -14,7 +14,7 @@ describe 'proxy_mysql_galera_hostgroup' do
       writer_hostgroup: 10,
       backup_writer_hostgroup: 20,
       reader_hostgroup: 30,
-      offline_hostgroup: 40
+      offline_hostgroup: 40,
     }
   end
 

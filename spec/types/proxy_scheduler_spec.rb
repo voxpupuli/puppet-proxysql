@@ -12,7 +12,7 @@ describe 'proxy_scheduler' do
       ensure: 'present',
       name: 'scheduler-10',
       scheduler_id: 10,
-      filename: '/usr/bin/id'
+      filename: '/usr/bin/id',
     }
   end
 

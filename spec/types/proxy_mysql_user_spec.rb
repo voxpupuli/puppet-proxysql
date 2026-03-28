@@ -10,7 +10,7 @@ describe 'proxy_mysql_user' do
   let(:params) do
     {
       ensure: 'present',
-      password: 'somePassword'
+      password: 'somePassword',
     }
   end
 

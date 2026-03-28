@@ -10,7 +10,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
   # users.
   def self.instances
     users = mysql([defaults_file, '-NBe',
-                   'SELECT username FROM mysql_users'].compact).split(%r{\n})
+                   'SELECT username FROM mysql_users',].compact).split(%r{\n})
 
     # To reduce the number of calls to MySQL we collect all the properties in
     # one big swoop.
@@ -84,7 +84,7 @@ Puppet::Type.type(:proxy_mysql_user).provide(:proxysql, parent: Puppet::Provider
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

@@ -18,15 +18,15 @@ Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
           [:writer_hostgroup],
           [:backup_writer_hostgroup],
           [:reader_hostgroup],
-          [:offline_hostgroup]
-        ]
+          [:offline_hostgroup],
+        ],
       ],
       [
         %r{^(.*)$},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 
@@ -54,7 +54,7 @@ Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
         @resource.original_parameters[:writer_hostgroup],
         @resource.original_parameters[:backup_writer_hostgroup],
         @resource.original_parameters[:reader_hostgroup],
-        @resource.original_parameters[:offline_hostgroup]
+        @resource.original_parameters[:offline_hostgroup],
       ].join('-')
     end
   end

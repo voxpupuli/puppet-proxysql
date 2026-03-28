@@ -6,7 +6,7 @@ Puppet::Type.type(:proxy_mysql_galera_hostgroup).provide(:proxysql, parent: Pupp
   commands mysql: 'mysql'
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 
