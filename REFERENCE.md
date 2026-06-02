@@ -982,11 +982,9 @@ match queries with a specific digest, as returned by stats_mysql_query_digest.di
 
 ##### `multiplex`
 
-Valid values: `1`, `0`
+Valid values: `%r{[\w+]}`
 
-Defines if the Query Rule is multiplex or not. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".'
-
-Default value: `undef`
+Defines if the Query Rule is multiplex or not Set to 1, 0 or NULL. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".'
 
 ##### `ensure`
 
