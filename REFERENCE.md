@@ -980,12 +980,6 @@ Valid values: `%r{\w+}`
 
 match queries with a specific digest, as returned by stats_mysql_query_digest.digest
 
-##### `multiplex`
-
-Valid values: `%r{[\w+]}`
-
-Defines if the Query Rule is multiplex or not Set to 1, 0 or NULL. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".'
-
 ##### `ensure`
 
 Valid values: `present`, `absent`
@@ -1041,6 +1035,12 @@ see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md
 Valid values: `%r{\d+}`
 
 see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md.
+
+##### `multiplex`
+
+Valid values: `%r{\w+}`
+
+if this is set to 1, the query will be multiplexed. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".
 
 ##### `negate_match_pattern`
 
@@ -1774,7 +1774,7 @@ Array[Hash[String, Struct[{ rule_id                         => Integer,
   Optional[error_msg]             => String[1],
   Optional[log]                   => Integer[0,1],
   Optional[mirror_hostgroup]      => Integer,
-  Optional[multiplex]             => String[1]
+  Optional[multiplex]             => String[1],
 Optional[mirror_flag_out]       => Integer, }],1,1]]
 ```
 
