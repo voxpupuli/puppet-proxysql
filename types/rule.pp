@@ -23,4 +23,5 @@ type Proxysql::Rule = Array[Hash[String, Struct[{ rule_id                       
   Optional[error_msg]             => String[1],
   Optional[log]                   => Integer[0,1],
   Optional[mirror_hostgroup]      => Integer,
+  Optional[multiplex]             => Integer[0,1],
 Optional[mirror_flag_out]       => Integer, }],1,1]]

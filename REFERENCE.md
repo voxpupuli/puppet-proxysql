@@ -980,6 +980,14 @@ Valid values: `%r{\w+}`
 
 match queries with a specific digest, as returned by stats_mysql_query_digest.digest
 
+##### `multiplex`
+
+Valid values: `1`, `0`
+
+Defines if the Query Rule is multiplex or not
+
+Default value: `undef`
+
 ##### `ensure`
 
 Valid values: `present`, `absent`
