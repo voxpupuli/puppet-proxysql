@@ -87,7 +87,7 @@ Puppet::Type.newtype(:proxy_mysql_query_rule) do
 
   newproperty(:multiplex) do
     desc 'if this is set to 1, the query will be multiplexed. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".'
-    newvalue(%r{[01]})
+    newvalue(%r{\w+})
   end
 
   newproperty(:match_digest) do
