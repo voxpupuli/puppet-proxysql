@@ -9,4 +9,5 @@ type Proxysql::User = Array[Hash[String, Struct[{ password                      
   Optional[fast_forward]           => Integer[0,1],
   Optional[backend]                => Integer[0,1],
   Optional[frontend]               => Integer[0,1],
-Optional[max_connections]        => Integer, }],1,1]]
+  Optional[max_connections]        => Integer,
+  Optional[encrypt_password]       => Boolean, }],1,1]]
