@@ -5,7 +5,7 @@
 # @param package_ensure
 #   The ensure of the ProxySQL package resource.
 # @param package_install_options
-#   An array of additional options to pass when installing a package. 
+#   An array of additional options to pass when installing a package.
 # @param service_name
 #   The name of the ProxySQL service resource.
 # @param service_ensure
@@ -23,7 +23,7 @@
 # @param errorlog_file_group
 #   Group of the `errorlog_file`. Available from ProxySQL v2.0.0
 # @param manage_selinux
-#   Whether to create the required selinux rules for logrotate to work. 
+#   Whether to create the required selinux rules for logrotate to work.
 #   This parameter also requires the `puppet/selinux` module to be installed.
 # @param manage_mysql_client
 #   Whether to include the mysql::client class.
@@ -73,7 +73,9 @@
 # @param version
 #   The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
 #   It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
-#   deployed, use `package_name` or `package_source`. Currently defaults to '2.7.1' or the value of the `proxysql_version` fact.
+#   deployed, use `package_name` or `package_source`.
+#   Defaults to the value of the `proxysql_version` fact when ProxySQL is already installed. On a fresh install it defaults to '2.7.1',
+#   or '3.0.11' on distributions where upstream does not publish the 2.7.x repository (Debian 13 and later, EL10 and later).
 # @param package_source
 #   location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
 #   Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
@@ -179,7 +181,7 @@ class proxysql (
   Boolean $save_to_disk = true,
 
   Boolean $manage_repo = true,
-  Pattern[/^[1|2]\.\d+\.\d+/] $version = $proxysql::params::version,
+  Pattern[/^[1|2|3]\.\d+\.\d+/] $version = $proxysql::params::version,
 
   Optional[String[1]] $package_source         = undef,
   Optional[String[1]] $package_checksum_value = undef,
@@ -189,7 +191,7 @@ class proxysql (
 
   String $sys_owner = $version ? {
     /^1/ => 'root',
-    /^2/ => 'proxysql',
+    /^2|3/ => 'proxysql',
   },
   String $sys_group = $sys_owner,
 

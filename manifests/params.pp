@@ -9,6 +9,14 @@ class proxysql::params {
       $package_provider = 'dpkg'
       $package_dependencies = []
 
+      # ProxySQL does not publish 2.7.x packages for Debian 13 (trixie) and later.
+      # Fresh installs on those releases default to the 3.0.x series instead.
+      if $facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['major'], '13') >= 0 {
+        $fallback_version = '3.0.11'
+      } else {
+        $fallback_version = '2.7.1'
+      }
+
       if versioncmp(fact('os.release.major'), '18.04') == 0 {
         # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
         # This limits where we can write sockets.
@@ -76,6 +84,16 @@ class proxysql::params {
           'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.7.x/repo_pub_key',
         },
       }
+      $repo30 = {
+        comment  => 'ProxySQL 3.0.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => ' ',
+        key      => {
+          'name'   => 'proxysql-3.0.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key',
+        },
+      }
     }
     'RedHat': {
       $package_provider = 'rpm'
@@ -83,6 +101,14 @@ class proxysql::params {
       $repo_os_major_version = $facts['os']['release']['major'] ? {
         '2016'  => '6',
         default => $facts['os']['release']['major'],
+      }
+
+      # ProxySQL does not publish 2.7.x packages for EL10 and later.
+      # Fresh installs on those releases default to the 3.0.x series instead.
+      if versioncmp($repo_os_major_version, '10') >= 0 {
+        $fallback_version = '3.0.11'
+      } else {
+        $fallback_version = '2.7.1'
       }
       $repo22             = {
         name     => 'proxysql_2_2',
@@ -132,6 +158,14 @@ class proxysql::params {
         gpgcheck => true,
         gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
       }
+      $repo30             = {
+        name     => 'proxysql_3_0',
+        descr    => 'ProxySQL 3.0.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
     }
     default: {
       fail("osfamily ${facts['os']['family']} is not supported")
@@ -143,7 +177,8 @@ class proxysql::params {
   } else {
     $short_proxysql_version_fact = undef
   }
-  $version = pick($short_proxysql_version_fact,'2.7.1')
+  # The proxysql_version fact always wins so an existing installation is never moved to another series.
+  $version = pick($short_proxysql_version_fact, $fallback_version)
 
   $listen_socket = pick(getvar('_listen_socket'),'/tmp/proxysql.sock')
   $admin_listen_socket = pick(getvar('_admin_listen_socket'),'/tmp/proxysql_admin.sock')
