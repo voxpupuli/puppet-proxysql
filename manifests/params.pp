@@ -9,6 +9,14 @@ class proxysql::params {
       $package_provider = 'dpkg'
       $package_dependencies = []
 
+      # ProxySQL does not publish 2.7.x packages for Debian 13 (trixie) and later.
+      # Fresh installs on those releases default to the 3.0.x series instead.
+      if $facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['major'], '13') >= 0 {
+        $fallback_version = '3.0.11'
+      } else {
+        $fallback_version = '2.7.1'
+      }
+
       if versioncmp(fact('os.release.major'), '18.04') == 0 {
         # The 2.0.x systemd service file in ubuntu 18.04 has `ReadWritePaths=/var/lib/proxysql /var/run/proxysql`.
         # This limits where we can write sockets.
@@ -94,6 +102,14 @@ class proxysql::params {
         '2016'  => '6',
         default => $facts['os']['release']['major'],
       }
+
+      # ProxySQL does not publish 2.7.x packages for EL10 and later.
+      # Fresh installs on those releases default to the 3.0.x series instead.
+      if versioncmp($repo_os_major_version, '10') >= 0 {
+        $fallback_version = '3.0.11'
+      } else {
+        $fallback_version = '2.7.1'
+      }
       $repo22             = {
         name     => 'proxysql_2_2',
         descr    => 'ProxySQL 2.2.x YUM repository',
@@ -161,7 +177,8 @@ class proxysql::params {
   } else {
     $short_proxysql_version_fact = undef
   }
-  $version = pick($short_proxysql_version_fact,'2.7.1')
+  # The proxysql_version fact always wins so an existing installation is never moved to another series.
+  $version = pick($short_proxysql_version_fact, $fallback_version)
 
   $listen_socket = pick(getvar('_listen_socket'),'/tmp/proxysql.sock')
   $admin_listen_socket = pick(getvar('_admin_listen_socket'),'/tmp/proxysql_admin.sock')

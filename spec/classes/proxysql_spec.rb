@@ -117,6 +117,20 @@ describe 'proxysql' do
           it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
         end
 
+        context 'with an existing 2.6.x installation (proxysql_version fact set)' do
+          let(:facts) { facts.merge(proxysql_version: '2.6.6-3-g4b9b4a4') }
+
+          it { is_expected.to compile.with_all_deps }
+
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_2_6').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/centos/#{facts[:os]['release']['major']}") }
+            it { is_expected.not_to contain_yumrepo('proxysql_2_7') }
+            it { is_expected.not_to contain_yumrepo('proxysql_3_0') }
+          else
+            it { is_expected.to contain_apt__source('proxysql_repo').with_location("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/#{facts[:os]['distro']['codename']}/") }
+          end
+        end
+
         if facts[:os]['family'] == 'RedHat'
           describe 'manage_selinux' do
             context 'on systems with selinux enabled' do
@@ -136,6 +150,40 @@ describe 'proxysql' do
                 it { is_expected.not_to contain_class('proxysql::selinux') }
               end
             end
+          end
+        end
+      end
+    end
+  end
+
+  context 'on releases without an upstream 2.7.x repository' do
+    on_supported_os(
+      supported_os: [
+        { 'operatingsystem' => 'Debian', 'operatingsystemrelease' => ['13'] },
+        { 'operatingsystem' => 'CentOS', 'operatingsystemrelease' => ['10'] },
+      ],
+    ).each do |os, facts|
+      context "on #{os}" do
+        let(:facts) { facts }
+
+        context 'on a fresh install (no proxysql_version fact)' do
+          it { is_expected.to compile.with_all_deps }
+
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_3_0').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/centos/10') }
+            it { is_expected.not_to contain_yumrepo('proxysql_2_7') }
+          else
+            it { is_expected.to contain_apt__source('proxysql_repo').with_location('http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/trixie/') }
+          end
+        end
+
+        context 'with an explicit 2.7.x version' do
+          let(:params) { { 'version' => '2.7.1' } }
+
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/10') }
+          else
+            it { is_expected.to contain_apt__source('proxysql_repo').with_location('http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/trixie/') }
           end
         end
       end
