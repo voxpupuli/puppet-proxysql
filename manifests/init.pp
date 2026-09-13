@@ -73,7 +73,9 @@
 # @param version
 #   The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
 #   It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
-#   deployed, use `package_name` or `package_source`. Currently defaults to '2.7.1' or the value of the `proxysql_version` fact.
+#   deployed, use `package_name` or `package_source`.
+#   Defaults to the value of the `proxysql_version` fact when ProxySQL is already installed. On a fresh install it defaults to '2.7.1',
+#   or '3.0.11' on distributions where upstream does not publish the 2.7.x repository (Debian 13 and later, EL10 and later).
 # @param package_source
 #   location of a proxysql package.  When specified, this package will be installed with the `package\_provider` and the `manage_repo` setting will be ignored.
 #   Since version 4 of this module, this defaults to `undef` and needs to be specified when you don't want to use a package from a repository.
