@@ -35,7 +35,8 @@ describe 'proxysql class' do
     end
   end
 
-  context 'Upgrading to version 3.0' do
+  # ProxySQL does not publish 3.0.x packages for EL8
+  context 'Upgrading to version 3.0', unless: fact('os.family') == 'RedHat' && fact('os.release.major') == '8' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
