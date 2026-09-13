@@ -3,7 +3,11 @@
 require 'spec_helper_acceptance'
 
 describe 'proxysql class' do
-  context 'Upgrading to version 2.7' do
+  # ProxySQL does not publish 2.7.x packages for Debian 13+ and EL10+
+  no_27_repo = (fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 13) ||
+               (fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 10)
+
+  context 'Upgrading to version 2.7', unless: no_27_repo do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'proxysql':
