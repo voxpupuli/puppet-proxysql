@@ -1036,6 +1036,12 @@ Valid values: `%r{\d+}`
 
 see https://github.com/sysown/proxysql/blob/master/doc/mirroring.md.
 
+##### `multiplex`
+
+Valid values: `%r{\w+}`
+
+if this is set to 1, the query will be multiplexed. This means that if the same query is executed multiple times, only the first one will be sent to the backend, and the result will be returned to all clients. This is useful for queries that are executed very often, and return the same result, like "SELECT 1".
+
 ##### `negate_match_pattern`
 
 Valid values: `%r{[01]}`
@@ -1768,6 +1774,7 @@ Array[Hash[String, Struct[{ rule_id                         => Integer,
   Optional[error_msg]             => String[1],
   Optional[log]                   => Integer[0,1],
   Optional[mirror_hostgroup]      => Integer,
+  Optional[multiplex]             => String[1],
 Optional[mirror_flag_out]       => Integer, }],1,1]]
 ```
 
