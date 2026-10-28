@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.2.0](https://github.com/voxpupuli/puppet-proxysql/tree/v7.2.0) (2026-10-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v7.1.0...v7.2.0)
+
+**Implemented enhancements:**
+
+- puppet/systemd: Allow 11.x [\#260](https://github.com/voxpupuli/puppet-proxysql/pull/260) ([bastelfreak](https://github.com/bastelfreak))
+- Update requirements to allow OpenVox 9 [\#259](https://github.com/voxpupuli/puppet-proxysql/pull/259) ([sebastianrakel](https://github.com/sebastianrakel))
+
 ## [v7.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v7.1.0) (2026-09-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v7.0.0...v7.1.0)
