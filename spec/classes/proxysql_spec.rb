@@ -11,6 +11,14 @@ describe 'proxysql' do
           facts
         end
 
+        # Upstream does not publish the 2.7.x repository for Debian 13+ and EL10+, fresh installs default to 3.0.x there
+        default_series = if (facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'].to_i >= 13) ||
+                            (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i >= 10)
+                           '3.0'
+                         else
+                           '2.7'
+                         end
+
         context 'proxysql class without any parameters' do
           it { is_expected.to contain_class('proxysql') }
           it { is_expected.to compile.with_all_deps }
@@ -33,13 +41,15 @@ describe 'proxysql' do
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           if facts[:os]['family'] == 'RedHat'
-            it { is_expected.to contain_yumrepo('proxysql_2_7').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.7.x/centos/#{facts[:os]['release']['major']}") }
+            it { is_expected.to contain_yumrepo("proxysql_#{default_series.tr('.', '_')}").with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-#{default_series}.x/centos/#{facts[:os]['release']['major']}") }
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_6').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_5').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_4').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_3').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_2').with_ensure('absent') }
+          else
+            it { is_expected.to contain_apt__source('proxysql_repo').with_location("http://repo.proxysql.com/ProxySQL/proxysql-#{default_series}.x/#{facts[:os]['distro']['codename']}/") }
           end
 
           it do
@@ -51,6 +61,7 @@ describe 'proxysql' do
           sys_group = 'proxysql'
 
           admin_socket = '/tmp/proxysql_admin.sock'
+          my_cnf_path = '/root/.my.cnf'
 
           it do
             is_expected.to contain_file('proxysql-config-file').with(ensure: 'file',
@@ -73,7 +84,7 @@ describe 'proxysql' do
                                                                 owner: sys_user,
                                                                 group: sys_group,
                                                                 mode: '0400',
-                                                                path: '/root/.my.cnf')
+                                                                path: my_cnf_path)
           end
 
           it do
@@ -85,12 +96,26 @@ describe 'proxysql' do
           it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
 
           it do
-            is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
-              command: "test -S #{admin_socket}",
-              unless: "test -S #{admin_socket}",
-              tries: 3,
-              try_sleep: 10,
-              require: 'Service[proxysql]',
+            is_expected.to contain_exec('wait_for_admin_socket_availability_no_my_cnf').with(
+              command: "mysql -u admin -S #{admin_socket} -e 'SELECT 1'",
+              unless: "test -f #{my_cnf_path}",
+              environment: ['MYSQL_PWD=admin'],
+              tries: '10',
+              try_sleep: '2',
+              subscribe: 'Service[proxysql]',
+              refreshonly: true,
+              path: '/bin:/usr/bin',
+            )
+          end
+
+          it do
+            is_expected.to contain_exec('wait_for_admin_socket_availability_with_my_cnf').with(
+              command: "mysql --defaults-extra-file=#{my_cnf_path} -e 'SELECT 1'",
+              onlyif: "test -f #{my_cnf_path}",
+              tries: '10',
+              try_sleep: '2',
+              subscribe: 'Service[proxysql]',
+              refreshonly: true,
               path: '/bin:/usr/bin',
             )
           end
@@ -100,6 +125,20 @@ describe 'proxysql' do
           let(:params) { { 'datadir_mode' => '0644' } }
 
           it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
+        end
+
+        context 'with an existing 2.6.x installation (proxysql_version fact set)' do
+          let(:facts) { facts.merge(proxysql_version: '2.6.6-3-g4b9b4a4') }
+
+          it { is_expected.to compile.with_all_deps }
+
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yumrepo('proxysql_2_6').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/centos/#{facts[:os]['release']['major']}") }
+            it { is_expected.not_to contain_yumrepo('proxysql_2_7') }
+            it { is_expected.not_to contain_yumrepo('proxysql_3_0') }
+          else
+            it { is_expected.to contain_apt__source('proxysql_repo').with_location("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/#{facts[:os]['distro']['codename']}/") }
+          end
         end
 
         if facts[:os]['family'] == 'RedHat'

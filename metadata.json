@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs-mysql",
-      "version_requirement": ">= 6.0.0 < 17.0.0"
+      "version_requirement": ">= 6.0.0 < 18.0.0"
     },
     {
       "name": "puppetlabs-apt",
@@ -40,13 +40,15 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "8",
-        "9"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "9"
+        "9",
+        "10"
       ]
     },
     {
@@ -66,7 +68,8 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "11",
-        "12"
+        "12",
+        "13"
       ]
     },
     {

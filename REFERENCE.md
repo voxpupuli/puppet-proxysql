@@ -385,11 +385,13 @@ Default value: `true`
 
 ##### <a name="-proxysql--version"></a>`version`
 
-Data type: `Pattern[/^[1|2]\.\d+\.\d+/]`
+Data type: `Pattern[/^[1|2|3]\.\d+\.\d+/]`
 
 The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
 It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
-deployed, use `package_name` or `package_source`. Currently defaults to '2.7.1' or the value of the `proxysql_version` fact.
+deployed, use `package_name` or `package_source`.
+Defaults to the value of the `proxysql_version` fact when ProxySQL is already installed. On a fresh install it defaults to '2.7.1',
+or '3.0.11' on distributions where upstream does not publish the 2.7.x repository (Debian 13 and later, EL10 and later).
 
 Default value: `$proxysql::params::version`
 
@@ -445,7 +447,7 @@ Default value:
 ```puppet
 $version ? {
     /^1/ => 'root',
-    /^2/ => 'proxysql'
+    /^2|3/ => 'proxysql'
 ```
 
 ##### <a name="-proxysql--sys_group"></a>`sys_group`
