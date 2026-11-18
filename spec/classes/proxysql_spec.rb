@@ -43,6 +43,9 @@ describe 'proxysql' do
           if facts[:os]['family'] == 'RedHat'
             it { is_expected.to contain_yumrepo("proxysql_#{default_series.tr('.', '_')}").with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-#{default_series}.x/centos/#{facts[:os]['release']['major']}") }
             it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_ensure('absent') } if default_series == '3.0'
+
             it { is_expected.to contain_yumrepo('proxysql_2_6').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_5').with_ensure('absent') }
             it { is_expected.to contain_yumrepo('proxysql_2_4').with_ensure('absent') }
@@ -134,10 +137,42 @@ describe 'proxysql' do
 
           if facts[:os]['family'] == 'RedHat'
             it { is_expected.to contain_yumrepo('proxysql_2_6').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/centos/#{facts[:os]['release']['major']}") }
-            it { is_expected.not_to contain_yumrepo('proxysql_2_7') }
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_ensure('absent') }
             it { is_expected.not_to contain_yumrepo('proxysql_3_0') }
           else
             it { is_expected.to contain_apt__source('proxysql_repo').with_location("http://repo.proxysql.com/ProxySQL/proxysql-2.6.x/#{facts[:os]['distro']['codename']}/") }
+          end
+        end
+
+        context 'with version 3.0.11' do
+          let(:params) { { 'version' => '3.0.11' } }
+
+          it { is_expected.to compile.with_all_deps }
+
+          if facts[:os]['family'] == 'RedHat'
+            it 'configures the 3.0.x yum repository' do
+              is_expected.to contain_yumrepo('proxysql_3_0').with(
+                baseurl: "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/centos/#{facts[:os]['release']['major']}",
+                enabled: true,
+                gpgcheck: true,
+                gpgkey: 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+              )
+            end
+
+            it { is_expected.to contain_yumrepo('proxysql_2_7').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_2_6').with_ensure('absent') }
+          else
+            it 'configures the 3.0.x apt repository' do
+              is_expected.to contain_apt__source('proxysql_repo').with(
+                location: "http://repo.proxysql.com/ProxySQL/proxysql-3.0.x/#{facts[:os]['distro']['codename']}/",
+                release: './',
+                repos: ' ',
+                key: {
+                  'name' => 'proxysql-3.0.x.asc',
+                  'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-3.0.x/repo_pub_key',
+                },
+              )
+            end
           end
         end
 
