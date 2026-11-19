@@ -6,6 +6,7 @@ class proxysql::repo {
 
   if $proxysql::manage_repo and !$proxysql::package_source {
     $repo = $proxysql::version ? {
+      /^3\.0\./ => $proxysql::params::repo30,
       /^2\.7\./ => $proxysql::params::repo27,
       /^2\.6\./ => $proxysql::params::repo26,
       /^2\.5\./ => $proxysql::params::repo25,
@@ -27,6 +28,11 @@ class proxysql::repo {
         }
 
         # Purge old/unnecessary repos.
+        if ($proxysql::version !~ /^2\.7\./) {
+          yumrepo { $proxysql::params::repo27['name']:
+            ensure => absent,
+          }
+        }
         if ($proxysql::version !~ /^2\.6\./) {
           yumrepo { $proxysql::params::repo26['name']:
             ensure => absent,

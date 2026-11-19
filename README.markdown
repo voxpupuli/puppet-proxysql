@@ -49,7 +49,16 @@ include proxysql
 
 By default, packages come from the official upstream package repositories which the module will configure.
 On new installations, (by default), the 2.7.x repository will be configured. If ProxySQL is already installed, then the repository matching the currently installed version
-will be used.
+will be used, so an existing installation is never moved to another release series unless you set `version` explicitly.
+
+Upstream does not publish the 2.7.x repository for every distribution release (for example Debian 13 "trixie" and EL10). On those, new installations default
+to the 3.0.x repository instead. To pick a specific series on a new installation, set `version`:
+
+```puppet
+class { 'proxysql':
+  version => '3.0.11',
+}
+```
 
 To use your Operating System's own packages set `manage_repo => false`.
 
