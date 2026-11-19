@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.3.0](https://github.com/voxpupuli/puppet-proxysql/tree/v7.3.0) (2026-11-19)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v7.2.0...v7.3.0)
+
+**Implemented enhancements:**
+
+- Add ProxySQL 3.0.x repository support [\#269](https://github.com/voxpupuli/puppet-proxysql/pull/269) ([saz](https://github.com/saz))
+- Update dependency puppetlabs-mysql to v18 [\#268](https://github.com/voxpupuli/puppet-proxysql/pull/268) ([pccibot](https://github.com/pccibot))
+- Update dependency puppetlabs-apt to v11 [\#265](https://github.com/voxpupuli/puppet-proxysql/pull/265) ([pccibot](https://github.com/pccibot))
+- Update dependency puppet-extlib to v8 [\#264](https://github.com/voxpupuli/puppet-proxysql/pull/264) ([pccibot](https://github.com/pccibot))
+- puppetlabs/stdlib: Allow 10.x [\#262](https://github.com/voxpupuli/puppet-proxysql/pull/262) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v7.2.0](https://github.com/voxpupuli/puppet-proxysql/tree/v7.2.0) (2026-10-28)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v7.1.0...v7.2.0)
