@@ -26,14 +26,14 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
               '`client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`,  ' \
               '`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`,  ' \
               '`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`,  ' \
-              '`mirror_flagOUT`, `mirror_hostgroup` ' \
+              '`mirror_flagOUT`, `mirror_hostgroup`, `multiplex` ' \
               "FROM `mysql_query_rules` WHERE rule_id = '#{rule_id}'"
 
       @active, @username, @schemaname, @flag_in, @flag_out, @apply,
       @client_addr, @proxy_addr, @proxy_port, @destination_hostgroup,
       @digest, @match_digest, @match_pattern, @negate_match_pattern, @replace_pattern,
       @cache_ttl, @reconnect, @timeout, @retries, @delay, @error_msg, @log, @comment,
-      @mirror_flag_out, @mirror_hostgroup = mysql([defaults_file, '-NBe', query].compact).to_s.chomp.split(%r{\t})
+      @mirror_flag_out, @mirror_hostgroup, @multiplex = mysql([defaults_file, '-NBe', query].compact).to_s.chomp.split(%r{\t})
       name = "mysql_query_rule-#{rule_id}"
 
       @match_pattern = normalise_pattern(@match_pattern)
@@ -69,6 +69,7 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
         comment: @comment,
         mirror_flag_out: @mirror_flag_out,
         mirror_hostgroup: @mirror_hostgroup,
+        multiplex: @multiplex,
       )
     end
     instances
@@ -112,18 +113,18 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
     comment = make_sql_value(@resource.value(:comment) || nil)
     mirror_flag_out = make_sql_value(@resource.value(:mirror_flag_out) || nil)
     mirror_hostgroup = make_sql_value(@resource.value(:mirror_hostgroup) || nil)
-
+    multiplex = make_sql_value(@resource.value(:multiplex) || nil)
     query = 'INSERT INTO `mysql_query_rules` (' \
             '`rule_id`, `active`, `username`, `schemaname`, `flagIN`, `flagOUT`, `apply`, ' \
             '`client_addr`, `proxy_addr`, `proxy_port`, `destination_hostgroup`, ' \
             '`digest`, `match_digest`, `match_pattern`, `negate_match_pattern`, `replace_pattern`, ' \
             '`cache_ttl`, `reconnect`, `timeout`, `retries`, `delay`, `error_msg`, `log`, `comment`, ' \
-            '`mirror_flagOUT`, `mirror_hostgroup`) VALUES (' \
+            '`mirror_flagOUT`, `mirror_hostgroup`, `multiplex`) VALUES (' \
             "#{rule_id}, #{active}, #{username}, #{schemaname}, #{flag_in}, #{flag_out}, #{apply}, " \
             "#{client_addr}, #{proxy_addr}, #{proxy_port}, #{destination_hostgroup}, " \
             "#{digest}, #{match_digest}, #{match_pattern}, #{negate_match_pattern}, #{replace_pattern}, " \
             "#{cache_ttl}, #{reconnect}, #{timeout}, #{retries}, #{delay}, #{error_msg}, #{log}, #{comment}, " \
-            "#{mirror_flag_out}, #{mirror_hostgroup})"
+            "#{mirror_flag_out}, #{mirror_hostgroup}, #{multiplex})"
     mysql([defaults_file, '-e', query].compact)
     @property_hash[:ensure] = :present
 
@@ -275,5 +276,9 @@ Puppet::Type.type(:proxy_mysql_query_rule).provide(:proxysql, parent: Puppet::Pr
 
   def mirror_hostgroup=(value)
     @property_flush[:mirror_hostgroup] = value
+  end
+
+  def multiplex=(value)
+    @property_flush[:multiplex] = value
   end
 end
